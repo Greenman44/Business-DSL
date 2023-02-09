@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-
+import pandas as pd
 
 class Node(metaclass = ABCMeta):
     
@@ -43,4 +43,15 @@ class WhileStatement(Node):
     # def evaluate(self, context: Context):
     #     pass
         
+class ActionSell(Node):
+    def __init__(self, business, product, date, sell_price):
+        self.business = business
+        self.product = product
+        self.date = date
+        self.sell_price = sell_price
+        #if(business.sells == None):
+        #   business.sells == pd.DataFrame(data = [product.name,sell_price,date], columns = ["product", "price", "date"])
+        #else:
+        #   business.sells.append({"product" : product.name, "price": sell_price, "date" : date})
 
+class ActionBuy()
