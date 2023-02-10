@@ -1,6 +1,6 @@
 import ply.yacc as yacc
 from lexer import tokens
-from language import Program, TypeDeclaration, VariableAssignment, VariableCall
+from language import Program, TypeDeclaration, VariableAssignment, VariableCall, Metrics
 
 
 def p_program(p):
@@ -18,8 +18,31 @@ def p_list_instructions(p):
         p[0] = [p[1]]
 
 def p_instruction(p):
-    '''Instruction : instance'''
-    p[0] = p[1]
+    '''Instruction : instance
+                   | ID GET METRICS DATE'''
+    if len(p) == 5:
+        p[0] = Metrics(p[1], p[3], p[4])
+    elif len(p) == 2:
+        p[0] = p[1]
+
+def p_instruction_sale(p):
+    'Instruction : ACTION SALE ID PRICE DPOINT NUMBER amount DPOINT NUMBER'
+    p[0] = ActionSALE(p[3], p[6], p[8])
+
+def p_instruction_invests(p):
+    'Instruction : ACTION INVESTS ID COST DPOINT NUMBER amount DPOINT NUMBER'
+    p[0] = ActionINVESTS(p[3], p[6], p[8])
+
+def p_instruction_add(p):
+    '''Instruction : ID ADD ID
+                   | ID ADD BILL OBRACE COST COMMA DESCRIP CBRACE'''
+    p[0] = ActionADD(p[1], p[3])
+
+def p_instruction_del(p):
+    "Instruction : ID DEL ID"
+    p[0] = ActionDEL(p[1], p[3])
+
+
 
 def p_instance(p):
     '''instance : TYPE ID ASSIGN Assignable

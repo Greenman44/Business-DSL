@@ -8,6 +8,24 @@ class LexerBusiness:
         "product" : "TYPE",
         "staff" : "TYPE",
         "catalog" : "TYPE",
+        "bill" : "BILL",
+        "action" : "ACTION",
+        "sale" : "SALE",
+        "invests" : "INVESTS",
+        "net-sales" : "METRICS",
+        "gross-margin" : "METRICS",
+        "gross-profit" : "METRICS",
+        "expenses" : "METRICS",
+        "earnings" : "METRICS",
+        "GET" : "GET",
+        "ADD" : "ADD",
+        "DEL" : "DEL",
+        "load" : "LOAD",
+        "TODAY" : "DATE",
+        "LAST MONTH" : "DATE",
+        "LAST YEAR" : "DATE",
+        "price" : "PRICE",
+        "cost" : "COST"
         # "if" : "IF",
         # "else" : "ELSE",
         # "for" : "FOR",
@@ -16,6 +34,7 @@ class LexerBusiness:
 
     tokens = [
         'POINT',
+        'DPOINT',
         'OBR', #[
         'CBR', #]
         'OBRACE', #{
@@ -24,6 +43,7 @@ class LexerBusiness:
         'COMMA',
         'NAME',
         'NUMBER',
+        'DESCRIP',
         'ID',
         'END'
     ] + list(keywords.values())
@@ -35,6 +55,7 @@ class LexerBusiness:
     t_CBRACE = r'\}'
     t_ASSIGN = r'='
     t_COMMA = r','
+    t_DPOINT = r':'
     t_END = r';'
     t_OBR = r'\['
     t_CBR = r'\]'
@@ -52,6 +73,10 @@ class LexerBusiness:
     def t_NAME(self,t):
         r'"[a-zA-Z_]*"'
         t.value = t.value[1:-1]
+        return t
+    
+    def t_DESCRIP(self,t):
+        r'[a-zA-Z][a-zA-Z_\s]+'
         return t
 
     def t_ID(self,t):
