@@ -43,7 +43,7 @@ class WhileStatement(Node):
     # def evaluate(self, context: Context):
     #     pass
         
-class ActionSell(Node):
+class ActionSALE(Node):
     def __init__(self, business, product, date, sell_price):
         self.business = business
         self.product = product
@@ -54,4 +54,26 @@ class ActionSell(Node):
         #else:
         #   business.sells.append({"product" : product.name, "price": sell_price, "date" : date})
 
-class ActionBuy()
+class ActionINVESTS(Node):
+    def __init__(self,business,product, date, price):
+        self.business = business
+        self.product = product
+        self.date = date
+        self.price = price
+
+class ActionADD(Node):
+    def __init__(self,business, toAdd,date):
+        self.business = business
+        self.toAdd = toAdd
+        self.date = date
+
+class ActionDEL(Node):
+    def __init__(self,business,toDel,date):
+        self.business = business
+        self.toDel = toDel
+        self.date = date
+
+class Metrics(Node):
+    def __init__(self,business,metrics:str):
+        self.business = business
+        self.metrics = metrics
