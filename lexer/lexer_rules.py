@@ -17,16 +17,17 @@ class LexerBusiness:
     tokens = [
         'POINT',
         'DPOINT',
-        'OBR',
-        'CBR',
-        'OBRACE',
-        'CBRACE',
-        'ASSIGN',
+        'OBR', #[
+        'CBR', #]
+        'OBRACE', #{
+        'CBRACE', #}
+        'ASSIGN', #=
         'COMMA',
         'PCOMMA',
         'NAME',
         'NUMBER',
-        'ID'
+        'ID',
+        'END'
     ] + list(keywords.values())
 
     # TOKENS
