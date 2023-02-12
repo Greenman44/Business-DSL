@@ -29,7 +29,7 @@ class Business_Data:
     
     def get_catalogue(self) -> list[Product]:
         """return list of products"""
-        return self.bus.catalogue.items
+        return self.bus.catalogue.df
 
     def get_staff(self) -> list[Employed]:
         """return list of products"""
@@ -39,12 +39,32 @@ class Business_Data:
         """add product to product table"""
         self.bus.catalogue.items.append(product)
         self.bus.catalogue.df.append(product.__dict__)
-        
+    
+    def delete_product(self, product:Product):
+        """delete product from product table"""
+        index = -1
+        for i in range(len(self.bus.catalogue.items)):
+            if self.bus.catalogue.items[i].name == product.name:
+                self.bus.catalogue.df.drop([i])
+                index = i
+                break
+        self.bus.catalogue.items.remove(self.bus.catalogue.items[index])
 
     def add_employed(self, employed : Employed):
         """add employed to employed table"""
         self.bus.catalogue.items.append(employed)
         self.bus.catalogue.df.append(employed.__dict__)
+    
+    def delete_employed(self,employed : Employed):
+        """delete employed"""
+        index = -1
+        for i in range(len(self.bus.staff.items)):
+            if self.bus.staff.items[i].name == employed.name:
+                self.bus.staff.df.drop([i])
+                index = i
+                break
+        self.bus.staff.items.remove(self.bus.catalogue.items[index])
+        
 
     #TODO: CRUD for all tables
 
