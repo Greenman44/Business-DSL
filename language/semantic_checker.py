@@ -1,5 +1,5 @@
 from .visitor import when, on
-from .types import Bus_Context, Instance
+from .types_checker import Bus_Context, Instance
 from .ast_nodes import *
 from .scope import Scope
 
@@ -17,6 +17,19 @@ class SemanticChecker:
         for inst in node.instructions:
             self.visit(inst)
     
+    @when(VariableDeclaration)
+    def visit(self, node : VariableDeclaration):
+        try:
+            current_type = self.context.find_type(node.type)
+        except:
+            raise TypeError("Undefined type")
+
+        var = self.scope.find(node.id)
+        if var != None:
+            raise Exception("You can not declare two variables with the same name")
+        self.scope.set(node.id, current_type.name)
+        node.processed_type = current_type.name
+
     @when(TypeDeclaration)
     def visit(self, node : TypeDeclaration):
         try:
@@ -42,9 +55,10 @@ class SemanticChecker:
             raise Exception(f"Variable '{node.name}' is not defined")
         
         self.visit(node.value)
-        if current_type != node.value.processed_type:
+        if not (current_type in node.value.processed_type):
             raise Exception(f" Impossible assign value {node.value} to variable '{node.id}'. Type '{current_type}' different to '{node.value.processed_type}'")
-        node.processed_type = current_type
+        self.scope.set(node.id, node.value.processed_type)
+        node.processed_type = node.value.processed_type
 
     @when(VariableCall)
     def visit(self, node : VariableCall):
@@ -133,8 +147,31 @@ class SemanticChecker:
         current_type = node.collection_items.processed_type
         if current_type != "business" and not ("collection" in current_type):
             raise Exception("The type of the first ID has to be business or collection")
+        
+        try:
+            self.visit(node.item)
+            if current_type == "business":
+                if not("product" in node.item.processed_type):
+                    raise Exception(f"Can not delete {node.item.processed_type} from {current_type}")
+            else:
+                if not (node.item.processed_type in current_type):
+                    raise Exception(f"Can not delete {node.item.processed_type} from {current_type}")
+        except:
+            pass
         node.processed_type = "actionDel"
 
+    @when(ActionDISMISS)
+    def visit(self, node : ActionDISMISS):
+        self.visit(node.business)
+        if node.business.processed_type != "business":
+            raise Exception(f"Can not make action dismiss from {node.business.processed_type}")
+        try:
+            self.visit(node.employed)
+            if not("employed" in node.employed.processed_type):
+                raise Exception(f"Can not dismiss {node.employed.processed_type}")
+        except:
+            pass
+        node.processed_type = "actionDismiss"
 
     @when(IfStatement)
     def visit(self, node : IfStatement):

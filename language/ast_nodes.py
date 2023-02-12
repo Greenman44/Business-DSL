@@ -18,6 +18,18 @@ class TypeDeclaration(Node):
         self.id = id
         self.value = value
 
+class VariableDeclaration(Node):
+    def __init__(self, type, id):
+        self.type = type
+        self.id = id
+class VariableAssignment(Node):
+    def __init__(self, id, value):
+        self.id = id
+        self.value = value
+
+class VariableCall(Node):
+    def __init__(self, id):
+        self.id = id
 class Bus_Node(Node):
     def __init__(self, name, collection_1, collection_2):
         self.name = name
@@ -38,15 +50,6 @@ class Prod_Node(Node):
 class Collection_Node(Node):
     def __init__(self, collection):
         self.collection = collection
-
-class VariableAssignment(Node):
-    def __init__(self, id, value):
-        self.id = id
-        self.value = value
-
-class VariableCall(Node):
-    def __init__(self, id):
-        self.id = id
 
 class IfStatement(Node):
     def __init__(self, condition, body) -> None:
@@ -76,10 +79,10 @@ class ActionSALE(Node):
         #   business.sells.append({"product" : product.name, "price": sell_price, "date" : date})
 
 class ActionINVESTS(Node):
-    def __init__(self, business, product, sale_price, amount):
+    def __init__(self, business, product, cost_price, amount):
         self.business = business
         self.product = product
-        self.sale_price = sale_price
+        self.sale_price = cost_price
         self.amount = amount
 
 class ActionADD(Node):
@@ -91,6 +94,12 @@ class ActionDEL(Node):
     def __init__(self, collection_items, item):
         self.collection_items = collection_items
         self.item = item
+
+class ActionDISMISS(Node):
+    def __init__(self, business, employed):
+        self.business = business
+        self.employed = employed
+        
 
 class Metrics(Node):
     def __init__(self,business,metric, date):

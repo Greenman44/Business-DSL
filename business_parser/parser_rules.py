@@ -48,12 +48,27 @@ def p_instruction_del(p):
     "Instruction : ID DEL NAME"
     p[0] = ActionDEL(VariableCall(p[1]), p[3])
 
+def p_instruction_del_ID(p):
+    "Instruction : ID DEL ID"
+    p[0] = ActionDEL(VariableCall(p[1]), VariableCall(p[3]))
 
+def p_instruction_dismiss(p):
+    "Instruction : ID DISMISS NAME"
+    p[0] = ActionDISMISS(VariableCall(p[1]), p[3])
+
+def p_instruction_dismiss_ID(p):
+    "Instruction : ID DISMISS ID"
+    p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
 
 def p_instance(p):
-    '''instance : TYPE ID ASSIGN Assignable
+    '''instance : TYPE ID
+                | TYPE ID ASSIGN Assignable
                 | ID ASSIGN Assignable'''
-    if len(p) == 5:
+                
+    if len(p) == 3:
+        p[0] = VariableDeclaration(p[1], p[2])
+
+    elif len(p) == 5:
         p[0] = TypeDeclaration(p[1], p[2], p[4])
 
     elif len(p) == 4:
