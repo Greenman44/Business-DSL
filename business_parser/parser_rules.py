@@ -88,8 +88,8 @@ def p_instance_list_ID(p):
         p[0] = [VariableCall(p[1])]
 
 def p_bus(p):
-    '''bus : instance COMMA instance'''
-    p[0] = [p[1], p[3]]
+    '''bus : NAME COMMA instance COMMA instance'''
+    p[0] = [p[1], p[3], p[5]]
 
 def p_emp(p):
     '''emp : NAME COMMA NUMBER'''

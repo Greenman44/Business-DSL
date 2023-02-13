@@ -1,29 +1,52 @@
+from __future__ import annotations
 import pandas as pd
-class Employee:
+
+class Bus_Types:
+    types = {}
+    
+    def __init__(self, name : str):
+        self.mame = name
+        Bus_Types.types[name] = self
+    
+    @staticmethod
+    def find(name : str):
+        try:
+            return Bus_Types[name]
+        except KeyError:
+            raise TypeError(f"Undefined Type : {name}")
+        
+
+
+
+class Business(Bus_Types):
+    def __init__(self, name, staff: Collection, catalog : Collection):
+        Bus_Types.__init__(self, "business")
+        self.name = name
+        self.staff = staff
+        self.catalogue = catalog
+    
+class Collection(Bus_Types):
+    def __init__(self, items : list[Bus_Types]):
+        Bus_Types.__init__(self, "collection")
+        self.items = items
+        self.df = pd.DataFrame.from_dict(items[0].__dict__)
+        for i in range(len(items) - 1):
+            self.df = self.df.append(items[i+1].__dict__)
+class Employee(Bus_Types):
     def __init__(self, name, salary):
+        Bus_Types.__init__(self, name)
         self.name = name
         self.salary = salary
 
-class Product:
+class Product(Bus_Types):
     def __init__(self, name, cost, price):
+        Bus_Types.__init__(self, name)
         self.name = name
         self.cost = cost
         self.price = price
 
-class Staff:    
-    def __init__(self, employees: list[Employee]):
-        self.employees = employees
-        self.df = pd.DataFrame.from_dict(employees[0].__dict__)
-        for i in range(len(employees) - 1):
-            self.df = self.df.append(employees[i+1].__dict__)
-
-class Catalog:
-    def __init__(self, products: list[Product]):
-        self.products = products
-        self.df = pd.DataFrame.from_dict(products[0].__dict__)
-        for i in range(len(products) - 1):
-            self.df = self.df.append(products[i+1].__dict__)
         
+<<<<<<< Updated upstream
 class Business:
     def __init__(self, name, staff: Staff, catalog : Catalog):
         self.name = name
@@ -31,5 +54,7 @@ class Business:
         self.catalogue = catalog
         self.sells = None
         self.adquisitions = None
+=======
+>>>>>>> Stashed changes
 
 
