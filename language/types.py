@@ -24,6 +24,8 @@ class Business(Bus_Types):
         self.name = name
         self.staff = staff
         self.catalogue = catalog
+        self.sells = None
+        self.adquisitions = None
     
 class Collection(Bus_Types):
     def __init__(self, items : list[Bus_Types]):
@@ -32,6 +34,7 @@ class Collection(Bus_Types):
         self.df = pd.DataFrame.from_dict(items[0].__dict__)
         for i in range(len(items) - 1):
             self.df = self.df.append(items[i+1].__dict__)
+
 class Employee(Bus_Types):
     def __init__(self, name, salary):
         Bus_Types.__init__(self, name)
@@ -44,17 +47,5 @@ class Product(Bus_Types):
         self.name = name
         self.cost = cost
         self.price = price
-
-        
-<<<<<<< Updated upstream
-class Business:
-    def __init__(self, name, staff: Staff, catalog : Catalog):
-        self.name = name
-        self.staff = staff
-        self.catalogue = catalog
-        self.sells = None
-        self.adquisitions = None
-=======
->>>>>>> Stashed changes
 
 

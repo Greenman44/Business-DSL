@@ -31,5 +31,5 @@ class SemanticChecker:
             raise TypeError("Bad Type declaration")
         self.scope.set(node.id, instance)
     
-    @visitor.when(VariableAssignment)
+
 
