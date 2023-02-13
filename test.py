@@ -1,10 +1,16 @@
-import re
+from business_parser import parser
 from lexer import LexerBusiness
 
+l = LexerBusiness()
+l.build()
+try:
+    s = 'employed e1 = { "Ramon" , 30 }; product p1 = { "Champu" , 15 , 30 };'
+except EOFError:
+    print("Error")
+r = parser.parse(s, lexer=l.lexer)
+print(r)
 # p = re.compile(r'"[a-zA-Z_]*"')
 
 # print(p.findall('"Jorge_Maricon" "Ernesto_Animal"'))
 
-m = LexerBusiness()
-m.build()
-m.test('business b1 = {staff b1_staff = [employed e1 = {"Jorge", 300}]; catalog cat1 = [product p1 = {"Ropa", 13.5, 20}]}')
+

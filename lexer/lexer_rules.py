@@ -3,27 +3,25 @@ import ply.lex as lex
 class LexerBusiness:
 
     keywords = {
-        "business" : "BUSINESS",
-        "employed" : "EMPLOYED",
-        "product" : "PRODUCT",
-        "staff" : "STAFF",
-        "catalog" : "CATALOG",
-        "if" : "IF",
-        "else" : "ELSE",
-        "for" : "FOR",
-        "in" : "IN"
+        "business" : "TYPE",
+        "employed" : "TYPE",
+        "product" : "TYPE",
+        "staff" : "TYPE",
+        "catalog" : "TYPE",
+        # "if" : "IF",
+        # "else" : "ELSE",
+        # "for" : "FOR",
+        # "in" : "IN"
     }
 
     tokens = [
         'POINT',
-        'DPOINT',
         'OBR', #[
         'CBR', #]
         'OBRACE', #{
         'CBRACE', #}
         'ASSIGN', #=
         'COMMA',
-        'PCOMMA',
         'NAME',
         'NUMBER',
         'ID',
@@ -35,10 +33,9 @@ class LexerBusiness:
     t_POINT = r'\.'
     t_OBRACE = r'\{'
     t_CBRACE = r'\}'
-    t_DPOINT = r':'
     t_ASSIGN = r'='
     t_COMMA = r','
-    t_PCOMMA = r';'
+    t_END = r';'
     t_OBR = r'\['
     t_CBR = r'\]'
 

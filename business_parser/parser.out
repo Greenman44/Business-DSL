@@ -1,0 +1,430 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    POINT
+
+Grammar
+
+Rule 0     S' -> Program
+Rule 1     Program -> ListInst
+Rule 2     ListInst -> Instruction END ListInst
+Rule 3     ListInst -> Instruction END
+Rule 4     Instruction -> instance
+Rule 5     instance -> TYPE ID ASSIGN Assignable
+Rule 6     instance -> ID ASSIGN Assignable
+Rule 7     Assignable -> OBRACE subType CBRACE
+Rule 8     Assignable -> OBR instance_list CBR
+Rule 9     Assignable -> ID
+Rule 10    subType -> bus
+Rule 11    subType -> emp
+Rule 12    subType -> prod
+Rule 13    instance_list -> instance COMMA instance_list
+Rule 14    instance_list -> ID COMMA instance_list
+Rule 15    instance_list -> ID
+Rule 16    instance_list -> instance
+Rule 17    bus -> instance COMMA instance
+Rule 18    emp -> NAME COMMA NUMBER
+Rule 19    prod -> NAME COMMA NUMBER COMMA NUMBER
+
+Terminals, with rules where they appear
+
+ASSIGN               : 5 6
+CBR                  : 8
+CBRACE               : 7
+COMMA                : 13 14 17 18 19 19
+END                  : 2 3
+ID                   : 5 6 9 14 15
+NAME                 : 18 19
+NUMBER               : 18 19 19
+OBR                  : 8
+OBRACE               : 7
+POINT                : 
+TYPE                 : 5
+error                : 
+
+Nonterminals, with rules where they appear
+
+Assignable           : 5 6
+Instruction          : 2 3
+ListInst             : 1 2
+Program              : 0
+bus                  : 10
+emp                  : 11
+instance             : 4 13 16 17 17
+instance_list        : 8 13 14
+prod                 : 12
+subType              : 7
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Program
+    (1) Program -> . ListInst
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    TYPE            shift and go to state 5
+    ID              shift and go to state 6
+
+    Program                        shift and go to state 1
+    ListInst                       shift and go to state 2
+    Instruction                    shift and go to state 3
+    instance                       shift and go to state 4
+
+state 1
+
+    (0) S' -> Program .
+
+
+
+state 2
+
+    (1) Program -> ListInst .
+
+    $end            reduce using rule 1 (Program -> ListInst .)
+
+
+state 3
+
+    (2) ListInst -> Instruction . END ListInst
+    (3) ListInst -> Instruction . END
+
+    END             shift and go to state 7
+
+
+state 4
+
+    (4) Instruction -> instance .
+
+    END             reduce using rule 4 (Instruction -> instance .)
+
+
+state 5
+
+    (5) instance -> TYPE . ID ASSIGN Assignable
+
+    ID              shift and go to state 8
+
+
+state 6
+
+    (6) instance -> ID . ASSIGN Assignable
+
+    ASSIGN          shift and go to state 9
+
+
+state 7
+
+    (2) ListInst -> Instruction END . ListInst
+    (3) ListInst -> Instruction END .
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    $end            reduce using rule 3 (ListInst -> Instruction END .)
+    TYPE            shift and go to state 5
+    ID              shift and go to state 6
+
+    Instruction                    shift and go to state 3
+    ListInst                       shift and go to state 10
+    instance                       shift and go to state 4
+
+state 8
+
+    (5) instance -> TYPE ID . ASSIGN Assignable
+
+    ASSIGN          shift and go to state 11
+
+
+state 9
+
+    (6) instance -> ID ASSIGN . Assignable
+    (7) Assignable -> . OBRACE subType CBRACE
+    (8) Assignable -> . OBR instance_list CBR
+    (9) Assignable -> . ID
+
+    OBRACE          shift and go to state 14
+    OBR             shift and go to state 15
+    ID              shift and go to state 12
+
+    Assignable                     shift and go to state 13
+
+state 10
+
+    (2) ListInst -> Instruction END ListInst .
+
+    $end            reduce using rule 2 (ListInst -> Instruction END ListInst .)
+
+
+state 11
+
+    (5) instance -> TYPE ID ASSIGN . Assignable
+    (7) Assignable -> . OBRACE subType CBRACE
+    (8) Assignable -> . OBR instance_list CBR
+    (9) Assignable -> . ID
+
+    OBRACE          shift and go to state 14
+    OBR             shift and go to state 15
+    ID              shift and go to state 12
+
+    Assignable                     shift and go to state 16
+
+state 12
+
+    (9) Assignable -> ID .
+
+    END             reduce using rule 9 (Assignable -> ID .)
+    COMMA           reduce using rule 9 (Assignable -> ID .)
+    CBR             reduce using rule 9 (Assignable -> ID .)
+    CBRACE          reduce using rule 9 (Assignable -> ID .)
+
+
+state 13
+
+    (6) instance -> ID ASSIGN Assignable .
+
+    END             reduce using rule 6 (instance -> ID ASSIGN Assignable .)
+    COMMA           reduce using rule 6 (instance -> ID ASSIGN Assignable .)
+    CBR             reduce using rule 6 (instance -> ID ASSIGN Assignable .)
+    CBRACE          reduce using rule 6 (instance -> ID ASSIGN Assignable .)
+
+
+state 14
+
+    (7) Assignable -> OBRACE . subType CBRACE
+    (10) subType -> . bus
+    (11) subType -> . emp
+    (12) subType -> . prod
+    (17) bus -> . instance COMMA instance
+    (18) emp -> . NAME COMMA NUMBER
+    (19) prod -> . NAME COMMA NUMBER COMMA NUMBER
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    NAME            shift and go to state 22
+    TYPE            shift and go to state 5
+    ID              shift and go to state 6
+
+    subType                        shift and go to state 17
+    bus                            shift and go to state 18
+    emp                            shift and go to state 19
+    prod                           shift and go to state 20
+    instance                       shift and go to state 21
+
+state 15
+
+    (8) Assignable -> OBR . instance_list CBR
+    (13) instance_list -> . instance COMMA instance_list
+    (14) instance_list -> . ID COMMA instance_list
+    (15) instance_list -> . ID
+    (16) instance_list -> . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    ID              shift and go to state 25
+    TYPE            shift and go to state 5
+
+    instance_list                  shift and go to state 23
+    instance                       shift and go to state 24
+
+state 16
+
+    (5) instance -> TYPE ID ASSIGN Assignable .
+
+    END             reduce using rule 5 (instance -> TYPE ID ASSIGN Assignable .)
+    COMMA           reduce using rule 5 (instance -> TYPE ID ASSIGN Assignable .)
+    CBR             reduce using rule 5 (instance -> TYPE ID ASSIGN Assignable .)
+    CBRACE          reduce using rule 5 (instance -> TYPE ID ASSIGN Assignable .)
+
+
+state 17
+
+    (7) Assignable -> OBRACE subType . CBRACE
+
+    CBRACE          shift and go to state 26
+
+
+state 18
+
+    (10) subType -> bus .
+
+    CBRACE          reduce using rule 10 (subType -> bus .)
+
+
+state 19
+
+    (11) subType -> emp .
+
+    CBRACE          reduce using rule 11 (subType -> emp .)
+
+
+state 20
+
+    (12) subType -> prod .
+
+    CBRACE          reduce using rule 12 (subType -> prod .)
+
+
+state 21
+
+    (17) bus -> instance . COMMA instance
+
+    COMMA           shift and go to state 27
+
+
+state 22
+
+    (18) emp -> NAME . COMMA NUMBER
+    (19) prod -> NAME . COMMA NUMBER COMMA NUMBER
+
+    COMMA           shift and go to state 28
+
+
+state 23
+
+    (8) Assignable -> OBR instance_list . CBR
+
+    CBR             shift and go to state 29
+
+
+state 24
+
+    (13) instance_list -> instance . COMMA instance_list
+    (16) instance_list -> instance .
+
+    COMMA           shift and go to state 30
+    CBR             reduce using rule 16 (instance_list -> instance .)
+
+
+state 25
+
+    (14) instance_list -> ID . COMMA instance_list
+    (15) instance_list -> ID .
+    (6) instance -> ID . ASSIGN Assignable
+
+    COMMA           shift and go to state 31
+    CBR             reduce using rule 15 (instance_list -> ID .)
+    ASSIGN          shift and go to state 9
+
+
+state 26
+
+    (7) Assignable -> OBRACE subType CBRACE .
+
+    END             reduce using rule 7 (Assignable -> OBRACE subType CBRACE .)
+    COMMA           reduce using rule 7 (Assignable -> OBRACE subType CBRACE .)
+    CBR             reduce using rule 7 (Assignable -> OBRACE subType CBRACE .)
+    CBRACE          reduce using rule 7 (Assignable -> OBRACE subType CBRACE .)
+
+
+state 27
+
+    (17) bus -> instance COMMA . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    TYPE            shift and go to state 5
+    ID              shift and go to state 6
+
+    instance                       shift and go to state 32
+
+state 28
+
+    (18) emp -> NAME COMMA . NUMBER
+    (19) prod -> NAME COMMA . NUMBER COMMA NUMBER
+
+    NUMBER          shift and go to state 33
+
+
+state 29
+
+    (8) Assignable -> OBR instance_list CBR .
+
+    END             reduce using rule 8 (Assignable -> OBR instance_list CBR .)
+    COMMA           reduce using rule 8 (Assignable -> OBR instance_list CBR .)
+    CBR             reduce using rule 8 (Assignable -> OBR instance_list CBR .)
+    CBRACE          reduce using rule 8 (Assignable -> OBR instance_list CBR .)
+
+
+state 30
+
+    (13) instance_list -> instance COMMA . instance_list
+    (13) instance_list -> . instance COMMA instance_list
+    (14) instance_list -> . ID COMMA instance_list
+    (15) instance_list -> . ID
+    (16) instance_list -> . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    ID              shift and go to state 25
+    TYPE            shift and go to state 5
+
+    instance                       shift and go to state 24
+    instance_list                  shift and go to state 34
+
+state 31
+
+    (14) instance_list -> ID COMMA . instance_list
+    (13) instance_list -> . instance COMMA instance_list
+    (14) instance_list -> . ID COMMA instance_list
+    (15) instance_list -> . ID
+    (16) instance_list -> . instance
+    (5) instance -> . TYPE ID ASSIGN Assignable
+    (6) instance -> . ID ASSIGN Assignable
+
+    ID              shift and go to state 25
+    TYPE            shift and go to state 5
+
+    instance_list                  shift and go to state 35
+    instance                       shift and go to state 24
+
+state 32
+
+    (17) bus -> instance COMMA instance .
+
+    CBRACE          reduce using rule 17 (bus -> instance COMMA instance .)
+
+
+state 33
+
+    (18) emp -> NAME COMMA NUMBER .
+    (19) prod -> NAME COMMA NUMBER . COMMA NUMBER
+
+    CBRACE          reduce using rule 18 (emp -> NAME COMMA NUMBER .)
+    COMMA           shift and go to state 36
+
+
+state 34
+
+    (13) instance_list -> instance COMMA instance_list .
+
+    CBR             reduce using rule 13 (instance_list -> instance COMMA instance_list .)
+
+
+state 35
+
+    (14) instance_list -> ID COMMA instance_list .
+
+    CBR             reduce using rule 14 (instance_list -> ID COMMA instance_list .)
+
+
+state 36
+
+    (19) prod -> NAME COMMA NUMBER COMMA . NUMBER
+
+    NUMBER          shift and go to state 37
+
+
+state 37
+
+    (19) prod -> NAME COMMA NUMBER COMMA NUMBER .
+
+    CBRACE          reduce using rule 19 (prod -> NAME COMMA NUMBER COMMA NUMBER .)
+
