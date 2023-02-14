@@ -31,5 +31,24 @@ class SemanticChecker:
             raise TypeError("Bad Type declaration")
         self.scope.set(node.id, instance)
     
+    @visitor.when(VariableAssignment)
+    def visit(self, node : VariableAssignment):
+        self.visit(node.value)
+        processed_type = node.processed_type
+        var_type = self.scope.find(node.id)
+        if var_type is None:
+            raise Exception(f"Variable '{node.name}' is not defined")
+        if var_type != processed_type:
+            raise Exception(f" Impossible assign value {node.value} to variable '{node.name}'. Type '{var_type}' different to '{processed_type}'")
+        node.processed_type = var_type
+
+    @visitor.when(VariableCall)
+    def visit(self, node : VariableCall):
+        var_type = self.scope.find(node.id)
+        if var_type is None:
+            raise Exception(f"Variable '{node.id}' is not defined")
+        node.processed_type = var_type
+        
+    
 
 

@@ -5,7 +5,7 @@ class Node(metaclass = ABCMeta):
     
     @abstractmethod
     def __init__(self):
-        pass
+        self.processed_type = None
 
 class Program(Node):
     def __init__(self, instructions :  list[Node]):

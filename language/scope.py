@@ -16,5 +16,5 @@ class Scope:
         if name in self.locals:
             return self.locals[name]
         if self.parent:
-            return self.parent.Find(name)
+            return self.parent.find(name)
         return None
