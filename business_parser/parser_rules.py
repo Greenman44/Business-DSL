@@ -21,17 +21,17 @@ def p_instruction(p):
     '''Instruction : instance
                    | ID GET METRICS DATE'''
     if len(p) == 5:
-        p[0] = Metrics(p[1], p[3], p[4])
+        p[0] = Metrics(VariableCall(p[1]), p[3], p[4])
     elif len(p) == 2:
         p[0] = p[1]
 
 def p_instruction_sale(p):
-    'Instruction : ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
-    p[0] = ActionSALE(p[3], p[6], p[8])
+    'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
+    p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), p[7], p[9])
 
 def p_instruction_invests(p):
-    'Instruction : ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER'
-    p[0] = ActionINVESTS(p[3], p[6], p[8])
+    'Instruction : ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER'
+    p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), p[7], p[9])
 
 def p_instruction_add(p):
     '''Instruction : ID ADD ID

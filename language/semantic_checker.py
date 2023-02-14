@@ -89,11 +89,31 @@ class SemanticChecker:
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):
-        pass
+        self.visit(node.business)
+        self.visit(node.product)
+        if node.business.processed_type != "business":
+            raise Exception("Only can make an action sale from business")
+        if node.product.processed_type != "product":
+            raise Exception("Only can make an action sale over a product")
+        if not float.is_integer(node.amount):
+            raise Exception("The amount must be an integer")
+        
+        node.processed_type = "actionSale"
+
+
     
     @when(ActionINVESTS)
     def visit(self, node : ActionINVESTS):
-        pass
+        self.visit(node.business)
+        self.visit(node.product)
+        if node.business.processed_type != "business":
+            raise Exception("Only can make an action invest from business")
+        if node.product.processed_type != "product":
+            raise Exception("Only can make an action invest over a product")
+        if not float.is_integer(node.amount):
+            raise Exception("The amount must be an integer")
+        
+        node.processed_type = "actionInvest"
 
     @when(ActionADD)
     def visit(self, node : ActionADD):

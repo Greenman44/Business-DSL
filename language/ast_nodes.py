@@ -65,36 +65,35 @@ class WhileStatement(Node):
     #     pass
         
 class ActionSALE(Node):
-    def __init__(self, business, product, date, sell_price):
+    def __init__(self, business, product, sale_price, amount):
         self.business = business
         self.product = product
-        self.date = date
-        self.sell_price = sell_price
+        self.sale_price = sale_price
+        self.amount = amount
         #if(business.sells == None):
         #   business.sells == pd.DataFrame(data = [product.name,sell_price,date], columns = ["product", "price", "date"])
         #else:
         #   business.sells.append({"product" : product.name, "price": sell_price, "date" : date})
 
 class ActionINVESTS(Node):
-    def __init__(self,business,product, date, price):
+    def __init__(self, business, product, sale_price, amount):
         self.business = business
         self.product = product
-        self.date = date
-        self.price = price
+        self.sale_price = sale_price
+        self.amount = amount
 
 class ActionADD(Node):
-    def __init__(self,business, toAdd,date):
-        self.business = business
-        self.toAdd = toAdd
-        self.date = date
+    def __init__(self, collection_items, item):
+        self.collection_items = collection_items
+        self.item = item
 
 class ActionDEL(Node):
-    def __init__(self,business,toDel,date):
-        self.business = business
-        self.toDel = toDel
-        self.date = date
+    def __init__(self, collection_items, item):
+        self.collection_items = collection_items
+        self.item = item
 
 class Metrics(Node):
-    def __init__(self,business,metrics:str):
+    def __init__(self,business,metric, date):
         self.business = business
-        self.metrics = metrics
+        self.metric = metric
+        self.date = date
