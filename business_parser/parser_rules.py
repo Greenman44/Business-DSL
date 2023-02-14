@@ -36,10 +36,16 @@ def p_instruction_invests(p):
 def p_instruction_add(p):
     '''Instruction : ID ADD ID
                    | ID ADD BILL OBRACE COST CBRACE'''
-    p[0] = ActionADD(p[1], p[3])
+    if len(p) == 4:
+        p[0] = ActionADD(VariableCall(p[1]), VariableCall(p[3]))
+
+def p_instruction_add_ID(p):
+    ''' Instruction : ID ADD subType'''
+
+    p[0] = ActionADD(VariableCall(p[1]),p[3])
 
 def p_instruction_del(p):
-    "Instruction : ID DEL ID"
+    "Instruction : ID DEL NAME"
     p[0] = ActionDEL(p[1], p[3])
 
 
