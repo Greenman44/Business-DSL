@@ -99,8 +99,6 @@ class SemanticChecker:
             raise Exception("The amount must be an integer")
         
         node.processed_type = "actionSale"
-
-
     
     @when(ActionINVESTS)
     def visit(self, node : ActionINVESTS):
@@ -117,11 +115,26 @@ class SemanticChecker:
 
     @when(ActionADD)
     def visit(self, node : ActionADD):
-        pass
+        self.visit(node.collection_items)
+        current_type = node.collection_items.processed_type
+        if current_type != "business" and not ("collection" in current_type):
+            raise Exception("The type of the first ID has to be business or collection")
+        self.visit(node.item)
+        current_type_2 = node.item.processed_type
+        if current_type == "business" and not("employed" in current_type_2) and not ("product" in current_type_2):
+            raise Exception("You only can add to a business employeds and products")
+        if "collection" in current_type and current_type_2 not in current_type:
+            raise Exception(f"You can not add {current_type_2} to a collection of {current_type}")
+        node.processed_type = "actionAdd"
 
     @when(ActionDEL)
     def visit(self, node : ActionDEL):
-        pass
+        self.visit(node.collection_items)
+        current_type = node.collection_items.processed_type
+        if current_type != "business" and not ("collection" in current_type):
+            raise Exception("The type of the first ID has to be business or collection")
+        node.processed_type = "actionDel"
+
 
     @when(IfStatement)
     def visit(self, node : IfStatement):
@@ -134,7 +147,6 @@ class SemanticChecker:
     @when(Metrics)
     def visit(self, node : Metrics):
         pass
-        
     
 
 
