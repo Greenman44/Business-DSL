@@ -18,6 +18,27 @@ class TypeDeclaration(Node):
         self.id = id
         self.value = value
 
+class Bus_Node(Node):
+    def __init__(self, name, collection_1, collection_2):
+        self.name = name
+        self.staff_collection = collection_1
+        self.catalog_collection = collection_2
+
+
+class Emp_Node(Node):
+    def __init__(self, name, number):
+        self.name = name
+        self.number = number
+
+
+class Prod_Node(Node):
+    def __init__(self, name):
+        self.name = name
+
+class Collection_Node(Node):
+    def __init__(self, collection):
+        self.collection = collection
+
 class VariableAssignment(Node):
     def __init__(self, id, value):
         self.id = id

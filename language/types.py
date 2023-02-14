@@ -1,51 +1,66 @@
 from __future__ import annotations
 import pandas as pd
 
-class Bus_Types:
-    types = {}
-    
-    def __init__(self, name : str):
-        self.mame = name
-        Bus_Types.types[name] = self
-    
-    @staticmethod
-    def find(name : str):
-        try:
-            return Bus_Types[name]
-        except KeyError:
-            raise TypeError(f"Undefined Type : {name}")
         
+class Type:
+    def __init__(self, name:str):
+        self.name = name
+        self.attribute = {}
 
+    def def_attribute(self, name , value):
+        self.attribute[name] = value
+class Instance:
+    def __init__(self, type : Type, value) -> None:
+        self.type = type
+        self.value = value
 
-
-class Business(Bus_Types):
+class Business:
     def __init__(self, name, staff: Collection, catalog : Collection):
-        Bus_Types.__init__(self, "business")
         self.name = name
         self.staff = staff
         self.catalogue = catalog
         self.sells = None
         self.adquisitions = None
     
-class Collection(Bus_Types):
-    def __init__(self, items : list[Bus_Types]):
-        Bus_Types.__init__(self, "collection")
+class Collection:
+    def __init__(self, items : list[Employed|Product|Business]):
         self.items = items
         self.df = pd.DataFrame.from_dict(items[0].__dict__)
         for i in range(len(items) - 1):
             self.df = self.df.append(items[i+1].__dict__)
 
-class Employee(Bus_Types):
+class Employed:
     def __init__(self, name, salary):
-        Bus_Types.__init__(self, name)
         self.name = name
         self.salary = salary
 
-class Product(Bus_Types):
+class Product:
     def __init__(self, name, cost, price):
-        Bus_Types.__init__(self, name)
         self.name = name
         self.cost = cost
         self.price = price
+
+
+class Bus_Context:
+    def __init__(self):
+        self._types = {}
+        self._create_busTypes()
+
+    def _create_busTypes(self):
+        self._types["str"] = Type("str")
+        self._types["number"] = Type("number")
+        self._types["business"] = Type("business")
+        self._types["collection"] = Type("collection")
+        self._types["employed"] = Type("employed")
+        self._types["product"] = Type("product")
+        
+
+
+    def find_type(self, name:str):
+        try:
+            return self._types[name]
+        except KeyError:
+            raise TypeError(f'Type "{name}" is not defined.')
+        
 
 

@@ -16,6 +16,7 @@ class LexerBusiness:
         "gross-profit" : "METRICS",
         "expenses" : "METRICS",
         "earnings" : "METRICS",
+        "amount" : "AMOUNT",
         "GET" : "GET",
         "ADD" : "ADD",
         "DEL" : "DEL",
@@ -42,7 +43,7 @@ class LexerBusiness:
         'COMMA',
         'NAME',
         'NUMBER',
-        'DESCRIP',
+        #'DESCRIP',
         'ID',
         'END'
     ] + list(keywords.values())
@@ -74,9 +75,9 @@ class LexerBusiness:
         t.value = t.value[1:-1]
         return t
     
-    def t_DESCRIP(self,t):
-        r'[a-zA-Z][a-zA-Z_\s]+'
-        return t
+    # def t_DESCRIP(self,t):
+    #     r'[a-zA-Z][a-zA-Z_\s]+'
+    #     return t
 
     def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ASSIGN CBR CBRACE COMMA END ID NAME NUMBER OBR OBRACE POINT TYPE TYPE TYPE TYPE TYPEProgram : ListInstListInst : Instruction END ListInst\n                | Instruction ENDInstruction : instanceinstance : TYPE ID ASSIGN Assignable\n                | ID ASSIGN AssignableAssignable : OBRACE subType CBRACE\n                  | OBR instance_list CBR\n                  | IDsubType : bus\n               | emp\n               | prodinstance_list : instance COMMA instance_list\n                     | ID COMMA instance_list\n                     | ID\n                     | instancebus : instance COMMA instanceemp : NAME COMMA NUMBERprod : NAME COMMA NUMBER COMMA NUMBER'
+_lr_signature = 'ACTION ADD AMOUNT ASSIGN BILL CBR CBRACE COMMA COST DATE DATE DATE DEL DPOINT END GET ID INVESTS LOAD METRICS METRICS METRICS METRICS METRICS NAME NUMBER OBR OBRACE POINT PRICE SALE TYPE TYPE TYPE TYPEProgram : ListInstListInst : Instruction END ListInst\n                | Instruction ENDInstruction : instance\n                   | ID GET METRICS DATEInstruction : ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ID ADD ID\n                   | ID ADD BILL OBRACE COST CBRACEInstruction : ID DEL IDinstance : TYPE ID ASSIGN Assignable\n                | ID ASSIGN AssignableAssignable : subType\n                  | collection \n                  Assignable : IDsubType : OBRACE bus CBRACE\n               | OBRACE emp CBRACE\n               | OBRACE prod CBRACEcollection : OBR collection_body CBRcollection_body : subType COMMA collection_body\n                       | subTypecollection_body : ID COMMA collection_body\n                       | IDbus : NAME COMMA collection COMMA collectionbus : NAME COMMA ID COMMA IDemp : NAME COMMA NUMBERprod : NAME'
     
-_lr_action_items = {'TYPE':([0,7,14,15,27,30,31,],[5,5,5,5,5,5,5,]),'ID':([0,5,7,9,11,14,15,27,30,31,],[6,8,6,12,12,6,25,6,25,25,]),'$end':([1,2,7,10,],[0,-1,-3,-2,]),'END':([3,4,12,13,16,26,29,],[7,-4,-9,-6,-5,-7,-8,]),'ASSIGN':([6,8,25,],[9,11,9,]),'OBRACE':([9,11,],[14,14,]),'OBR':([9,11,],[15,15,]),'COMMA':([12,13,16,21,22,24,25,26,29,33,],[-9,-6,-5,27,28,30,31,-7,-8,36,]),'CBR':([12,13,16,23,24,25,26,29,34,35,],[-9,-6,-5,29,-16,-15,-7,-8,-13,-14,]),'CBRACE':([12,13,16,17,18,19,20,26,29,32,33,37,],[-9,-6,-5,26,-10,-11,-12,-7,-8,-17,-18,-19,]),'NAME':([14,],[22,]),'NUMBER':([28,36,],[33,37,]),}
+_lr_action_items = {'ID':([0,7,8,10,11,12,13,14,26,29,46,48,49,61,],[5,15,5,18,20,21,27,28,38,21,54,38,38,65,]),'ACTION':([0,8,],[6,6,]),'TYPE':([0,8,],[7,7,]),'$end':([1,2,8,16,],[0,-1,-3,-2,]),'END':([3,4,18,20,21,22,23,24,30,41,43,44,45,47,52,68,69,],[8,-4,-8,-10,-15,-12,-13,-14,-5,-11,-16,-17,-18,-19,-9,-6,-7,]),'GET':([5,],[9,]),'ADD':([5,],[10,]),'DEL':([5,],[11,]),'ASSIGN':([5,15,],[12,29,]),'SALE':([6,],[13,]),'INVESTS':([6,],[14,]),'METRICS':([9,],[17,]),'BILL':([10,],[19,]),'OBRACE':([12,19,26,29,48,49,],[25,31,25,25,25,25,]),'OBR':([12,29,46,60,],[26,26,26,26,]),'DATE':([17,],[30,]),'NAME':([25,],[35,]),'PRICE':([27,],[39,]),'COST':([28,31,],[40,42,]),'CBRACE':([32,33,34,35,42,47,55,64,65,],[43,44,45,-27,52,-19,-26,-24,-25,]),'COMMA':([35,37,38,43,44,45,47,53,54,],[46,48,49,-16,-17,-18,-19,60,61,]),'CBR':([36,37,38,43,44,45,56,57,],[47,-21,-23,-16,-17,-18,-20,-22,]),'DPOINT':([39,40,62,63,],[50,51,66,67,]),'NUMBER':([46,50,51,66,67,],[55,58,59,68,69,]),'AMOUNT':([58,59,],[62,63,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'Program':([0,],[1,]),'ListInst':([0,7,],[2,10,]),'Instruction':([0,7,],[3,3,]),'instance':([0,7,14,15,27,30,31,],[4,4,21,24,32,24,24,]),'Assignable':([9,11,],[13,16,]),'subType':([14,],[17,]),'bus':([14,],[18,]),'emp':([14,],[19,]),'prod':([14,],[20,]),'instance_list':([15,30,31,],[23,34,35,]),}
+_lr_goto_items = {'Program':([0,],[1,]),'ListInst':([0,8,],[2,16,]),'Instruction':([0,8,],[3,3,]),'instance':([0,8,],[4,4,]),'Assignable':([12,29,],[22,41,]),'subType':([12,26,29,48,49,],[23,37,23,37,37,]),'collection':([12,29,46,60,],[24,24,53,64,]),'bus':([25,],[32,]),'emp':([25,],[33,]),'prod':([25,],[34,]),'collection_body':([26,48,49,],[36,56,57,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -31,19 +31,27 @@ _lr_productions = [
   ('ListInst -> Instruction END ListInst','ListInst',3,'p_list_instructions','parser_rules.py',12),
   ('ListInst -> Instruction END','ListInst',2,'p_list_instructions','parser_rules.py',13),
   ('Instruction -> instance','Instruction',1,'p_instruction','parser_rules.py',21),
-  ('instance -> TYPE ID ASSIGN Assignable','instance',4,'p_instance','parser_rules.py',25),
-  ('instance -> ID ASSIGN Assignable','instance',3,'p_instance','parser_rules.py',26),
-  ('Assignable -> OBRACE subType CBRACE','Assignable',3,'p_Assignable','parser_rules.py',34),
-  ('Assignable -> OBR instance_list CBR','Assignable',3,'p_Assignable','parser_rules.py',35),
-  ('Assignable -> ID','Assignable',1,'p_Assignable','parser_rules.py',36),
-  ('subType -> bus','subType',1,'p_subType','parser_rules.py',45),
-  ('subType -> emp','subType',1,'p_subType','parser_rules.py',46),
-  ('subType -> prod','subType',1,'p_subType','parser_rules.py',47),
-  ('instance_list -> instance COMMA instance_list','instance_list',3,'p_instance_list','parser_rules.py',52),
-  ('instance_list -> ID COMMA instance_list','instance_list',3,'p_instance_list','parser_rules.py',53),
-  ('instance_list -> ID','instance_list',1,'p_instance_list','parser_rules.py',54),
-  ('instance_list -> instance','instance_list',1,'p_instance_list','parser_rules.py',55),
-  ('bus -> instance COMMA instance','bus',3,'p_bus','parser_rules.py',62),
-  ('emp -> NAME COMMA NUMBER','emp',3,'p_emp','parser_rules.py',66),
-  ('prod -> NAME COMMA NUMBER COMMA NUMBER','prod',5,'p_prod','parser_rules.py',70),
+  ('Instruction -> ID GET METRICS DATE','Instruction',4,'p_instruction','parser_rules.py',22),
+  ('Instruction -> ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',9,'p_instruction_sale','parser_rules.py',29),
+  ('Instruction -> ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',9,'p_instruction_invests','parser_rules.py',33),
+  ('Instruction -> ID ADD ID','Instruction',3,'p_instruction_add','parser_rules.py',37),
+  ('Instruction -> ID ADD BILL OBRACE COST CBRACE','Instruction',6,'p_instruction_add','parser_rules.py',38),
+  ('Instruction -> ID DEL ID','Instruction',3,'p_instruction_del','parser_rules.py',42),
+  ('instance -> TYPE ID ASSIGN Assignable','instance',4,'p_instance','parser_rules.py',48),
+  ('instance -> ID ASSIGN Assignable','instance',3,'p_instance','parser_rules.py',49),
+  ('Assignable -> subType','Assignable',1,'p_Assignable','parser_rules.py',57),
+  ('Assignable -> collection','Assignable',1,'p_Assignable','parser_rules.py',58),
+  ('Assignable -> ID','Assignable',1,'p_Assignable_ID','parser_rules.py',63),
+  ('subType -> OBRACE bus CBRACE','subType',3,'p_subType','parser_rules.py',68),
+  ('subType -> OBRACE emp CBRACE','subType',3,'p_subType','parser_rules.py',69),
+  ('subType -> OBRACE prod CBRACE','subType',3,'p_subType','parser_rules.py',70),
+  ('collection -> OBR collection_body CBR','collection',3,'p_collection','parser_rules.py',75),
+  ('collection_body -> subType COMMA collection_body','collection_body',3,'p_collection_body','parser_rules.py',80),
+  ('collection_body -> subType','collection_body',1,'p_collection_body','parser_rules.py',81),
+  ('collection_body -> ID COMMA collection_body','collection_body',3,'p_collection_body_ID','parser_rules.py',88),
+  ('collection_body -> ID','collection_body',1,'p_collection_body_ID','parser_rules.py',89),
+  ('bus -> NAME COMMA collection COMMA collection','bus',5,'p_bus','parser_rules.py',96),
+  ('bus -> NAME COMMA ID COMMA ID','bus',5,'p_bus_ID','parser_rules.py',100),
+  ('emp -> NAME COMMA NUMBER','emp',3,'p_emp','parser_rules.py',103),
+  ('prod -> NAME','prod',1,'p_prod','parser_rules.py',107),
 ]
