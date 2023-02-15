@@ -47,6 +47,11 @@ class Prod_Node(Node):
     def __init__(self, name):
         self.name = name
 
+class Bill_Node(Node):
+    def __init__(self, business, cost):
+        self.business = business
+        self.cost = cost
+
 class Collection_Node(Node):
     def __init__(self, collection):
         self.collection = collection
@@ -59,9 +64,10 @@ class IfStatement(Node):
     # def evaluate(self, context: Context):
     #     pass
 
-class WhileStatement(Node):
-    def __init__(self, condition, body) -> None:
-        self.condition = condition
+class ForeachStatement(Node):
+    def __init__(self, item, bus_coll ,body) -> None:
+        self.item = item
+        self.bus_coll= bus_coll
         self.body = body
     
     # def evaluate(self, context: Context):

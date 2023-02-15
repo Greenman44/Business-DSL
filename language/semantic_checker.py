@@ -2,11 +2,13 @@ from .visitor import when, on
 from .types_checker import Bus_Context, Instance
 from .ast_nodes import *
 from .scope import Scope
+import datetime
 
 class SemanticChecker:
     def __init__(self, scope : Scope):
         self.scope = scope
         self.context = Bus_Context()
+        self.today =  datetime.datetime.now()
     
     @on("node")
     def visit(self, node):
@@ -86,6 +88,14 @@ class SemanticChecker:
     @when(Emp_Node)
     def visit(self, node : Emp_Node):
         node.processed_type = "employed"
+    
+    @when(Bill_Node)
+    def visit(self, node : Bill_Node):
+        self.visit(node.business)
+        if node.business.processed_type != "business":
+            raise Exception("Only can add bills on business")
+        node.processed_type = "bill"
+
     
     @when(Collection_Node)
     def visit(self, node : Collection_Node):
@@ -172,6 +182,9 @@ class SemanticChecker:
         except:
             pass
         node.processed_type = "actionDismiss"
+    
+
+    
 
     @when(IfStatement)
     def visit(self, node : IfStatement):
@@ -183,7 +196,15 @@ class SemanticChecker:
 
     @when(Metrics)
     def visit(self, node : Metrics):
-        pass
+        self.visit(node.business)
+        if node.business.processed_type != "business":
+            raise Exception("Can only calculate metrics to a business")
+        
+        self.visit(node.date)
+        if node.date > self.today:
+            raise Exception("You can only calculate metrics from an old date")
+        
+        node.processed_type =  "metrics"
     
 
 

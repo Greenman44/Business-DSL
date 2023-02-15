@@ -25,11 +25,12 @@ class LexerBusiness:
         "LAST MONTH" : "DATE",
         "LAST YEAR" : "DATE",
         "price" : "PRICE",
-        "cost" : "COST"
-        # "if" : "IF",
-        # "else" : "ELSE",
-        # "for" : "FOR",
-        # "in" : "IN"
+        "cost" : "COST",
+        "if" : "IF",
+        "foreach" : "FOREACH",
+        "in" : "IN",
+        "not" : "NOT",
+        "and" : "AND"
     }
 
     tokens = [
@@ -37,12 +38,20 @@ class LexerBusiness:
         'DPOINT',
         'OBR', #[
         'CBR', #]
+        'OPAREN',
+        'CPAREN',
         'OBRACE', #{
         'CBRACE', #}
         'ASSIGN', #=
+        'EQUAL', #==
+        'GEQ', #>=
+        'LEQ', #<=
+        'GREATER', #>
+        'LESS', #<
         'COMMA',
         'NAME',
         'NUMBER',
+        'DATE',
         #'DESCRIP',
         'ID',
         'END'
@@ -54,6 +63,13 @@ class LexerBusiness:
     t_OBRACE = r'\{'
     t_CBRACE = r'\}'
     t_ASSIGN = r'='
+    t_OPAREN = r'\('
+    t_CPAREN = r'\)'
+    EQUAL = r'=='
+    GEQ= r'>='
+    LEQ = r'<='
+    GREATER = r'>'
+    t_LESS = r'<'
     t_COMMA = r','
     t_DPOINT = r':'
     t_END = r';'
@@ -73,6 +89,10 @@ class LexerBusiness:
     def t_NAME(self,t):
         r'"[a-zA-Z_]*"'
         t.value = t.value[1:-1]
+        return t
+    
+    def t_DATE(self,t):
+        r'((\d\d?-)?\d\d?-)?\d{4}'
         return t
     
     # def t_DESCRIP(self,t):

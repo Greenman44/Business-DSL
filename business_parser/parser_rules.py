@@ -19,11 +19,15 @@ def p_list_instructions(p):
 
 def p_instruction(p):
     '''Instruction : instance
-                   | ID GET METRICS DATE'''
+                   | ID GET METRICS DATE
+                   | IF OPAREN condition CPAREN OBRACE ListInst CBRACE'''
     if len(p) == 5:
         p[0] = Metrics(VariableCall(p[1]), p[3], p[4])
     elif len(p) == 2:
         p[0] = p[1]
+    
+    elif len(p) == 8:
+        p[0] = IfStatement(p[3], p[6])
 
 def p_instruction_sale(p):
     'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
@@ -38,6 +42,8 @@ def p_instruction_add(p):
                    | ID ADD BILL OBRACE COST CBRACE'''
     if len(p) == 4:
         p[0] = ActionADD(VariableCall(p[1]), VariableCall(p[3]))
+    if len(p) == 7:
+        p[0] = Bill_Node(VariableCall(p[1]), p[5])
 
 def p_instruction_add_ID(p):
     ''' Instruction : ID ADD subType'''
@@ -59,6 +65,27 @@ def p_instruction_dismiss(p):
 def p_instruction_dismiss_ID(p):
     "Instruction : ID DISMISS ID"
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
+
+def p_condition(p):
+    '''condition : Assignable EQUAL Assignable
+                 | Assignable LEQ Assignable
+                 | Assignable GEQ Assignable
+                 | Assignable GREATER Assignable
+                 | Assignable LESS Assignable
+                 | bool_expression'''
+    if len(p) == 2:
+        pass #TODO: create an astNode to this
+    else:
+        pass #TODO: create an astNode to this
+
+def p_bool_expresion(p):
+    '''bool_expresion : BOOL AND BOOL
+                      | Assignable IN Assignable
+                      | Assignable NOT IN Assignable
+                      | BOOL AND NOT BOOL'''
+    #TODO: Maybe separate this nonterminal in others
+    #TODO: create an astNode to this
+    #TODO: Make the semantic_checker for this production
 
 def p_instance(p):
     '''instance : TYPE ID
@@ -83,14 +110,12 @@ def p_Assignable(p):
 def p_Assignable_ID(p):
     '''Assignable : ID'''
     p[0] = VariableCall(p[1])
-    #TODO: logic of buss
 
 def p_subType(p):
     '''subType : OBRACE bus CBRACE
                | OBRACE emp CBRACE
                | OBRACE prod CBRACE'''
     p[0] = p[2]       
-    #TODO: logic of dec_staff_instruction
 
 def p_collection(p):
     "collection : OBR collection_body CBR"
@@ -127,6 +152,7 @@ def p_emp(p):
 def p_prod(p):
     '''prod : NAME'''
     p[0] = Prod_Node(p[1])
+
 
 def p_error(p):
     raise Exception(f"Syntax error at '{p.value}', line {p.lineno} (Index {p.lexpos}).")

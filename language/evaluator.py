@@ -56,12 +56,18 @@ class Evaluator:
     @when(Prod_Node)
     def visit(self, prod_node : Prod_Node):
         return Product(prod_node.name)
+
+    @when(Bill_Node)
+    def visit(self, bill_node : Bill_Node):
+        var_bus : Business = self.visit(bill_node.business).value
+        #TODO:  add this method to Business_Data
+        var_bus.data.add_bill(var_bus.name, bill_node.cost)
     
     @when(ActionSALE)
     def visit(self, sale_node : ActionSALE):
         var_bus : Business = self.visit(sale_node.business).value
         var_prod : Product = self.visit(sale_node.product).value
-        #TODO add this method to Business_Data 
+        #TODO: add this method to Business_Data 
         var_bus.data.make_sale(var_bus.name, var_prod.name, sale_node.sale_price, sale_node.amount)
     
     @when(ActionINVESTS)
@@ -89,4 +95,11 @@ class Evaluator:
         var_bus : Business = self.visit(dis_node.business).value
         var_emp = self.visit(dis_node.employed).value
         var_bus.dismiss(var_emp)
+    
+    @when(Metrics)
+    def visit(self, metrics : Metrics):
+        var_bus : Business = self.visit(metrics.business).value
+
+        #TODO: add this method to Business_Data
+        var_bus.calculate_metrics(var_bus.name, metrics.metric , metrics.date)
     
