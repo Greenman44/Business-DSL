@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ACTION ADD AMOUNT ASSIGN BILL CBR CBRACE COMMA COST DATE DATE DATE DEL DPOINT END GET ID INVESTS LOAD METRICS METRICS METRICS METRICS METRICS NAME NUMBER OBR OBRACE POINT PRICE SALE TYPE TYPE TYPE TYPEProgram : ListInstListInst : Instruction END ListInst\n                | Instruction ENDInstruction : instance\n                   | ID GET METRICS DATEInstruction : ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ID ADD ID\n                   | ID ADD BILL OBRACE COST CBRACEInstruction : ID DEL IDinstance : TYPE ID ASSIGN Assignable\n                | ID ASSIGN AssignableAssignable : subType\n                  | collection \n                  Assignable : IDsubType : OBRACE bus CBRACE\n               | OBRACE emp CBRACE\n               | OBRACE prod CBRACEcollection : OBR collection_body CBRcollection_body : subType COMMA collection_body\n                       | subTypecollection_body : ID COMMA collection_body\n                       | IDbus : NAME COMMA collection COMMA collectionbus : NAME COMMA ID COMMA IDemp : NAME COMMA NUMBERprod : NAME'
+_lr_signature = 'ACTION ADD AMOUNT ASSIGN BILL CBR CBRACE COMMA COST DATE DATE DATE DEL DPOINT END GET ID INVESTS LOAD METRICS METRICS METRICS METRICS METRICS NAME NUMBER OBR OBRACE POINT PRICE SALE TYPE TYPE TYPE TYPEProgram : ListInstListInst : Instruction END ListInst\n                | Instruction ENDInstruction : instance\n                   | ID GET METRICS DATEInstruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBERInstruction : ID ADD ID\n                   | ID ADD BILL OBRACE COST CBRACE Instruction : ID ADD subTypeInstruction : ID DEL NAMEinstance : TYPE ID ASSIGN Assignable\n                | ID ASSIGN AssignableAssignable : subType\n                  | collection \n                  Assignable : IDsubType : OBRACE bus CBRACE\n               | OBRACE emp CBRACE\n               | OBRACE prod CBRACEcollection : OBR collection_body CBRcollection_body : subType COMMA collection_body\n                       | subTypecollection_body : ID COMMA collection_body\n                       | IDbus : NAME COMMA collection COMMA collectionbus : NAME COMMA ID COMMA IDemp : NAME COMMA NUMBERprod : NAME'
     
-_lr_action_items = {'ID':([0,7,8,10,11,12,13,14,26,29,46,48,49,61,],[5,15,5,18,20,21,27,28,38,21,54,38,38,65,]),'ACTION':([0,8,],[6,6,]),'TYPE':([0,8,],[7,7,]),'$end':([1,2,8,16,],[0,-1,-3,-2,]),'END':([3,4,18,20,21,22,23,24,30,41,43,44,45,47,52,68,69,],[8,-4,-8,-10,-15,-12,-13,-14,-5,-11,-16,-17,-18,-19,-9,-6,-7,]),'GET':([5,],[9,]),'ADD':([5,],[10,]),'DEL':([5,],[11,]),'ASSIGN':([5,15,],[12,29,]),'SALE':([6,],[13,]),'INVESTS':([6,],[14,]),'METRICS':([9,],[17,]),'BILL':([10,],[19,]),'OBRACE':([12,19,26,29,48,49,],[25,31,25,25,25,25,]),'OBR':([12,29,46,60,],[26,26,26,26,]),'DATE':([17,],[30,]),'NAME':([25,],[35,]),'PRICE':([27,],[39,]),'COST':([28,31,],[40,42,]),'CBRACE':([32,33,34,35,42,47,55,64,65,],[43,44,45,-27,52,-19,-26,-24,-25,]),'COMMA':([35,37,38,43,44,45,47,53,54,],[46,48,49,-16,-17,-18,-19,60,61,]),'CBR':([36,37,38,43,44,45,56,57,],[47,-21,-23,-16,-17,-18,-20,-22,]),'DPOINT':([39,40,62,63,],[50,51,66,67,]),'NUMBER':([46,50,51,66,67,],[55,58,59,68,69,]),'AMOUNT':([58,59,],[62,63,]),}
+_lr_action_items = {'ID':([0,6,7,10,12,16,17,27,28,47,49,50,62,],[5,13,5,18,23,30,31,39,23,55,39,39,66,]),'TYPE':([0,7,],[6,6,]),'$end':([1,2,7,14,],[0,-1,-3,-2,]),'END':([3,4,18,21,22,23,24,25,26,29,40,44,45,46,48,53,69,70,],[7,-4,-8,-10,-11,-16,-13,-14,-15,-5,-12,-17,-18,-19,-20,-9,-6,-7,]),'GET':([5,],[8,]),'ACTION':([5,],[9,]),'ADD':([5,],[10,]),'DEL':([5,],[11,]),'ASSIGN':([5,13,],[12,28,]),'METRICS':([8,],[15,]),'SALE':([9,],[16,]),'INVESTS':([9,],[17,]),'BILL':([10,],[19,]),'OBRACE':([10,12,19,27,28,49,50,],[20,20,32,20,20,20,20,]),'NAME':([11,20,],[22,36,]),'OBR':([12,28,47,61,],[27,27,27,27,]),'DATE':([15,],[29,]),'PRICE':([30,],[41,]),'COST':([31,32,],[42,43,]),'CBRACE':([33,34,35,36,43,48,56,65,66,],[44,45,46,-28,53,-20,-27,-25,-26,]),'COMMA':([36,38,39,44,45,46,48,54,55,],[47,49,50,-17,-18,-19,-20,61,62,]),'CBR':([37,38,39,44,45,46,57,58,],[48,-22,-24,-17,-18,-19,-21,-23,]),'DPOINT':([41,42,63,64,],[51,52,67,68,]),'NUMBER':([47,51,52,67,68,],[56,59,60,69,70,]),'AMOUNT':([59,60,],[63,64,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'Program':([0,],[1,]),'ListInst':([0,8,],[2,16,]),'Instruction':([0,8,],[3,3,]),'instance':([0,8,],[4,4,]),'Assignable':([12,29,],[22,41,]),'subType':([12,26,29,48,49,],[23,37,23,37,37,]),'collection':([12,29,46,60,],[24,24,53,64,]),'bus':([25,],[32,]),'emp':([25,],[33,]),'prod':([25,],[34,]),'collection_body':([26,48,49,],[36,56,57,]),}
+_lr_goto_items = {'Program':([0,],[1,]),'ListInst':([0,7,],[2,14,]),'Instruction':([0,7,],[3,3,]),'instance':([0,7,],[4,4,]),'subType':([10,12,27,28,49,50,],[21,25,38,25,38,38,]),'Assignable':([12,28,],[24,40,]),'collection':([12,28,47,61,],[26,26,54,65,]),'bus':([20,],[33,]),'emp':([20,],[34,]),'prod':([20,],[35,]),'collection_body':([27,49,50,],[37,57,58,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -32,26 +32,27 @@ _lr_productions = [
   ('ListInst -> Instruction END','ListInst',2,'p_list_instructions','parser_rules.py',13),
   ('Instruction -> instance','Instruction',1,'p_instruction','parser_rules.py',21),
   ('Instruction -> ID GET METRICS DATE','Instruction',4,'p_instruction','parser_rules.py',22),
-  ('Instruction -> ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',9,'p_instruction_sale','parser_rules.py',29),
-  ('Instruction -> ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',9,'p_instruction_invests','parser_rules.py',33),
+  ('Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',10,'p_instruction_sale','parser_rules.py',29),
+  ('Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER','Instruction',10,'p_instruction_invests','parser_rules.py',33),
   ('Instruction -> ID ADD ID','Instruction',3,'p_instruction_add','parser_rules.py',37),
   ('Instruction -> ID ADD BILL OBRACE COST CBRACE','Instruction',6,'p_instruction_add','parser_rules.py',38),
-  ('Instruction -> ID DEL ID','Instruction',3,'p_instruction_del','parser_rules.py',42),
-  ('instance -> TYPE ID ASSIGN Assignable','instance',4,'p_instance','parser_rules.py',48),
-  ('instance -> ID ASSIGN Assignable','instance',3,'p_instance','parser_rules.py',49),
-  ('Assignable -> subType','Assignable',1,'p_Assignable','parser_rules.py',57),
-  ('Assignable -> collection','Assignable',1,'p_Assignable','parser_rules.py',58),
-  ('Assignable -> ID','Assignable',1,'p_Assignable_ID','parser_rules.py',63),
-  ('subType -> OBRACE bus CBRACE','subType',3,'p_subType','parser_rules.py',68),
-  ('subType -> OBRACE emp CBRACE','subType',3,'p_subType','parser_rules.py',69),
-  ('subType -> OBRACE prod CBRACE','subType',3,'p_subType','parser_rules.py',70),
-  ('collection -> OBR collection_body CBR','collection',3,'p_collection','parser_rules.py',75),
-  ('collection_body -> subType COMMA collection_body','collection_body',3,'p_collection_body','parser_rules.py',80),
-  ('collection_body -> subType','collection_body',1,'p_collection_body','parser_rules.py',81),
-  ('collection_body -> ID COMMA collection_body','collection_body',3,'p_collection_body_ID','parser_rules.py',88),
-  ('collection_body -> ID','collection_body',1,'p_collection_body_ID','parser_rules.py',89),
-  ('bus -> NAME COMMA collection COMMA collection','bus',5,'p_bus','parser_rules.py',96),
-  ('bus -> NAME COMMA ID COMMA ID','bus',5,'p_bus_ID','parser_rules.py',100),
-  ('emp -> NAME COMMA NUMBER','emp',3,'p_emp','parser_rules.py',103),
-  ('prod -> NAME','prod',1,'p_prod','parser_rules.py',107),
+  ('Instruction -> ID ADD subType','Instruction',3,'p_instruction_add_ID','parser_rules.py',43),
+  ('Instruction -> ID DEL NAME','Instruction',3,'p_instruction_del','parser_rules.py',48),
+  ('instance -> TYPE ID ASSIGN Assignable','instance',4,'p_instance','parser_rules.py',54),
+  ('instance -> ID ASSIGN Assignable','instance',3,'p_instance','parser_rules.py',55),
+  ('Assignable -> subType','Assignable',1,'p_Assignable','parser_rules.py',63),
+  ('Assignable -> collection','Assignable',1,'p_Assignable','parser_rules.py',64),
+  ('Assignable -> ID','Assignable',1,'p_Assignable_ID','parser_rules.py',69),
+  ('subType -> OBRACE bus CBRACE','subType',3,'p_subType','parser_rules.py',74),
+  ('subType -> OBRACE emp CBRACE','subType',3,'p_subType','parser_rules.py',75),
+  ('subType -> OBRACE prod CBRACE','subType',3,'p_subType','parser_rules.py',76),
+  ('collection -> OBR collection_body CBR','collection',3,'p_collection','parser_rules.py',81),
+  ('collection_body -> subType COMMA collection_body','collection_body',3,'p_collection_body','parser_rules.py',86),
+  ('collection_body -> subType','collection_body',1,'p_collection_body','parser_rules.py',87),
+  ('collection_body -> ID COMMA collection_body','collection_body',3,'p_collection_body_ID','parser_rules.py',94),
+  ('collection_body -> ID','collection_body',1,'p_collection_body_ID','parser_rules.py',95),
+  ('bus -> NAME COMMA collection COMMA collection','bus',5,'p_bus','parser_rules.py',102),
+  ('bus -> NAME COMMA ID COMMA ID','bus',5,'p_bus_ID','parser_rules.py',106),
+  ('emp -> NAME COMMA NUMBER','emp',3,'p_emp','parser_rules.py',109),
+  ('prod -> NAME','prod',1,'p_prod','parser_rules.py',113),
 ]

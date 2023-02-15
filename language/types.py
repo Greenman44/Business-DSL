@@ -19,8 +19,6 @@ class Business:
         self.name = name
         self.staff = staff
         self.catalogue = catalog
-        self.sells = None
-        self.adquisitions = None
     
 class Collection:
     def __init__(self, items : list[Employed|Product|Business]):

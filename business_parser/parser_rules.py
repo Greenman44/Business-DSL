@@ -27,11 +27,11 @@ def p_instruction(p):
 
 def p_instruction_sale(p):
     'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
-    p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), p[7], p[9])
+    p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), p[7], p[10])
 
 def p_instruction_invests(p):
     'Instruction : ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER'
-    p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), p[7], p[9])
+    p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), p[7], p[10])
 
 def p_instruction_add(p):
     '''Instruction : ID ADD ID
@@ -46,7 +46,7 @@ def p_instruction_add_ID(p):
 
 def p_instruction_del(p):
     "Instruction : ID DEL NAME"
-    p[0] = ActionDEL(p[1], p[3])
+    p[0] = ActionDEL(VariableCall(p[1]), p[3])
 
 
 

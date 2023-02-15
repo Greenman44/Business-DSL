@@ -1,7 +1,7 @@
 from .ast_nodes import *
 from .semantic_checker import SemanticChecker
 from .scope import Scope
-
+from .types import Business, Collection, Employed, Product
 __all__ = [
     "Program",
     "TypeDeclaration",
@@ -18,4 +18,8 @@ __all__ = [
     "Collection_Node",
     "SemanticChecker",
     "Scope",
+    "Business",
+    "Collection",
+    "Employed",
+    "Product"
 ]

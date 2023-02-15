@@ -15,9 +15,11 @@ try:
 
     collection c2 = [p1, p2];
 
+    business b1 = {"Tienda" , c1 , c2 };
 
-    business b1 = {"Tienda" , c1 , c1 };
-    '''
+    b1 ACTION SALE p1 price : 30.5 amount : 10.1;
+
+'''
 except EOFError:
     print("Error")
 node = parser.parse(s, lexer=l.lexer)
