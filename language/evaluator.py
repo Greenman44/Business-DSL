@@ -103,3 +103,28 @@ class Evaluator:
         #TODO: add this method to Business_Data
         var_bus.calculate_metrics(var_bus.name, metrics.metric , metrics.date)
     
+    @when(IfStatement)
+    def visit(self, if_statement: IfStatement):
+        pass
+
+    @when(NotStatement)
+    def visit(self, not_statement: NotStatement):
+        var_id1 = self.visit(not_statement.stam.id_1).value
+        var_id2 = self.visit(not_statement.stam.id_2).value
+
+        return var_id1 not in var_id2
+
+    @when(InStatement)
+    def visit(self, in_statement: InStatement):
+        var_id1 = self.visit(in_statement.id_1).value
+        var_id2 = self.visit(in_statement.id_2).value
+
+        return var_id1 in var_id2
+
+    @when(Comparer)
+    def visit(self, comparer : Comparer):
+        var_id1 = self.visit(comparer.id_1).value
+        var_id2 = self.visit(comparer.id_2).value
+        #TODO: Make a method to do this
+
+    

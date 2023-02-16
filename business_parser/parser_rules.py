@@ -67,25 +67,25 @@ def p_instruction_dismiss_ID(p):
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
 
 def p_condition(p):
-    '''condition : Assignable EQUAL Assignable
-                 | Assignable LEQ Assignable
-                 | Assignable GEQ Assignable
-                 | Assignable GREATER Assignable
-                 | Assignable LESS Assignable
+    '''condition : ID EQUAL ID
+                 | ID LEQ ID
+                 | ID GEQ ID
+                 | ID GREATER ID
+                 | ID LESS ID
                  | bool_expression'''
     if len(p) == 2:
-        pass #TODO: create an astNode to this
+        pass
     else:
-        pass #TODO: create an astNode to this
+        p[0] = Comparer(VariableCall(p[1]), VariableCall(p[3]))
+
 
 def p_bool_expresion(p):
-    '''bool_expresion : BOOL AND BOOL
-                      | Assignable IN Assignable
-                      | Assignable NOT IN Assignable
-                      | BOOL AND NOT BOOL'''
-    #TODO: Maybe separate this nonterminal in others
-    #TODO: create an astNode to this
-    #TODO: Make the semantic_checker for this production
+    '''bool_expression : ID IN ID
+                       | ID NOT IN ID'''
+    if len(p) == 4:
+        p[0] = InStatement(VariableCall(p[1]),VariableCall(p[3]))
+    else:
+        p[0] = NotStatement(InStatement(VariableCall(p[1]),VariableCall(p[4])))
 
 def p_instance(p):
     '''instance : TYPE ID

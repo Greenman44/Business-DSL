@@ -190,8 +190,38 @@ class SemanticChecker:
     def visit(self, node : IfStatement):
         pass
 
-    @when(WhileStatement)
-    def visit(self, node : WhileStatement):
+    @when(Comparer)
+    def visit(self, node : Comparer):
+        self.visit(node.id_1)
+        self.visit(node.id_2)
+        type_id_1 = node.id_1.processed_type
+        type_id_2 = node.id_2.processed_type
+        
+        if type_id_1 != type_id_2:
+            raise Exception(f"Type of {node.id_1} is not equal to the type of {node.id_2}")
+        
+        node.processed_type = "comparer"
+    
+    @when(InStatement)
+    def visit(self, node : InStatement):
+        self.visit(node.id_1)
+        self.visit(node.id_2)
+        type_id_1 = node.id_1.processed_type
+        type_id_2 = node.id_2.processed_type
+
+        if type_id_2 != "business" and not("collection" in type_id_2):
+            raise Exception("The type of the second item has to be collection or business")
+        # I dont know if i have to check the type of the first item
+        
+        node.processed_type = "inStatement"
+    
+    @when(NotStatement)
+    def visit(self, node : NotStatement):
+        node.processed_type = "notStatement"
+
+
+    @when(ForeachStatement)
+    def visit(self, node : ForeachStatement):
         pass
 
     @when(Metrics)

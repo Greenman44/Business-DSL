@@ -60,9 +60,22 @@ class IfStatement(Node):
     def __init__(self, condition, body) -> None:
         self.condition = condition
         self.body = body
-    
+
+class NotStatement(Node):
+    def __init__(self, stam) -> None:
+        self.stam = stam
     # def evaluate(self, context: Context):
     #     pass
+
+class Comparer(Node):
+    def __init__(self, id_1, id_2) -> None:
+        self.id_1 = id_1
+        self.id_2 = id_2
+
+class InStatement(Node):
+    def __init__(self, id_1, id_2) -> None:
+        self.id_1 = id_1
+        self.id_2 = id_2
 
 class ForeachStatement(Node):
     def __init__(self, item, bus_coll ,body) -> None:
@@ -72,6 +85,7 @@ class ForeachStatement(Node):
     
     # def evaluate(self, context: Context):
     #     pass
+
         
 class ActionSALE(Node):
     def __init__(self, business, product, sale_price, amount):

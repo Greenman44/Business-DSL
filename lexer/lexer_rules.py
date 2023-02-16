@@ -30,7 +30,8 @@ class LexerBusiness:
         "foreach" : "FOREACH",
         "in" : "IN",
         "not" : "NOT",
-        "and" : "AND"
+        "and" : "AND",
+        "or" : "OR"
     }
 
     tokens = [
