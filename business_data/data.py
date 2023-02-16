@@ -9,23 +9,24 @@ class Business_Data:
         self.product_table = pd.DataFrame(columns=["name", "amount"])
         self.sales_table = pd.DataFrame(columns=["product", "price", "amount"])
         self.invests_table = pd.DataFrame(columns=["product", "cost", "amount"])
-        self.bus = business
+        self.fill_catalog(business.catalogue)
+        self.fill_staff(business.staff)
+        self.name = business.name
     
+
     def get_product(self, name : str) -> Product:
-        """Get product from product table"""
-        for product in self.bus.catalogue.items:
-            if product.name == name:
-                return product
-        raise Exception("Product not found: %s" % name)
+        match = self.product_table["name"] == name
+        if match.any():
+            return Product(name)
+        raise Exception("Product not found")
         
     
     def get_employed(self, name : str) -> Employed:
         """Get employed from employed table"""
-        for employee in self.bus.staff.items:
-            if employee.name == name:
-                return  employee
-        raise Exception("Employed not found: %s" % name)
-        pass
+        for i in self.employed_table.index:
+            if self.employed_table.at[i, "name"] == name:
+                return Employed(name, self.employed_table.at[i,"salary"])
+        raise Exception("Employed not found")
     
     def get_catalogue(self) -> list[Product]:
         """return list of products"""
@@ -37,40 +38,83 @@ class Business_Data:
 
     def add_product(self, product : Product):
         """add product to product table"""
-        self.bus.catalogue.items.append(product)
-        self.bus.catalogue.df.append(product.__dict__)
+        self.product_table = self.product_table.append({"name" : product.name, "amount" : 0}, ignore_index=True)
     
-    def delete_product(self, product:Product):
-        """delete product from product table"""
-        index = -1
-        for i in range(len(self.bus.catalogue.items)):
-            if self.bus.catalogue.items[i].name == product.name:
-                self.bus.catalogue.df.drop([i])
-                index = i
-                break
-        self.bus.catalogue.items.remove(self.bus.catalogue.items[index])
-
     def add_employed(self, employed : Employed):
         """add employed to employed table"""
-        self.bus.catalogue.items.append(employed)
-        self.bus.catalogue.df.append(employed.__dict__)
+        self.employed_table = self.employed_table.append({"name" : employed.name, "salary" : employed.salary}, ignore_index=True)
+
+    def add_productCollection(self, collection : Collection):
+        data_names = [product.name for product in collection]
+        data_amounts = [0 for product in collection]
+        new_products = pd.DataFrame()
+        new_products["name"] = data_names
+        new_products["amount"] = data_amounts
+        self.product_table = pd.concat([self.product_table, new_products], ignore_index=True)
     
-    def delete_employed(self,employed : Employed):
+    def add_employedCollection(self, collection : Collection):
+        data_names = [employed.name for employed in collection] 
+        data_salaries = [employed.salary for employed in collection]
+        new_employees = pd.DataFrame()
+        new_employees["name"] = data_names
+        new_employees["salary"] = data_salaries
+        self.employed_table = pd.concat([self.employed_table, new_employees], ignore_index=True)
+
+
+    def fill_catalog(self, coll_products : Collection):
+        data_name = [product.name for product in coll_products] 
+        data_amount = [0 for i in range(len(coll_products))]
+        self.product_table["name"] = data_name
+        self.product_table["amount"] = data_amount
+    
+    def fill_staff(self, coll_employees : Collection):
+        data_name = [employed.name for employed in coll_employees]
+        data_salary = [employed.salary for employed in coll_employees]
+        self.employed_table["name"] = data_name
+        self.employed_table["salary"] = data_salary
+
+    
+    def delete_employed(self, name:str):
         """delete employed"""
-        index = -1
-        for i in range(len(self.bus.staff.items)):
-            if self.bus.staff.items[i].name == employed.name:
-                self.bus.staff.df.drop([i])
-                index = i
+        for i in self.employed_table.index:
+            if self.employed_table.at[i, "name"] == name:
+                self.employed_table.drop([i], inplace=True)
                 break
-        self.bus.staff.items.remove(self.bus.catalogue.items[index])
+    
+    def delete_employedCollection(self, collection : Collection):
+        data_names = [e.name for e in collection]
+        data_salary = [e.salary for e in collection]
+        df_toDrop = pd.DataFrame()
+        df_toDrop["name"] = data_names
+        df_toDrop["salary"] = data_salary
+        self.employed_table = self.employed_table[~self.employed_table.apply(tuple,1).isin(df_toDrop.apply(tuple,1))]
+
+    def delete_product(self, name:str):
+        """delete product from product table"""
+        for i in self.product_table.index:
+            if self.product_table.at[i, "name"] == name:
+                self.product_table.drop([i], inplace=True)
+                break
+    
+    def delete_productCollection(self, collection : Collection):
+        data_names = [e.name for e in collection]
+        data_amounts = [0 for e in collection]
+        df_toDrop = pd.DataFrame()
+        df_toDrop["name"] = data_names
+        df_toDrop["amount"] = data_amounts
+        self.product_table = self.product_table[~self.product_table.apply(tuple,1).isin(df_toDrop.apply(tuple,1))]
+        self.product_table = self.product_table.drop_duplicates(subset=["name"],keep=False)
         
 
     #TODO: CRUD for all tables
 
     #TODO: Save Data on excel
-    def DatatoExcel(self, data : pd.DataFrame, excel_sheet:str, path = "./excel_sheets"):
-        data.to_excel(path, excel_sheet)
+    def Save_DatatoExcel(self, path = "./excel_sheets"):
+        with pd.ExcelWriter(path=path + f"/{self.name}.xlsx") as writer:
+            self.product_table.to_excel(writer, sheet_name="catalog")
+            self.employed_table.to_excel(writer, sheet_name="staff")
+            self.sales_table.to_excel(writer, sheet_name="sales")
+            self.invests_table.to_excel(writer, sheet_name="expenses")
 
     #TODO: Load data from excel
     def ExceltoData(self,excel_sheet_name:str, path = "./excel_sheets")->pd.DataFrame:
@@ -83,17 +127,27 @@ class Business:
         self.catalogue = catalog
         self.data = Business_Data(self) if data is None else data
     
+    def get_staff(self):
+        return self.staff
+
+    def get_catalogue(self):
+        return  self.catalogue
+
     def add(self,item):
         if isinstance(item, Collection):
-            if isinstance(item[0], Product):
+            if isinstance(item.peek(), Product):
                 self.catalogue.add(item)
+                self.data.add_productCollection(item)
             else:
-                self.staff.add(item)    
+                self.staff.add(item)
+                self.data.add_employedCollection(item)
         
         elif isinstance(item, Product):
             self.catalogue.add(item)
+            self.data.add_product(item)
         else:
             self.staff.add(item)
+            self.data.add_employed(item)
 
     def any_product(self, product : Product):
         return any(p == product for p in self.catalogue)
@@ -124,6 +178,11 @@ class Collection:
     def __init__(self, items : list[Employed|Product|Business]):
         self.items = set(items)
 
+    def get(self, name : str):
+        for item in self.items:
+            if item.name == name:
+                return item
+        raise Exception("Item not found")
 
     def add(self, item):
         if isinstance(item, Collection):
@@ -149,6 +208,9 @@ class Collection:
                 break
         self.delete_instance(current_item)
 
+    def peek(self):
+        return self.items.copy().pop()
+
     def delete(self, item):
         if isinstance(item, Collection):
             self._delete_coll(item)
@@ -156,23 +218,53 @@ class Collection:
             self._delete_instanceByName(item)
         else:
             self._delete_instance(item)
+    
+    def __lt__(self, other) -> bool:
+        return len(self.items) < len(other.items)
+    
+    def __gt__(self, other) -> bool:
+        return len(self.items) > len(other.items)
+    
+    def __le__(self, other) -> bool:
+        return len(self.items) <= len(other.items)
+
+    def __ge__(self, other) -> bool:
+        return len(self.items) >= len(other.items) 
+    
+    def __eq__(self, other) -> bool:
+        if len(self.items) != len(other.items):
+            return False
+
+        aux = self.items.intersection(other)
+        return len(aux) == len(self.items)
 
     def __iter__(self):
         return iter(self.items)
-    
-    def __getitem__(self, index):
-        return self.items[index]
 
+    def __len__(self):
+        return len(self.items)
 class Employed:
     def __init__(self, name, salary):
         self.name = name
-        self.salary = salary
+        self.salary : float = salary
     
     def __str__(self) -> str:
-        return f"name : {self.name}, salary : {str(self.salary)}"
+        return f"(name : {self.name}, salary : {str(self.salary)})"
     
     def __repr__(self) -> str:
         return str(self)
+
+    def __lt__(self, other) -> bool:
+        return self.salary < other.salary
+    
+    def __gt__(self, other) -> bool:
+        return self.salary > other.salary
+    
+    def __le__(self, other) -> bool:
+        return self.salary <= other.salary
+
+    def __ge__(self, other) -> bool:
+        return self.salary >= other.salary 
     
     def __eq__(self, other) -> bool:
         return self.name == other.name and self.salary == other.salary
@@ -181,14 +273,27 @@ class Employed:
         return self.name.__hash__()
 
 class Product:
-    def __init__(self, name):
+    def __init__(self, name, amount = 0):
         self.name = name
+        self.amount = amount
 
     def __str__(self) -> str:
         return self.name
     
     def __repr__(self) -> str:
         return str(self)
+
+    def __lt__(self, other) -> bool:
+        return self.amount < other.amount
+    
+    def __gt__(self, other) -> bool:
+        return self.amount > other.amount
+    
+    def __le__(self, other) -> bool:
+        return self.amount <= other.amount
+
+    def __ge__(self, other) -> bool:
+        return self.amount >= other.amount 
 
     def __eq__(self, other) -> bool:
         return self.name == other.name

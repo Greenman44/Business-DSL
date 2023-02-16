@@ -67,10 +67,13 @@ class NotStatement(Node):
     # def evaluate(self, context: Context):
     #     pass
 
-class Comparer(Node):
-    def __init__(self, id_1, id_2) -> None:
-        self.id_1 = id_1
-        self.id_2 = id_2
+class Bool_Expression_Node(Node):
+    def __init__(self, left, right: 0.0, comparer) -> None:
+        self.left = left
+        self.right = right
+        self.comparer = comparer
+
+
 
 class InStatement(Node):
     def __init__(self, id_1, id_2) -> None:
@@ -80,7 +83,7 @@ class InStatement(Node):
 class ForeachStatement(Node):
     def __init__(self, item, bus_coll ,body) -> None:
         self.item = item
-        self.bus_coll= bus_coll
+        self.bus_coll = bus_coll
         self.body = body
     
     # def evaluate(self, context: Context):

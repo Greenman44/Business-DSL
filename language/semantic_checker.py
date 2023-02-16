@@ -187,20 +187,23 @@ class SemanticChecker:
     
 
     @when(IfStatement)
-    def visit(self, node : IfStatement):
+    def visit(self, node : IfStatement):#TODO: this
         pass
 
-    @when(Comparer)
-    def visit(self, node : Comparer):
-        self.visit(node.id_1)
-        self.visit(node.id_2)
-        type_id_1 = node.id_1.processed_type
-        type_id_2 = node.id_2.processed_type
+    @when(Bool_Expression_Node)
+    def visit(self, node : Bool_Expression_Node):
+        self.visit(node.left)
+        self.visit(node.right)
+        type_id_1 = node.left.processed_type
+        type_id_2 = node.right.processed_type
         
+        if type_id_1 == "business":
+            raise Exception(f"Can not compare type Business")
+
         if type_id_1 != type_id_2:
             raise Exception(f"Type of {node.id_1} is not equal to the type of {node.id_2}")
         
-        node.processed_type = "comparer"
+        node.processed_type = "bool_expression"
     
     @when(InStatement)
     def visit(self, node : InStatement):
@@ -211,13 +214,16 @@ class SemanticChecker:
 
         if type_id_2 != "business" and not("collection" in type_id_2):
             raise Exception("The type of the second item has to be collection or business")
-        # I dont know if i have to check the type of the first item
         
-        node.processed_type = "inStatement"
+        node.processed_type = "bool_expression"
     
     @when(NotStatement)
     def visit(self, node : NotStatement):
-        node.processed_type = "notStatement"
+        self.visit(node.stam)
+        current_type = node.stam.processed_type
+        if current_type != "bool_expression":
+            raise Exception("Only can make a not syntax to a bool_expression")
+        node.processed_type = "bool_expression"
 
 
     @when(ForeachStatement)

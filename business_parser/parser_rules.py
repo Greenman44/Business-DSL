@@ -67,25 +67,42 @@ def p_instruction_dismiss_ID(p):
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
 
 def p_condition(p):
-    '''condition : ID EQUAL ID
-                 | ID LEQ ID
-                 | ID GEQ ID
-                 | ID GREATER ID
-                 | ID LESS ID
-                 | bool_expression'''
+    '''condition : bool_expression
+                '''
+    
+    
     if len(p) == 2:
-        pass
-    else:
-        p[0] = Comparer(VariableCall(p[1]), VariableCall(p[3]))
+        p[0] = p[1]
 
 
-def p_bool_expresion(p):
-    '''bool_expression : ID IN ID
-                       | ID NOT IN ID'''
-    if len(p) == 4:
-        p[0] = InStatement(VariableCall(p[1]),VariableCall(p[3]))
-    else:
-        p[0] = NotStatement(InStatement(VariableCall(p[1]),VariableCall(p[4])))
+
+def p_bool_expression(p):
+    '''
+        bool_expression : NOT bool_expression
+                        | bool_expression AND bool_expression
+                        | bool_expression OR bool_expression
+                        | ID EQUAL ID
+                        | ID LEQ ID
+                        | ID GEQ ID
+                        | ID GREATER ID
+                        | ID LESS ID
+                        '''
+
+    if len(p) == 3:
+        p[0] = NotStatement(p[2])
+    elif len(p) == 4:
+        p[0] = Bool_Expression_Node(p[1], p[3], p[2])
+
+def p_bool_expression_Paren(p):
+    'bool_expression : OPAREN bool_expression CPAREN'
+
+    p[0] = p[2]
+
+
+
+def p_bool_expression_in(p):
+    '''bool_expression : ID IN ID'''
+    p[0] = InStatement(VariableCall(p[1]),VariableCall(p[3]))
 
 def p_instance(p):
     '''instance : TYPE ID

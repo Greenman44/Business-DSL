@@ -104,15 +104,14 @@ class Evaluator:
         var_bus.calculate_metrics(var_bus.name, metrics.metric , metrics.date)
     
     @when(IfStatement)
-    def visit(self, if_statement: IfStatement):
+    def visit(self, if_statement: IfStatement): #TODO: this
         pass
 
     @when(NotStatement)
     def visit(self, not_statement: NotStatement):
-        var_id1 = self.visit(not_statement.stam.id_1).value
-        var_id2 = self.visit(not_statement.stam.id_2).value
+        var = self.visit(not_statement.stam).value
 
-        return var_id1 not in var_id2
+        return not var
 
     @when(InStatement)
     def visit(self, in_statement: InStatement):
@@ -121,10 +120,24 @@ class Evaluator:
 
         return var_id1 in var_id2
 
-    @when(Comparer)
-    def visit(self, comparer : Comparer):
-        var_id1 = self.visit(comparer.id_1).value
-        var_id2 = self.visit(comparer.id_2).value
-        #TODO: Make a method to do this
+    @when(Bool_Expression_Node)
+    def visit(self, comparer : Bool_Expression_Node):
+        var_left = self.visit(comparer.left).value
+        var_right = self.visit(comparer.right).value
+        try:
+            operators = {
+                "<" : var_left.less,
+                ">" : var_left.greater,
+                "<=" : var_left.leq,
+                ">=" : var_left.geq,
+                "==" : var_left.equal
+            }
+            return operators[comparer.comparer](var_right)
+        except AttributeError:
+            if comparer.comparer == "and":
+                return var_left and var_right
+            else:
+                return var_left or var_right
+
 
     
