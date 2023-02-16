@@ -107,7 +107,8 @@ def p_bool_expression_in(p):
 def p_instance(p):
     '''instance : TYPE ID
                 | TYPE ID ASSIGN Assignable
-                | ID ASSIGN Assignable'''
+                | ID ASSIGN Assignable
+                '''
                 
     if len(p) == 3:
         p[0] = VariableDeclaration(p[1], p[2])
@@ -118,11 +119,21 @@ def p_instance(p):
     elif len(p) == 4:
         p[0] = VariableAssignment(p[1], p[3])
 
+def p_instance_SAVELOAD(p):
+    ''' instance : ID ASSIGN LOAD NAME
+                 | SAVE ID '''
+    if len(p) == 5:
+        p[0] = Load(p[1],p[4])
+    elif len(p) == 3:
+        p[0] = Save(p[2])
+
+
 def p_Assignable(p):
     '''Assignable : subType
-                  | collection 
+                  | collection
                   '''
     p[0] = p[1]
+    
     
 def p_Assignable_ID(p):
     '''Assignable : ID'''

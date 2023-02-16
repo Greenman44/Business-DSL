@@ -73,6 +73,14 @@ class Bool_Expression_Node(Node):
         self.right = right
         self.comparer = comparer
 
+class Load(Node):
+    def __init__(self, business, name)->None:
+        self.business = business
+        self.name = name
+
+class Save(Node):
+    def __init__(self, business)->None:
+        self.business = business
 
 
 class InStatement(Node):

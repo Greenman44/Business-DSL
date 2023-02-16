@@ -184,11 +184,39 @@ class SemanticChecker:
         node.processed_type = "actionDismiss"
     
 
+    @when(Load)
+    def visit(self, node : Load):
+        self.visit(node.business)
+        current_type = node.business.processed_type
+        if current_type != "business":
+            raise Exception("Can not load if the type of operation is different from business")
+        
+        node.processed_type = "load"
+    
+    @when(Save)
+    def visit(self, node : Save):
+        self.visit(node.business)
+        current_type = node.business.processed_type
+        if current_type != "business":
+            raise Exception("Only can make Save over a business")
+        
+        node.processed_type = "save"
+        
+
     
 
     @when(IfStatement)
-    def visit(self, node : IfStatement):#TODO: this
-        pass
+    def visit(self, node : IfStatement):
+        self.visit(node.condition)
+        type_node_cond = node.condition.processed_type
+        if type_node_cond != "bool_expression":
+            raise Exception("The condition has to be a bool expression")
+        
+        self.visit(node.body)
+        for item in node.body:
+            self.visit(item)
+        node.processed_type = "ifStatement"
+
 
     @when(Bool_Expression_Node)
     def visit(self, node : Bool_Expression_Node):

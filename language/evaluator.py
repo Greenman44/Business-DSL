@@ -1,6 +1,6 @@
 from .ast_nodes import *
 from .scope import Scope
-from business_data import Business, Collection, Employed, Product
+from business_data import Business, Collection, Employed, Product, Business_Data
 from .types_checker import  Instance
 from .visitor import on, when
 
@@ -96,6 +96,22 @@ class Evaluator:
         var_emp = self.visit(dis_node.employed).value
         var_bus.dismiss(var_emp)
     
+
+    @when(Load)
+    def visit(self, load_node : Load):
+        var_bus : Business = self.visit(load_node.business).value
+
+        var_inst_bus = Business_Data(var_bus)
+
+        self.scope.set(var_inst_bus)
+    
+    @when(Save)
+    def visit(self, save_node : Save):
+        var_bus : Business = self.visit(save_node.business).value
+
+        # TODO: add this method to Business_Data
+        var_bus.data.Save()
+
     @when(Metrics)
     def visit(self, metrics : Metrics):
         var_bus : Business = self.visit(metrics.business).value
@@ -104,8 +120,13 @@ class Evaluator:
         var_bus.calculate_metrics(var_bus.name, metrics.metric , metrics.date)
     
     @when(IfStatement)
-    def visit(self, if_statement: IfStatement): #TODO: this
-        pass
+    def visit(self, if_statement: IfStatement):
+        var_condition = self.visit(if_statement.condition).value
+
+        if var_condition:
+            var_body = self.visit(if_statement.body).value
+            for item in var_body:
+                self.visit(item)
 
     @when(NotStatement)
     def visit(self, not_statement: NotStatement):

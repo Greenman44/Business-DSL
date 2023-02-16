@@ -16,6 +16,8 @@ class LexerBusiness:
         "gross-profit" : "METRICS",
         "expenses" : "METRICS",
         "earnings" : "METRICS",
+        "load" : "LOAD",
+        "save" : "SAVE",
         "amount" : "AMOUNT",
         "GET" : "GET",
         "add" : "ADD",
