@@ -1,6 +1,6 @@
 # from business_parser import parser
 # from lexer import LexerBusiness
-from business_data.data import  Collection, Product, Business_Data, Business, Employed
+from business_data.data import  Collection, Product, Business_Data, Business, Employed, Invest
 # SemanticChecker, Scope,
 # l = LexerBusiness()
 # l.build()
@@ -31,7 +31,10 @@ c1 = Collection([Product("papa"), Product("tomate"), Product("cebolla")])
 c2 = Collection([Employed("Juan", 30), Employed("Pepe", 20), Employed("Anacleto", 50)])
 c3 = Collection([Employed("Juan", 30),Employed("Antonio", 20)])
 
-
 a = Business("agro", c2, c1)
-a.data.delete_employedCollection(c3)
-print(a.data.employed_table)
+
+a.data.make_invest(Invest(product=Product("tomate"), cost=50.0, amount=4))
+print(a.data.invests_table)
+a.data.Save_DatatoExcel()
+a = Business_Data.LoadBusiness("agro")
+print(a.data.invests_table)

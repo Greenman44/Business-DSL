@@ -60,8 +60,7 @@ class Evaluator:
     @when(Bill_Node)
     def visit(self, bill_node : Bill_Node):
         var_bus : Business = self.visit(bill_node.business).value
-        #TODO:  add this method to Business_Data
-        var_bus.data.add_bill(var_bus.name, bill_node.cost)
+        var_bus.data.add_bill(bill_node.cost)
     
     @when(ActionSALE)
     def visit(self, sale_node : ActionSALE):
@@ -99,25 +98,23 @@ class Evaluator:
 
     @when(Load)
     def visit(self, load_node : Load):
-        var_bus : Business = self.visit(load_node.business).value
+        var_bus = self.visit(load_node.business)
 
-        Business_Data.Load()
+        var_bus.value = Business_Data.LoadBusiness(load_node.name)
 
-        self.scope.set(var_bus)
     
     @when(Save)
     def visit(self, save_node : Save):
         var_bus : Business = self.visit(save_node.business).value
 
         # TODO: add this method to Business_Data
-        var_bus.data.Save()
+        var_bus.save()
 
     @when(Metrics)
     def visit(self, metrics : Metrics):
         var_bus : Business = self.visit(metrics.business).value
 
-        #TODO: add this method to Business_Data
-        var_bus.calculate_metrics(var_bus.name, metrics.metric , metrics.date)
+        var_bus.calculate_metrics(metrics.metric , metrics.date)
     
     @when(IfStatement)
     def visit(self, if_statement: IfStatement):
@@ -149,11 +146,11 @@ class Evaluator:
         var_right = self.visit(comparer.right).value
         try:
             operators = {
-                "<" : var_left.less,
-                ">" : var_left.greater,
-                "<=" : var_left.leq,
-                ">=" : var_left.geq,
-                "==" : var_left.equal
+                "<" : var_left < var_right,
+                ">" : var_left > var_right,
+                "<=" : var_left <= var_right,
+                ">=" : var_left >= var_right,
+                "==" : var_left == var_right,
             }
             return operators[comparer.comparer](var_right)
         except AttributeError:
