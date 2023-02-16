@@ -101,9 +101,9 @@ class Evaluator:
     def visit(self, load_node : Load):
         var_bus : Business = self.visit(load_node.business).value
 
-        var_inst_bus = Business_Data(var_bus)
+        Business_Data.Load()
 
-        self.scope.set(var_inst_bus)
+        self.scope.set(var_bus)
     
     @when(Save)
     def visit(self, save_node : Save):
@@ -122,11 +122,13 @@ class Evaluator:
     @when(IfStatement)
     def visit(self, if_statement: IfStatement):
         var_condition = self.visit(if_statement.condition).value
-
+        
         if var_condition:
-            var_body = self.visit(if_statement.body).value
-            for item in var_body:
-                self.visit(item)
+            if_scope = self.scope.new_child(self.scope)
+            if_eva = Evaluator(if_scope)
+            for node in if_statement.body:
+                if_eva.visit(node)
+            
 
     @when(NotStatement)
     def visit(self, not_statement: NotStatement):

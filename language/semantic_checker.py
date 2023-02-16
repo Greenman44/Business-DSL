@@ -212,9 +212,10 @@ class SemanticChecker:
         if type_node_cond != "bool_expression":
             raise Exception("The condition has to be a bool expression")
         
-        self.visit(node.body)
+        if_scope = Scope.new_child(self.scope)
+        if_sem_che = SemanticChecker(if_scope)
         for item in node.body:
-            self.visit(item)
+            if_sem_che.visit(item)
         node.processed_type = "ifStatement"
 
 
