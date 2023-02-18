@@ -55,43 +55,57 @@ l = LexerBusiness()
 l.build()
 #
 try:
-    s = '''
-    employed e1 = {"Juan", salary : 300};
-    employed e2 = {"Pedro", salary : 400};
-    employed e3 = {"Antonio", salary : 500};
-    product p1 = {"Tomate", amount : 100};
-    product p2 = {"Hierro", amount : 30};
-    collection employeds = [e1, e2, e3];
-    collection a = [];
-    num n1 = 20;
-    num n2 = 10;
-    num n3 = 10;
-    num n4 = 30;
-    while(e1 in employeds){
-        num n5 = get amount from p1;
-        if (n5 < n4){
-            employeds del "Juan";
-        }
-        else{
-            n4 = n4 + 10;
-        };
-    };
-    print : n4;
-    print : employeds;
-    collection c3 = [n1, n2, n3];
-    foreach item in c3 {
-        num n5 = 10;
-        if (item > n5){
-            n4 = n4 - 5;
-        };
-    };
-    print : n4;
-    while (n4 > n2){
-        n4 = n4 - 10;
-    };
-    print : n4;
+    s =  '''
+        load "laCuevita";
+    '''
+    # employed e1 = {"Jose", salary : 600};
+    # employed e2 = {"Anthony", salary : 800};
+    # employed e3 = {"Marc", salary : 400};
+    # product p1 = {"Agua", amount : 200};
+    # product p2 ={"Ketchup", amount :100};
+    # collection emp = [e1,e2,e3];
+    # collection p = [p1,p2];
+    # business b = {"laCuevita",emp,p};
+    # SAVE b;
+   
+    
+    
+    #employed e1 = {"Juan", salary : 300};
+    #employed e2 = {"Pedro", salary : 400};
+    #employed e3 = {"Antonio", salary : 500};
+    #product p1 = {"Tomate", amount : 100};
+    #product p2 = {"Hierro", amount : 30};
+    #collection employeds = [e1, e2, e3];
+    #collection a = [];
+    #num n1 = 20;
+    #num n2 = 10;
+    #num n3 = 10;
+    #num n4 = 30;
+    #while(e1 in employeds){
+    #    num n5 = get amount from p1;
+    #    if (n5 < n4){
+    #        employeds del "Juan";
+    #    }
+    #    else{
+    #        n4 = n4 + 10;
+    #    };
+    #};
+    #print : n4;
+    #print : employeds;
+    #collection c3 = [n1, n2, n3];
+    #foreach item in c3 {
+    #    num n5 = 10;
+    #    if (item > n5){
+    #        n4 = n4 - 5;
+    #    };
+    #};
+    #print : n4;
+    #while (n4 > n2){
+    #    n4 = n4 - 10;
+    #};
+    #print : n4;
 
-'''
+    #'''
 # TODO: We need to check the number __str__() because is not working as expected
     # foreach item in employeds {
     #     a add item;
