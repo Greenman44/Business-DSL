@@ -7,6 +7,7 @@ class LexerBusiness:
         "employed" : "TYPE",
         "product" : "TYPE",
         "collection" : "TYPE",
+        "num" : "TYPE",
         "bill" : "BILL",
         "action" : "ACTION",
         "sale" : "SALE",

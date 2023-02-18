@@ -2,6 +2,10 @@ import ply.yacc as yacc
 from lexer import tokens
 from language import *
 
+precedence = (
+    ('left','PLUS','MINUS'),
+    ('left','MULT','DIV'),
+    )
 
 def p_program(p):
     '''Program : ListInst'''
@@ -134,34 +138,32 @@ def p_instance(p):
     elif len(p) == 4:
         p[0] = VariableAssignment(p[1], p[3])
 
-def p_instance_Oper(p):
-    '''instance : ID ASSIGN oper'''
-
-    p[0] = Oper_Assign(p[1],p[3])
-
-
 def p_oper(p):
-    ''' oper : operation PLUS operation
-             | operation MINUS operation
-             | operation DIV operation
-             | operation MULT operation'''
-    p[0] = Oper_Node(p[1],p[3],p[2])
+    ''' operation : operation PLUS operation
+                  | operation MINUS operation
+                  | operation DIV operation
+                  | operation MULT operation
+                  | ID'''
+    if len(p) == 4:
+        p[0] = Oper_Node(p[1],p[3],p[2])
+    elif len(p) == 2:
+        p[0] = VariableCall(p[1])
+
+def p_oper_Number(p):
+    ' operation : NUMBER'
+    p[0] = p[1]
 
 def p_oper_PAREN(p):
-    ''' operation : OPAREN oper CPAREN'''
-
+    ''' operation : OPAREN operation CPAREN'''
     p[0] = p[2]
 
-def p_oper_EP(p):
-    '''operation : ID
-                 | oper'''
-    p[0] = p[1]
 
 def p_Assignable(p):
     '''Assignable : subType
                   | collection
                   | GET NAME FROM ID
                   | LOAD NAME
+                  | operation
                   '''
     p[0] = p[1]
     if len(p) == 5:
@@ -186,7 +188,8 @@ def p_Assignable_ID(p):
 def p_subType(p):
     '''subType : OBRACE bus CBRACE
                | OBRACE emp CBRACE
-               | OBRACE prod CBRACE'''
+               | OBRACE prod CBRACE
+               '''
     p[0] = p[2]       
 
 def p_collection(p):
@@ -217,8 +220,17 @@ def p_bus(p):
 def p_bus_ID(p):
     "bus : NAME COMMA ID COMMA ID"
     p[0] = Bus_Node(p[1], VariableCall(p[3]), VariableCall(p[5]))
+
 def p_emp(p):
     '''emp : NAME COMMA NUMBER'''
+    p[0] = Emp_Node(p[1], p[3])
+
+def p_emp_ID(p):
+    "emp : NAME COMMA ID"
+    p[0] = Emp_Node(p[1], VariableCall(p[3]))
+
+def p_emp_Oper(p):
+    'emp : NAME COMMA operation'
     p[0] = Emp_Node(p[1], p[3])
 
 def p_prod(p):
@@ -228,6 +240,14 @@ def p_prod(p):
         p[0] = Prod_Node(p[1])
     else:
         p[0] = Prod_Node(p[1], amount=p[3])
+
+def p_prod_ID(p):
+    ' prod : NAME COMMA ID'
+    p[0] = Prod_Node(p[1], amount= VariableCall(p[3]))
+
+def p_prod_Oper(p):
+    'prod : NAME COMMA operation'
+    p[0] = Prod_Node(p[1], amount=p[3])
 
 
 def p_error(p):

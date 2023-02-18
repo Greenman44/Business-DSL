@@ -106,11 +106,6 @@ class Oper_Node(Node):
         self.right = right
         self.oper = oper
 
-class Oper_Assign(Node):
-    def __init__(self, id_oper, value) -> None:
-        self.id_oper = id_oper
-        self.value = value
-
 class Load(Node):
     def __init__(self, name)->None:
         self.name = name

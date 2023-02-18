@@ -32,12 +32,6 @@ class Evaluator:
         new_value = self.visit(varAssign_node.value) 
         var.value = new_value
     
-    @when(Oper_Assign)
-    def visit(self, opAssign_node : Oper_Assign):
-        var : Instance = self.scope.find(opAssign_node.id_oper)
-        new_value = self.visit(opAssign_node.value)
-        # TODO: Is necesary not change the all value, only the value of salary or amount
-    
     @when(VariableCall)
     def visit(self, varCall_node : VariableCall):
         return self.scope.find(varCall_node.id)

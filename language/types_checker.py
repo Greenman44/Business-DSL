@@ -21,6 +21,7 @@ class Bus_Context:
         self._types["collection"] = Type("collection")
         self._types["employed"] = Type("employed")
         self._types["product"] = Type("product")
+        self._types["num"] = Type("num")
         
 
 
