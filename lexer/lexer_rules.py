@@ -51,6 +51,10 @@ class LexerBusiness:
         'LEQ', #<=
         'GREATER', #>
         'LESS', #<
+        'PLUS',
+        'MINUS',
+        'DIV',
+        'MULT',
         'COMMA',
         'NAME',
         'NUMBER',
@@ -73,6 +77,10 @@ class LexerBusiness:
     t_LEQ = r'<='
     t_GREATER = r'>'
     t_LESS = r'<'
+    t_PLUS = r'\+'
+    t_MINUS = r'-'
+    t_DIV = r'/'
+    t_MULT = r'\*'
     t_COMMA = r','
     t_DPOINT = r':'
     t_END = r';'

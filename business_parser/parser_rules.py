@@ -66,10 +66,10 @@ def p_instruction_dismiss_ID(p):
     "Instruction : ID DISMISS ID"
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
 
+
 def p_condition(p):
     '''condition : bool_expression
                 '''
-    
     
     if len(p) == 2:
         p[0] = p[1]
@@ -119,6 +119,11 @@ def p_instance(p):
     elif len(p) == 4:
         p[0] = VariableAssignment(p[1], p[3])
 
+def p_instance_Oper(p):
+    '''instance : ID ASSIGN oper'''
+
+    p[0] = Oper_Assign(p[1],p[3])
+
 def p_instance_SAVELOAD(p):
     ''' instance : ID ASSIGN LOAD NAME
                  | SAVE ID '''
@@ -128,10 +133,26 @@ def p_instance_SAVELOAD(p):
         p[0] = Save(VariableCall(p[2]))
 
 
+def p_oper(p):
+    ''' oper : operation PLUS operation
+             | operation MINUS operation
+             | operation DIV operation
+             | operation MULT operation'''
+    p[0] = Oper_Node(p[1],p[3],p[2])
+
+def p_oper_PAREN(p):
+    ''' operation : OPAREN oper CPAREN'''
+
+    p[0] = p[2]
+
+def p_oper_EP(p):
+    '''operation : ID
+                 | oper'''
+    p[0] = p[1]
+
 def p_Assignable(p):
     '''Assignable : subType
-                  | collection
-                  '''
+                  | collection'''
     p[0] = p[1]
     
     

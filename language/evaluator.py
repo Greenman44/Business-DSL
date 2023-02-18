@@ -32,6 +32,12 @@ class Evaluator:
         new_value = self.visit(varAssign_node.value) 
         var.value = new_value
     
+    @when(Oper_Assign)
+    def visit(self, opAssign_node : Oper_Assign):
+        var : Instance = self.scope.find(opAssign_node.id_oper)
+        new_value = self.visit(opAssign_node.value)
+        # TODO: Is necesary not change the all value, only the value of salary or amount
+    
     @when(VariableCall)
     def visit(self, varCall_node : VariableCall):
         return self.scope.find(varCall_node.id)
@@ -95,6 +101,17 @@ class Evaluator:
         var_emp = self.visit(dis_node.employed).value
         var_bus.dismiss(var_emp)
     
+    @when(Oper_Node)
+    def visit(self, op_node : Oper_Node):
+        var_left = self.visit(op_node.left).value
+        var_right = self.visit(op_node.right).value
+        operators = {
+                "+" : var_left + var_right,
+                "-" : var_left - var_right,
+                "/" : var_left / var_right,
+                "*" : var_left * var_right,
+        }
+        return operators[op_node.oper](var_right)
 
     @when(Load)
     def visit(self, load_node : Load):

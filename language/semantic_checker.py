@@ -61,6 +61,19 @@ class SemanticChecker:
             raise Exception(f" Impossible assign value {node.value} to variable '{node.id}'. Type '{current_type}' different to '{node.value.processed_type}'")
         self.scope.set(node.id, node.value.processed_type)
         node.processed_type = node.value.processed_type
+    
+    @when(Oper_Assign)
+    def visit(self, node : Oper_Assign):
+        current = self.scope.find(node.id_oper)
+        if current is None:
+            raise Exception(f"Variable '{node.name}' is not defined")
+        self.visit(node.id_oper)
+        current_type = self.visit(node.id_oper)
+
+        if current_type != "employed" and current_type != "product":
+            raise Exception(f"You can not do the operation on this type: {current_type}")
+        self.scope.set(node.id_oper, current_type)
+        node.processed_type = current_type
 
     @when(VariableCall)
     def visit(self, node : VariableCall):
@@ -203,6 +216,18 @@ class SemanticChecker:
         node.processed_type = "save"
         
 
+
+    @when(Oper_Node)
+    def visit(self, node: Oper_Node):
+        self.visit(node.left)
+        self.visit(node.right)
+        type_id_1 = node.left.processed_type
+        type_id_2 = node.right.processed_type
+
+        if type_id_1 != type_id_2:
+            raise Exception("The type of each of the variables must be the same")
+        
+        node.processed_type = "operation"
     
 
     @when(IfStatement)
