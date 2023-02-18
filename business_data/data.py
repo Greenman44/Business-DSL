@@ -268,9 +268,17 @@ class Business:
         else:
             self.data = data
 
+    def add_Bill(self, cost:float, description:str):
+        self.data.add_bill(Bill(bill_type=description, cost=cost, date=date.today()))
+
     def save(self):
         self.data.Save_DatatoExcel()
 
+    def make_sale(self, product_name:str, price:float, amount):
+        self.data.make_sale(Sale(product=Product(product_name), price=price, amount=int(amount)))
+
+    def make_invest(self, product_name:str, cost:float, amount:float):
+        self.data.make_invest(Invest(product=Product(product_name), cost=cost, amount=int(amount)))
 
     def calculate_metrics(self, metric : str, date):
         return self.data.get_metric(metric, date)
@@ -280,6 +288,12 @@ class Business:
 
     def get_catalogue(self):
         return self.catalogue
+
+    def get(self, name):
+        try:
+            return self.catalogue.get(name)
+        except:
+            return self.staff.get(name)
 
     def add(self, item):
         if isinstance(item, Collection):
@@ -319,7 +333,13 @@ class Business:
 
     def __hash__(self) -> int:
         return self.name.__hash__()
-
+    
+    def __contains__(self, item) -> bool:
+        if isinstance(item, Product):
+            return item in self.catalogue
+        elif isinstance(item,Employed):
+            return item in self.staff
+        raise Exception(f"business not compatible with {item}")            
 
 class Collection:
     def __init__(self, items: list[Employed | Product | Business]):
@@ -395,6 +415,9 @@ class Collection:
 
     def __len__(self):
         return len(self.items)
+    
+    def __contains__(self,item):
+        return item in self.items
 
 
 class Employed:

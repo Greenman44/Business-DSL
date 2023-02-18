@@ -36,29 +36,56 @@ class Bus_Node(Node):
         self.staff_collection = collection_1
         self.catalog_collection = collection_2
 
-
 class Emp_Node(Node):
     def __init__(self, name, number):
         self.name = name
         self.number = number
 
-
 class Prod_Node(Node):
-    def __init__(self, name):
+    def __init__(self, name, amount = 0):
         self.name = name
-
+        self.amount = amount
 class Bill_Node(Node):
-    def __init__(self, business, cost):
+    def __init__(self, business, cost, description):
         self.business = business
         self.cost = cost
+        self.description = description
 
 class Collection_Node(Node):
     def __init__(self, collection):
         self.collection = collection
 
+class GetStaff_node(Node):
+    def __init__(self, business):
+        self.business = business
+
+class GetCatalog_node(Node):
+    def __init__(self, business):
+        self.business = business
+class GetElementFrom_Statement(Node):
+    def __init__(self, name, collection):
+        self.name = name
+        self.collection = collection
+
+class Foreach_node(Node):
+    def __init__(self, loop_var, collection, body):
+        self.loop_var = loop_var
+        self.collection = collection
+        self.body = body
+
+class While_node(Node):
+    def __init__(self, condition, body):
+        self.condition = condition
+        self.body = body
+
 class IfStatement(Node):
     def __init__(self, condition, body) -> None:
         self.condition = condition
+        self.body = body
+
+class ElseStatement(Node):
+    def __init__(self, if_statement, body) -> None:
+        self.if_statement = if_statement
         self.body = body
 
 class NotStatement(Node):
@@ -74,8 +101,7 @@ class Bool_Expression_Node(Node):
         self.comparer = comparer
 
 class Load(Node):
-    def __init__(self, business, name)->None:
-        self.business = business
+    def __init__(self, name)->None:
         self.name = name
 
 class Save(Node):

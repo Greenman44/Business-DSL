@@ -83,6 +83,8 @@ class SemanticChecker:
     
     @when(Prod_Node)
     def visit(self, node : Prod_Node):
+        if not float.is_integer(node.amount):
+            raise Exception("The amount must be an integer")
         node.processed_type = "product"
     
     @when(Emp_Node)
@@ -108,8 +110,32 @@ class SemanticChecker:
 
         node.processed_type = f"collection_{current_type}"
 
+    @when(GetStaff_node)
+    def visit(self, node: GetStaff_node):
+        self.visit(node.business)
+        if node.business.processed_type != "business":
+            raise Exception("Only can get staff from a business")
+        node.processed_type = "collection_employed"
+
+    @when(GetCatalog_node)
+    def visit(self, node: GetCatalog_node):
+        self.visit(node.business)
+        if node.business.processed_type != "business":
+            raise Exception("Only can get catalog from a business")
+        node.processed_type = "collection_product"
 
 
+    @when(GetElementFrom_Statement)
+    def visit(self, node : GetElementFrom_Statement):
+        self.visit(node.collection)
+        current_type = node.processed_type
+        if current_type == "business":
+            node.processed_type = "employed_product"
+        elif "collection" in node.collection.processed_type:  
+            coll_type = node.collection.processed_type.split("_")[1]
+            node.processed_type = coll_type
+        else:
+            raise Exception("Only can make get action from a collection or a business")
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):
@@ -186,12 +212,7 @@ class SemanticChecker:
 
     @when(Load)
     def visit(self, node : Load):
-        self.visit(node.business)
-        current_type = node.business.processed_type
-        if current_type != "business":
-            raise Exception("Can not load if the type of operation is different from business")
-        
-        node.processed_type = "load"
+        node.processed_type = "business"
     
     @when(Save)
     def visit(self, node : Save):
@@ -201,9 +222,33 @@ class SemanticChecker:
             raise Exception("Only can make Save over a business")
         
         node.processed_type = "save"
-        
 
-    
+    @when(Foreach_node)
+    def visit(self, node : Foreach_node):
+        self.visit(node.collection)
+        if "collection" not in node.collection.processed_type:
+            raise Exception("Only can make Foreach over a collection")
+        var = self.scope.find(node.loop_var)
+        if var != None:
+            raise Exception("You can not declare two variables with the same name")
+        coll_type = node.collection.processed_type.split("_")[1]
+        foreach_scope = self.scope.new_child()
+        foreach_scope.set(node.loop_var, coll_type)
+        foreach_sem_check = SemanticChecker(foreach_scope)
+        for instruction in node.body:
+            foreach_sem_check.visit(instruction)
+        node.processed_type = "foreach"
+
+    @when(While_node)
+    def visit(self, node : While_node):
+        self.visit(node.condition)
+        if node.condition.processed_type != "bool_expression":
+            raise Exception("While expression needs a conditional expression")
+        while_scope = self.scope.new_child()
+        while_sem_check = SemanticChecker(while_scope)
+        for instruction in node.body:
+            while_sem_check.visit(instruction)
+        node.processed_type = "while"
 
     @when(IfStatement)
     def visit(self, node : IfStatement):
@@ -217,6 +262,17 @@ class SemanticChecker:
         for item in node.body:
             if_sem_che.visit(item)
         node.processed_type = "ifStatement"
+
+    @when(ElseStatement)
+    def visit(self, node : ElseStatement):
+        self.visit(node.if_statement)
+        if node.if_statement.processed_type != "ifStatement":
+            raise Exception("Else statement needs to be after If statement")
+        else_scope = Scope.new_child(self.scope)
+        else_sem_check = SemanticChecker(else_scope)
+        for instruction in node.body:
+            else_sem_check.visit(instruction)
+        node.processed_type = "elseStatement"
 
 
     @when(Bool_Expression_Node)

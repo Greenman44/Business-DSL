@@ -19,15 +19,19 @@ def p_list_instructions(p):
 
 def p_instruction(p):
     '''Instruction : instance
+                   | SAVE ID
                    | ID GET METRICS DATE
-                   | IF OPAREN condition CPAREN OBRACE ListInst CBRACE'''
+                   | loop_statements
+                   | IfStatement
+                   | IfStatement ELSE OBRACE ListInst CBRACE
+                   '''
     if len(p) == 5:
         p[0] = Metrics(VariableCall(p[1]), p[3], p[4])
     elif len(p) == 2:
         p[0] = p[1]
-    
-    elif len(p) == 8:
-        p[0] = IfStatement(p[3], p[6])
+    elif len(p) == 6:
+        p[0] = ElseStatement(p[1], p[4])
+
 
 def p_instruction_sale(p):
     'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
@@ -39,11 +43,11 @@ def p_instruction_invests(p):
 
 def p_instruction_add(p):
     '''Instruction : ID ADD ID
-                   | ID ADD BILL OBRACE COST CBRACE'''
+                   | ID ADD BILL OBRACE COST COMMA DESCRIP CBRACE'''
     if len(p) == 4:
         p[0] = ActionADD(VariableCall(p[1]), VariableCall(p[3]))
     if len(p) == 7:
-        p[0] = Bill_Node(VariableCall(p[1]), p[5])
+        p[0] = Bill_Node(VariableCall(p[1]), p[5], p[7])
 
 def p_instruction_add_ID(p):
     ''' Instruction : ID ADD subType'''
@@ -65,6 +69,18 @@ def p_instruction_dismiss(p):
 def p_instruction_dismiss_ID(p):
     "Instruction : ID DISMISS ID"
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
+
+def p_loops_statements(p):
+    '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
+                       | while OPAREN condition CPAREN OBRACE ListInst CBRACE'''
+    if p[1] == "foreach":
+        p[0] = Foreach_node(p[2], p[4], p[6])
+    else:
+        p[0] = While_node(p[3], p[6])
+
+def p_IfStatement(p):
+    "IfStatement : IF OPAREN condition CPAREN OBRACE ListInst CBRACE"
+    p[0] = IfStatement(p[3], p[6])
 
 def p_condition(p):
     '''condition : bool_expression
@@ -119,22 +135,29 @@ def p_instance(p):
     elif len(p) == 4:
         p[0] = VariableAssignment(p[1], p[3])
 
-def p_instance_SAVELOAD(p):
-    ''' instance : ID ASSIGN LOAD NAME
-                 | SAVE ID '''
-    if len(p) == 5:
-        p[0] = Load(VariableCall(p[1]),p[4])
-    elif len(p) == 3:
-        p[0] = Save(VariableCall(p[2]))
-
 
 def p_Assignable(p):
     '''Assignable : subType
                   | collection
+                  | GET NAME FROM ID
+                  | LOAD NAME
                   '''
     p[0] = p[1]
+    if len(p) == 5:
+        p[0] = GetElementFrom_Statement(p[2], VariableCall(p[4]))
+    elif len(p) == 3:
+        p[0] = Load(p[2])                  
+                  
+
+        
+def p_Assignable_Staff(p):
+    '''Assignable : GET STAFF FROM ID'''
+    p[0] = GetStaff_node(VariableCall(p[4]))
     
-    
+def p_Assignable_Catalog(p):
+    '''Assignable : GET CATALOG FROM ID'''
+    p[0] = GetCatalog_node(VariableCall(p[4]))
+
 def p_Assignable_ID(p):
     '''Assignable : ID'''
     p[0] = VariableCall(p[1])
@@ -178,8 +201,12 @@ def p_emp(p):
     p[0] = Emp_Node(p[1], p[3])
 
 def p_prod(p):
-    '''prod : NAME'''
-    p[0] = Prod_Node(p[1])
+    '''prod : NAME COMMA NUMBER
+            | NAME'''
+    if len(p):
+        p[0] = Prod_Node(p[1])
+    else:
+        p[0] = Prod_Node(p[1], amount=p[3])
 
 
 def p_error(p):

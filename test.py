@@ -1,6 +1,8 @@
 # from business_parser import parser
 # from lexer import LexerBusiness
-from business_data.data import  Collection, Product, Business_Data, Business, Employed, Invest
+#from business_data.data import  Collection, Product, Business_Data, Business, Employed, Invest
+import re
+from datetime import date
 # SemanticChecker, Scope,
 # l = LexerBusiness()
 # l.build()
@@ -25,16 +27,18 @@ from business_data.data import  Collection, Product, Business_Data, Business, Em
 # node = parser.parse(s, lexer=l.lexer)
 # checker = SemanticChecker(Scope())
 # checker.visit(node)
-# p = re.compile(r'[a-zA-Z][a-zA-Z_\s]+')
+# p = re.compile(r'^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})')
+# print(p.fullmatch("31-12-2020"))
 
-c1 = Collection([Product("papa"), Product("tomate"), Product("cebolla")])
-c2 = Collection([Employed("Juan", 30), Employed("Pepe", 20), Employed("Anacleto", 50)])
-c3 = Collection([Employed("Juan", 30),Employed("Antonio", 20)])
+print(int("09"))
+# c1 = Collection([Product("papa"), Product("tomate"), Product("cebolla")])
+# c2 = Collection([Employed("Juan", 30), Employed("Pepe", 20), Employed("Anacleto", 50)])
+# c3 = Collection([Employed("Juan", 30),Employed("Antonio", 20)])
 
-a = Business("agro", c2, c1)
+# a = Business("agro", c2, c1)
 
-a.data.make_invest(Invest(product=Product("tomate"), cost=50.0, amount=4))
-print(a.data.invests_table)
-a.data.Save_DatatoExcel()
-a = Business_Data.LoadBusiness("agro")
-print(a.data.invests_table)
+# a.data.make_invest(Invest(product=Product("tomate"), cost=50.0, amount=4))
+# print(a.data.invests_table)
+# a.data.Save_DatatoExcel()
+# a = Business_Data.LoadBusiness("agro")
+# print(a.data.invests_table)

@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+from datetime import date
 class LexerBusiness:
 
     keywords = {
@@ -29,7 +29,10 @@ class LexerBusiness:
         "price" : "PRICE",
         "cost" : "COST",
         "if" : "IF",
+        "else" : "ELSE",
         "foreach" : "FOREACH",
+        "while" : "WHILE",
+        "from" : "FROM",
         "in" : "IN",
         "not" : "NOT",
         "and" : "AND",
@@ -54,8 +57,7 @@ class LexerBusiness:
         'COMMA',
         'NAME',
         'NUMBER',
-        'DATE',
-        #'DESCRIP',
+        'DESCRIP',
         'ID',
         'END'
     ] + list(keywords.values())
@@ -78,7 +80,7 @@ class LexerBusiness:
     t_END = r';'
     t_OBR = r'\['
     t_CBR = r'\]'
-
+    t_DESCRIP = r'"[a-zA-Z][a-zA-Z_\s]+"'
 
     def t_NUMBER (self,t):
         r'\d+\.?\d+'
@@ -94,13 +96,14 @@ class LexerBusiness:
         t.value = t.value[1:-1]
         return t
     
-    def t_DATE(self,t):
-        r'((\d\d?-)?\d\d?-)?\d{4}'
-        return t
-    
-    # def t_DESCRIP(self,t):
-    #     r'[a-zA-Z][a-zA-Z_\s]+'
-    #     return t
+    def t_DATE(self, t):
+        r"^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})"
+        d = None
+        try:
+            d = t.value.split('/')
+        except:
+            d = t.value.split('-')
+        t.value = date(d[2], d[1], d[0])
 
     def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'

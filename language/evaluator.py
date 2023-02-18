@@ -60,14 +60,14 @@ class Evaluator:
     @when(Bill_Node)
     def visit(self, bill_node : Bill_Node):
         var_bus : Business = self.visit(bill_node.business).value
-        var_bus.data.add_bill(bill_node.cost)
+        var_bus.add_bill(bill_node.cost, bill_node.description)
     
     @when(ActionSALE)
     def visit(self, sale_node : ActionSALE):
         var_bus : Business = self.visit(sale_node.business).value
         var_prod : Product = self.visit(sale_node.product).value
         #TODO: add this method to Business_Data 
-        var_bus.data.make_sale(var_bus.name, var_prod.name, sale_node.sale_price, sale_node.amount)
+        var_bus.make_sale(var_bus.name, var_prod.name, sale_node.sale_price, sale_node.amount)
     
     @when(ActionINVESTS)
     def visit(self, inv_node : ActionINVESTS):
@@ -75,7 +75,7 @@ class Evaluator:
         var_prod : Product = self.visit(inv_node.product).value
         if not var_bus.any_product(var_prod):
             var_bus.add(var_prod)
-        var_bus.data.make_invest(var_bus.name, var_prod.name, inv_node.cost_price, inv_node.amount)
+        var_bus.make_invest(var_bus.name, var_prod.name, inv_node.cost_price, inv_node.amount)
     
     @when(ActionADD)
     def visit(self, add_node : ActionADD):
@@ -115,21 +115,42 @@ class Evaluator:
         var_bus : Business = self.visit(metrics.business).value
 
         var_bus.calculate_metrics(metrics.metric , metrics.date)
+
+    @when(GetElementFrom_Statement)
+    def visit(self, getElement : GetElementFrom_Statement):
+        var_bus : Business|Collection = self.visit(getElement.collection)
+        return var_bus.get(getElement.name)
     
+    @when(GetCatalog_node)
+    def visit(self, getCatalog : GetCatalog_node):
+        var_bus : Business = self.visit(getCatalog.business)
+        return var_bus.get_catalogue()
+    
+    @when(GetStaff_node)
+    def visit(self, getStaff : GetStaff_node):
+        var_bus : Business = self.visit(getStaff.business)
+        return var_bus.get_staff()
+    
+    @when(Foreach_node)
+    def visit(self, foreach : Foreach_node):
+        coll : Collection = self.visit(foreach.collection)
+        
+
     @when(IfStatement)
     def visit(self, if_statement: IfStatement):
-        var_condition = self.visit(if_statement.condition).value
+        var_condition = self.visit(if_statement.condition)
         
         if var_condition:
             if_scope = self.scope.new_child(self.scope)
             if_eva = Evaluator(if_scope)
             for node in if_statement.body:
                 if_eva.visit(node)
+        return var_condition
             
 
     @when(NotStatement)
     def visit(self, not_statement: NotStatement):
-        var = self.visit(not_statement.stam).value
+        var = self.visit(not_statement.stam)
 
         return not var
 
@@ -142,17 +163,17 @@ class Evaluator:
 
     @when(Bool_Expression_Node)
     def visit(self, comparer : Bool_Expression_Node):
-        var_left = self.visit(comparer.left).value
-        var_right = self.visit(comparer.right).value
+        var_left = self.visit(comparer.left)
+        var_right = self.visit(comparer.right)
         try:
             operators = {
-                "<" : var_left < var_right,
-                ">" : var_left > var_right,
-                "<=" : var_left <= var_right,
-                ">=" : var_left >= var_right,
-                "==" : var_left == var_right,
+                "<" : var_left.value < var_right.value,
+                ">" : var_left.value > var_right.value,
+                "<=" : var_left.value <= var_right.value,
+                ">=" : var_left.value >= var_right.value,
+                "==" : var_left.value == var_right.value,
             }
-            return operators[comparer.comparer](var_right)
+            return operators[comparer.comparer]
         except AttributeError:
             if comparer.comparer == "and":
                 return var_left and var_right
