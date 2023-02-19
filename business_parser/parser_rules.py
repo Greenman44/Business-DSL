@@ -2,6 +2,8 @@ import ply.yacc as yacc
 from lexer import tokens
 from language import *
 
+#etecsa's fault
+
 precedence = (
     ('left','PLUS','MINUS'),
     ('left','MULT','DIV'),
