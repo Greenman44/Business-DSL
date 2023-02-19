@@ -67,6 +67,10 @@ class GetElementFrom_Statement(Node):
         self.name = name
         self.collection = collection
 
+class GetAmount_node(Node):
+    def __init__(self, product) -> None:
+        self.product = product
+
 class Foreach_node(Node):
     def __init__(self, loop_var, collection, body):
         self.loop_var = loop_var
