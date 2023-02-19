@@ -11,34 +11,34 @@ class Business_Data:
     def __init__(
         self,
         business_name: str,
-        employed_data=None,
-        product_data=None,
-        sales_data=None,
-        invests_data=None,
+        employed_data = None,
+        product_data = None,
+        sales_data = None,
+        invests_data = None,
         bill_data = None,
     ):
         self.employed_table = (
-            pd.DataFrame(columns=["name", "salary"])
+            pd.DataFrame(columns = ["name", "salary"])
             if employed_data is None
             else employed_data
         )
         self.product_table = (
-            pd.DataFrame(columns=["name", "amount"])
+            pd.DataFrame(columns = ["name", "amount"])
             if product_data is None
             else product_data
         )
         self.sales_table = (
-            pd.DataFrame(columns=["product", "price", "amount", "date"])
+            pd.DataFrame(columns = ["product", "price", "amount", "date"])
             if sales_data is None
             else sales_data
         )
         self.invests_table = (
-            pd.DataFrame(columns=["product", "cost", "amount", "date"])
+            pd.DataFrame(columns = ["product", "cost", "amount", "date"])
             if invests_data is None
             else invests_data
         )
         self.bill_table = (
-            pd.DataFrame(columns=["type", "cost", "date"])
+            pd.DataFrame(columns = ["type", "cost", "date"])
             if bill_data is None
             else bill_data
         )
@@ -448,6 +448,23 @@ class Employed:
 
     def __hash__(self) -> int:
         return self.name.__hash__()
+    
+    def __add__(self, other):
+        new_salary = self.salary + other.salary
+        return new_salary
+    
+    def __sub__(self, other):
+        new_salary = self.salary - other.salary
+        return new_salary
+    
+    def __mul__(self, other):
+        new_salary = self.salary * other.salary
+        return new_salary
+    
+    def __truediv__(self, other):
+        new_salary = self.salary / other.salary
+        return new_salary
+
 
 
 class Product:
@@ -478,6 +495,25 @@ class Product:
 
     def __hash__(self) -> int:
         return self.name.__hash__()
+    
+    def __add__(self, other):
+        new_salary = self.amount + other.amount
+        return new_salary
+    
+    def __sub__(self, other):
+        new_salary = self.amount - other.amount
+        return new_salary
+    
+    def __mul__(self, other):
+        new_salary = self.amount * other.amount
+        return new_salary
+    
+    def __truediv__(self, other):
+        new_salary = self.amount / other.amount
+        return new_salary
+    
+    def get_amount(self):
+        return self.amount
 
 @dataclass
 class Sale:

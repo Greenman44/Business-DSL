@@ -183,6 +183,10 @@ def p_Assignable_Catalog(p):
     '''Assignable : GET CATALOG FROM ID'''
     p[0] = GetCatalog_node(VariableCall(p[4]))
 
+def p_Assignable_Amount(p):
+    'Assignable : GET AMOUNT FROM ID'
+    p[0] = GetAmount_node(VariableCall(p[4]))
+
 def p_Assignable_ID(p):
     '''Assignable : ID'''
     p[0] = VariableCall(p[1])

@@ -142,6 +142,11 @@ class Evaluator:
         var_bus : Business = self.visit(getStaff.business)
         return var_bus.get_staff()
     
+    @when(GetAmount_node)
+    def visit(self, getAmount : GetAmount_node):
+        var_product : Product = self.visit(getAmount.product)
+        return var_product.get_amount()
+    
     @when(Foreach_node)
     def visit(self, foreach : Foreach_node):
         coll : Collection = self.visit(foreach.collection)

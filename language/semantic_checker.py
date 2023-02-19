@@ -136,6 +136,15 @@ class SemanticChecker:
             node.processed_type = coll_type
         else:
             raise Exception("Only can make get action from a collection or a business")
+    
+    @when(GetAmount_node)
+    def visit(self, node : GetAmount_node):
+        self.visit(node.product)
+        current_type = node.product.processed_type
+        if current_type != "product":
+            raise Exception('Only can make get_amount action from a product')
+        
+        node.processed_type = "amount_product"
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):
@@ -260,7 +269,7 @@ class SemanticChecker:
         if type_id_1 != type_id_2:
             raise Exception("The type of each of the variables must be the same")
         
-        if type_id_1 != "num":
+        if type_id_1 == "business" or ("collection" in type_id_1):
             raise Exception(f"Can not make operations in variable with type {type_id_1}")
 
         node.processed_type = "num"
