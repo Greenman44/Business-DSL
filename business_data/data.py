@@ -380,6 +380,9 @@ class Collection:
                 break
         self.delete_instance(current_item)
 
+    def get_type(self):
+        return self.peek().__class__.__name__.lower()
+
     def peek(self):
         return self.items.copy().pop()
 
@@ -416,6 +419,7 @@ class Collection:
     def __len__(self):
         return len(self.items)
     
+
     def __contains__(self,item):
         return item in self.items
 
@@ -465,6 +469,52 @@ class Employed:
         new_salary = self.salary / other.salary
         return new_salary
 
+
+class Number:
+    def __init__(self, number):
+        self.number = number
+    
+    def __str__(self):
+        return str(self.number)
+    
+    def __repr__(self):
+        return str(self)
+    
+    def __lt__(self, other) -> bool:
+        return self.number < other.number
+
+    def __gt__(self, other) -> bool:
+        return self.number > other.number
+
+    def __le__(self, other) -> bool:
+        return self.number <= other.number
+
+    def __ge__(self, other) -> bool:
+        return self.number >= other.number
+
+
+    def __eq__(self, other):
+        return self.number == other.number
+    
+    def __hash__(self) -> int:
+        return self.number.__hash__()
+    
+    def __add__(self, other):
+        return Number(self.number + other.number)
+    
+    def __sub__(self, other):
+        return Number(self.number - other.number)
+    
+    def __mul__(self, other):
+        return Number(self.number * other.number)
+    
+    def __truediv__(self, other):
+        if other.number == 0:
+            raise ValueError("You cannot divide by zero")
+        return Number(self.number / other.number)
+    
+    def __mod__(self, other):
+        return self.number % other.number
 
 
 class Product:

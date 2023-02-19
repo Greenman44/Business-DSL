@@ -152,8 +152,8 @@ def p_oper(p):
         p[0] = VariableCall(p[1])
 
 def p_oper_Number(p):
-    ' operation : NUMBER'
-    p[0] = p[1]
+    'operation : NUMBER'
+    p[0] =  Number_Node(p[1])
 
 def p_oper_PAREN(p):
     ''' operation : OPAREN operation CPAREN'''
@@ -229,7 +229,7 @@ def p_bus_ID(p):
 
 def p_emp(p):
     '''emp : NAME COMMA NUMBER'''
-    p[0] = Emp_Node(p[1], p[3])
+    p[0] = Emp_Node(p[1], Number_Node(p[3]))
 
 def p_emp_ID(p):
     "emp : NAME COMMA ID"
@@ -242,10 +242,10 @@ def p_emp_Oper(p):
 def p_prod(p):
     '''prod : NAME COMMA NUMBER
             | NAME'''
-    if len(p):
+    if len(p) == 2:
         p[0] = Prod_Node(p[1])
     else:
-        p[0] = Prod_Node(p[1], amount=p[3])
+        p[0] = Prod_Node(p[1], amount=Number_Node(p[3]))
 
 def p_prod_ID(p):
     ' prod : NAME COMMA ID'

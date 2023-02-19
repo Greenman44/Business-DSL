@@ -1,6 +1,6 @@
 from .ast_nodes import *
 from .scope import Scope
-from business_data import Business, Collection, Employed, Product, Business_Data
+from business_data import Business, Collection, Employed, Product, Business_Data, Number
 from .types_checker import  Instance
 from .visitor import on, when
 
@@ -62,6 +62,11 @@ class Evaluator:
         var_bus : Business = self.visit(bill_node.business).value
         var_bus.add_bill(bill_node.cost, bill_node.description)
     
+    @when(Number_Node)
+    def visit(self, number_node : Number_Node):
+        return Number(number_node.number)
+
+
     @when(ActionSALE)
     def visit(self, sale_node : ActionSALE):
         var_bus : Business = self.visit(sale_node.business).value
@@ -105,7 +110,7 @@ class Evaluator:
                 "/" : var_left / var_right,
                 "*" : var_left * var_right,
         }
-        return operators[op_node.oper](var_right)
+        return operators[op_node.oper]
 
     @when(Load)
     def visit(self, load_node : Load):
@@ -150,6 +155,22 @@ class Evaluator:
     @when(Foreach_node)
     def visit(self, foreach : Foreach_node):
         coll : Collection = self.visit(foreach.collection)
+        type_coll = coll.get_type()
+        for item in coll:
+            foreach_scope = self.scope.new_child()
+            foreach_scope.set(foreach.loop_var, Instance(type_coll, item))
+            foreach_eval = Evaluator(foreach_scope)
+            for instruction in foreach.body:
+                foreach_eval.visit(instruction)
+    
+    @when(While_node)
+    def visit(self, while_node: While_node):
+        while self.visit(while_node.condition):
+            while_scope = self.scope.new_child()
+            while_eval = Evaluator(while_scope)
+            for instruction in while_node.body:
+                while_eval.visit(instruction)
+
         
 
     @when(IfStatement)

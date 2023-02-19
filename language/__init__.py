@@ -16,6 +16,7 @@ __all__ = [
     "Bus_Node",
     "Emp_Node",
     "Prod_Node",
+    "Number_Node",
     "Metrics",
     "Collection_Node",
     "SemanticChecker",

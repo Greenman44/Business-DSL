@@ -83,12 +83,20 @@ class SemanticChecker:
     
     @when(Prod_Node)
     def visit(self, node : Prod_Node):
-        if not float.is_integer(node.amount):
-            raise Exception("The amount must be an integer")
-        node.processed_type = "product"
+        self.visit(node.amount)
+        if node.amount.processed_type != "number":
+            raise ValueError("amount must be a number")
+        try:
+            if not float.is_integer(node.amount.number):
+                raise Exception("The amount must be an integer")
+        except:
+            node.processed_type = "product"
     
     @when(Emp_Node)
     def visit(self, node : Emp_Node):
+        self.visit(node.number)
+        if node.number.processed_type != "number":
+            raise Exception("salary must be a number")
         node.processed_type = "employed"
     
     @when(Bill_Node)
@@ -98,7 +106,10 @@ class SemanticChecker:
             raise Exception("Only can add bills on business")
         node.processed_type = "bill"
 
-    
+    @when(Number_Node)
+    def visit(self, node : Number_Node):
+        node.processed_type = "number"
+
     @when(Collection_Node)
     def visit(self, node : Collection_Node):
         self.visit(node.collection[0])
@@ -144,7 +155,7 @@ class SemanticChecker:
         if current_type != "product":
             raise Exception('Only can make get_amount action from a product')
         
-        node.processed_type = "amount_product"
+        node.processed_type = "number"
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):
@@ -266,13 +277,13 @@ class SemanticChecker:
         type_id_1 = node.left.processed_type
         type_id_2 = node.right.processed_type
 
-        if type_id_1 != type_id_2:
-            raise Exception("The type of each of the variables must be the same")
-        
+
         if type_id_1 == "business" or ("collection" in type_id_1):
             raise Exception(f"Can not make operations in variable with type {type_id_1}")
+        if type_id_1 != type_id_2:
+            raise Exception("The type of each of the variables must be the same")
 
-        node.processed_type = "num"
+        node.processed_type = "number"
     
 
     @when(IfStatement)

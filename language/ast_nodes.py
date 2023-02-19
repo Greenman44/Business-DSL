@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-import pandas as pd
 
 class Node(metaclass = ABCMeta):
     
@@ -41,16 +40,19 @@ class Emp_Node(Node):
         self.name = name
         self.number = number
 
-class Prod_Node(Node):
-    def __init__(self, name, amount = 0):
-        self.name = name
-        self.amount = amount
 class Bill_Node(Node):
     def __init__(self, business, cost, description):
         self.business = business
         self.cost = cost
         self.description = description
 
+class Number_Node(Node):
+    def __init__(self,number):
+        self.number = number
+class Prod_Node(Node):
+    def __init__(self, name, amount = Number_Node(0)):
+        self.name = name
+        self.amount = amount
 class Collection_Node(Node):
     def __init__(self, collection):
         self.collection = collection
