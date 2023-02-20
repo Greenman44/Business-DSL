@@ -353,6 +353,12 @@ class Collection:
     def __init__(self, items: list[Employed | Product | Business]):
         self.items = set(items)
 
+    def __str__(self) -> str:
+        return str(self.items)
+
+    def __repr__(self) -> str:
+        return str(self)
+
     def get(self, name: str):
         for item in self.items:
             if item.name == name:
@@ -435,7 +441,7 @@ class Collection:
 class Employed:
     def __init__(self, name, salary):
         self.name = name
-        self.salary: float = salary
+        self.salary : float = salary
 
     def __str__(self) -> str:
         return f"(name : {self.name}, salary : {str(self.salary)})"
@@ -482,10 +488,10 @@ class Number:
     def __init__(self, number):
         self.number = number
     
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.number)
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return str(self)
     
     def __lt__(self, other) -> bool:

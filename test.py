@@ -56,7 +56,11 @@ l.build()
 #
 try:
     s = '''
-    
+    employed e1 = {"Juan", salary : 300};
+    employed e2 = {"Pedro", salary : 400};
+    product p1 = {"Tomate", amount : 100};
+    product p2 = {"Hierro", amount : 30};
+    collection employeds = [e1, e2];
     num n1 = 20;
     num n2 = 10;
     num n3 = 10;
@@ -64,8 +68,9 @@ try:
 
     
     num n5 = (n2 + n1) * (n4 + n3);
-    print : n5;
+    print : employeds;
 '''
+# TODO: We need to check the number __str__() because is not working as expected
     # employed e1 = {"Juan", salary : 300};
     # employed e2 = {"Pedro", salary : 400};
     # product p1 = {"Tomate", amount : 100};
