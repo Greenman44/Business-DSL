@@ -101,7 +101,7 @@ class NotStatement(Node):
     #     pass
 
 class Bool_Expression_Node(Node):
-    def __init__(self, left, right: 0.0, comparer) -> None:
+    def __init__(self, left, right: 0.0, comparer)-> None:
         self.left = left
         self.right = right
         self.comparer = comparer
@@ -113,12 +113,16 @@ class Oper_Node(Node):
         self.oper = oper
 
 class Load(Node):
-    def __init__(self, name)->None:
+    def __init__(self, name) -> None:
         self.name = name
 
 class Save(Node):
-    def __init__(self, business)->None:
+    def __init__(self, business) -> None:
         self.business = business
+
+class Print_Node(Node):
+    def __init__(self, id_1) -> None:
+        self.id_1 = id_1
 
 
 class InStatement(Node):

@@ -145,8 +145,17 @@ class Evaluator:
     
     @when(Oper_Node)
     def visit(self, op_node : Oper_Node):
-        var_left = self.visit(op_node.left).value
-        var_right = self.visit(op_node.right).value
+        try:
+            var_left = self.visit(op_node.left).value
+        except:
+            var_left = self.visit(op_node.left)
+        try:
+            var_right = self.visit(op_node.right).value
+        except:
+            var_right = self.visit(op_node.right)
+        
+        
+
         operators = {
                 "+" : var_left + var_right,
                 "-" : var_left - var_right,
@@ -168,6 +177,12 @@ class Evaluator:
 
         # TODO: add this method to Business_Data
         var_bus.save()
+
+    @when(Print_Node)
+    def visit(self, print_node : Print_Node):
+        var_id = self.visit(print_node.id_1).value
+
+        print(var_id)
 
     @when(Metrics)
     def visit(self, metrics : Metrics):

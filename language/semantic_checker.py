@@ -265,6 +265,12 @@ class SemanticChecker:
             raise Exception("Only can make Save over a business")
         
         node.processed_type = "save"
+    
+    @when(Print_Node)
+    def visit(self, node : Print_Node):
+        self.visit(node.id_1)
+
+        node.processed_type = "print"
 
     @when(Foreach_node)
     def visit(self, node : Foreach_node):

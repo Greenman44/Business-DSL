@@ -102,6 +102,10 @@ def p_instruction_dismiss_ID(p):
     "Instruction : ID DISMISS ID"
     p[0] = ActionDISMISS(VariableCall(p[1]), VariableCall(p[3]))
 
+def p_print(p):
+    'Instruction : PRINT DPOINT ID'
+    p[0] = Print_Node(VariableCall(p[3]))
+
 def p_loops_statements(p):
     '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
                        | WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE'''
