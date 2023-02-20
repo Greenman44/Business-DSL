@@ -1,6 +1,7 @@
 from .ast_nodes import *
 from .semantic_checker import SemanticChecker
 from .scope import Scope
+from .evaluator import Evaluator
 
 __all__ = [
     "Program",
@@ -12,7 +13,7 @@ __all__ = [
     "ActionDEL",
     "ActionINVESTS",
     "ActionSALE",
-    "ActionDISMISS"
+    "ActionDISMISS",
     "Bus_Node",
     "Emp_Node",
     "Prod_Node",
@@ -20,5 +21,21 @@ __all__ = [
     "Metrics",
     "Collection_Node",
     "SemanticChecker",
-    "Scope"
+    "Scope",
+    "Evaluator",
+    "Bill_Node",
+    "ElseStatement",
+    "IfStatement",
+    "Foreach_node",
+    "While_node",
+    "NotStatement",
+    "Bool_Expression_Node",
+    "Oper_Node",
+    "GetElementFrom_Statement",
+    "GetCatalog_node",
+    "GetStaff_node",
+    "InStatement",
+    "GetAmount_node",
+    "Load",
+    "Save"
 ]

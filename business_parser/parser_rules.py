@@ -37,23 +37,49 @@ def p_instruction(p):
         p[0] = p[1]
     elif len(p) == 6:
         p[0] = ElseStatement(p[1], p[4])
+    elif len(p) == 3:
+        p[0] = Save(VariableCall(p[2]))
 
 
 def p_instruction_sale(p):
     'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
+    p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), Number_Node(p[7]), Number_Node(p[10]))
+
+def p_instruction_sale_ID(p):
+    'Instruction : ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID'
+    p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), VariableCall(p[7]), VariableCall(p[10]))
+
+def p_instruction_sale_operation(p):
+    'Instruction : ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation'
     p[0] = ActionSALE(VariableCall(p[1]), VariableCall(p[4]), p[7], p[10])
 
 def p_instruction_invests(p):
     'Instruction : ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER'
+    p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), Number_Node(p[7]), Number_Node(p[10]))
+
+def p_instruction_invests_ID(p):
+    'Instruction : ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID'
+    p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), VariableCall(p[7]), VariableCall(p[10]))
+
+def p_instruction_invests_operation(p):
+    'Instruction : ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation'
     p[0] = ActionINVESTS(VariableCall(p[1]), VariableCall(p[4]), p[7], p[10])
 
 def p_instruction_add(p):
     '''Instruction : ID ADD ID
-                   | ID ADD BILL OBRACE COST COMMA DESCRIP CBRACE'''
+                   | ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE'''
     if len(p) == 4:
         p[0] = ActionADD(VariableCall(p[1]), VariableCall(p[3]))
-    if len(p) == 7:
-        p[0] = Bill_Node(VariableCall(p[1]), p[5], p[7])
+    if len(p) == 9:
+        p[0] = Bill_Node(VariableCall(p[1]), Number_Node(p[5]), p[7])
+
+def p_instruction_Bill_oper(p):
+    'Instruction : ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE'
+    p[0] = Bill_Node(VariableCall(p[1]), p[5], p[7])
+
+def p_instruction_Bill_ID(p):
+    'Instruction : ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE'
+    p[0] = Bill_Node(VariableCall(p[1]), VariableCall(p[5]),p[7])
 
 def p_instruction_add_ID(p):
     ''' Instruction : ID ADD subType'''
@@ -78,7 +104,7 @@ def p_instruction_dismiss_ID(p):
 
 def p_loops_statements(p):
     '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
-                       | while OPAREN condition CPAREN OBRACE ListInst CBRACE'''
+                       | WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE'''
     if p[1] == "foreach":
         p[0] = Foreach_node(p[2], p[4], p[6])
     else:
@@ -228,32 +254,32 @@ def p_bus_ID(p):
     p[0] = Bus_Node(p[1], VariableCall(p[3]), VariableCall(p[5]))
 
 def p_emp(p):
-    '''emp : NAME COMMA NUMBER'''
-    p[0] = Emp_Node(p[1], Number_Node(p[3]))
+    '''emp : NAME COMMA SALARY DPOINT NUMBER'''
+    p[0] = Emp_Node(p[1], Number_Node(p[5]))
 
 def p_emp_ID(p):
-    "emp : NAME COMMA ID"
-    p[0] = Emp_Node(p[1], VariableCall(p[3]))
+    "emp : NAME COMMA SALARY DPOINT ID"
+    p[0] = Emp_Node(p[1], VariableCall(p[5]))
 
 def p_emp_Oper(p):
-    'emp : NAME COMMA operation'
-    p[0] = Emp_Node(p[1], p[3])
+    'emp : NAME COMMA SALARY DPOINT operation'
+    p[0] = Emp_Node(p[1], p[5])
 
 def p_prod(p):
-    '''prod : NAME COMMA NUMBER
+    '''prod : NAME COMMA AMOUNT DPOINT NUMBER
             | NAME'''
     if len(p) == 2:
         p[0] = Prod_Node(p[1])
     else:
-        p[0] = Prod_Node(p[1], amount=Number_Node(p[3]))
+        p[0] = Prod_Node(p[1], amount=Number_Node(p[5]))
 
 def p_prod_ID(p):
-    ' prod : NAME COMMA ID'
-    p[0] = Prod_Node(p[1], amount= VariableCall(p[3]))
+    ' prod : NAME COMMA AMOUNT DPOINT ID'
+    p[0] = Prod_Node(p[1], amount= VariableCall(p[5]))
 
 def p_prod_Oper(p):
-    'prod : NAME COMMA operation'
-    p[0] = Prod_Node(p[1], amount=p[3])
+    'prod : NAME COMMA AMOUNT DPOINT operation'
+    p[0] = Prod_Node(p[1], amount=p[5])
 
 
 def p_error(p):

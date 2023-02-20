@@ -55,12 +55,17 @@ class Evaluator:
     
     @when(Prod_Node)
     def visit(self, prod_node : Prod_Node):
-        return Product(prod_node.name)
+        return Product(prod_node.name, amount=prod_node.amount)
 
     @when(Bill_Node)
     def visit(self, bill_node : Bill_Node):
         var_bus : Business = self.visit(bill_node.business).value
-        var_bus.add_bill(bill_node.cost, bill_node.description)
+        var_cost : Number = self.visit(bill_node.cost)
+        try:
+            var_cost = var_cost.value
+        except:
+            pass
+        var_bus.add_Bill(var_cost, bill_node.description)
     
     @when(Number_Node)
     def visit(self, number_node : Number_Node):
@@ -71,34 +76,72 @@ class Evaluator:
     def visit(self, sale_node : ActionSALE):
         var_bus : Business = self.visit(sale_node.business).value
         var_prod : Product = self.visit(sale_node.product).value
+        var_price : Number =  self.visit(sale_node.sale_price)
+        var_amount : Number = self.visit(sale_node.amount)
+        try:
+            var_price = var_price.value
+            var_amount = var_amount.value
+        except:
+            pass
+        if not float.is_integer(var_amount.number):
+            raise Exception("Amount must be an integer")
         #TODO: add this method to Business_Data 
-        var_bus.make_sale(var_bus.name, var_prod.name, sale_node.sale_price, sale_node.amount)
+        var_bus.make_sale(var_prod.name, var_price, var_amount)
     
     @when(ActionINVESTS)
     def visit(self, inv_node : ActionINVESTS):
         var_bus : Business = self.visit(inv_node.business).value
         var_prod : Product = self.visit(inv_node.product).value
+        var_price : Number =  self.visit(inv_node.sale_price)
+        var_amount : Number = self.visit(inv_node.amount)
+        try:
+            var_price = var_price.value
+            var_amount = var_amount.value
+        except:
+            pass
+        if not float.is_integer(var_amount.number):
+            raise Exception("Amount must be an integer")
         if not var_bus.any_product(var_prod):
             var_bus.add(var_prod)
-        var_bus.make_invest(var_bus.name, var_prod.name, inv_node.cost_price, inv_node.amount)
+        var_bus.make_invest(var_prod.name, var_price, var_amount)
     
     @when(ActionADD)
     def visit(self, add_node : ActionADD):
-        var_coll = self.visit(add_node.collection_items)
+        var_coll = self.visit(add_node.collection_items).value
         var_item = self.visit(add_node.item)
+        try:
+            var_item = var_item.value
+        except:
+            pass
         var_coll.add(var_item)
     
     @when(ActionDEL)
     def visit(self, del_node : ActionDEL):
         var_coll = self.visit(del_node.collection_items).value
-        var_item = self.visit(del_node.item).value
+        var_item = None
+        if isinstance(del_node.item, str):
+            var_item = del_node.item
+        else:            
+            var_item = self.visit(del_node.item)
+            try:
+                var_item = var_item.value
+            except:
+                pass
         var_coll.delete(var_item)
     
     @when(ActionDISMISS)
     def visit(self, dis_node : ActionDISMISS):
         var_bus : Business = self.visit(dis_node.business).value
-        var_emp = self.visit(dis_node.employed).value
-        var_bus.dismiss(var_emp)
+        var_item = None
+        if isinstance(dis_node.employed, str):
+            var_item = dis_node.employed
+        else:            
+            var_item = self.visit(dis_node.employed)
+            try:
+                var_item = var_item.value
+            except:
+                pass
+        var_bus.dismiss(var_item)
     
     @when(Oper_Node)
     def visit(self, op_node : Oper_Node):

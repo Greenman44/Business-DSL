@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    LOAD
     POINT
 
 Grammar
@@ -12,74 +11,151 @@ Rule 1     Program -> ListInst
 Rule 2     ListInst -> Instruction END ListInst
 Rule 3     ListInst -> Instruction END
 Rule 4     Instruction -> instance
-Rule 5     Instruction -> ID GET METRICS DATE
-Rule 6     Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
-Rule 7     Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
-Rule 8     Instruction -> ID ADD ID
-Rule 9     Instruction -> ID ADD BILL OBRACE COST CBRACE
-Rule 10    Instruction -> ID ADD subType
-Rule 11    Instruction -> ID DEL NAME
-Rule 12    instance -> TYPE ID ASSIGN Assignable
-Rule 13    instance -> ID ASSIGN Assignable
-Rule 14    Assignable -> subType
-Rule 15    Assignable -> collection
-Rule 16    Assignable -> ID
-Rule 17    subType -> OBRACE bus CBRACE
-Rule 18    subType -> OBRACE emp CBRACE
-Rule 19    subType -> OBRACE prod CBRACE
-Rule 20    collection -> OBR collection_body CBR
-Rule 21    collection_body -> subType COMMA collection_body
-Rule 22    collection_body -> subType
-Rule 23    collection_body -> ID COMMA collection_body
-Rule 24    collection_body -> ID
-Rule 25    bus -> NAME COMMA collection COMMA collection
-Rule 26    bus -> NAME COMMA ID COMMA ID
-Rule 27    emp -> NAME COMMA NUMBER
-Rule 28    prod -> NAME
+Rule 5     Instruction -> SAVE ID
+Rule 6     Instruction -> ID GET METRICS DATE
+Rule 7     Instruction -> loop_statements
+Rule 8     Instruction -> IfStatement
+Rule 9     Instruction -> IfStatement ELSE OBRACE ListInst CBRACE
+Rule 10    Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+Rule 11    Instruction -> ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+Rule 12    Instruction -> ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+Rule 13    Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+Rule 14    Instruction -> ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+Rule 15    Instruction -> ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+Rule 16    Instruction -> ID ADD ID
+Rule 17    Instruction -> ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+Rule 18    Instruction -> ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+Rule 19    Instruction -> ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+Rule 20    Instruction -> ID ADD subType
+Rule 21    Instruction -> ID DEL NAME
+Rule 22    Instruction -> ID DEL ID
+Rule 23    Instruction -> ID DISMISS NAME
+Rule 24    Instruction -> ID DISMISS ID
+Rule 25    loop_statements -> FOREACH ID IN ID OBRACE ListInst CBRACE
+Rule 26    loop_statements -> WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+Rule 27    IfStatement -> IF OPAREN condition CPAREN OBRACE ListInst CBRACE
+Rule 28    condition -> bool_expression
+Rule 29    bool_expression -> NOT bool_expression
+Rule 30    bool_expression -> bool_expression AND bool_expression
+Rule 31    bool_expression -> bool_expression OR bool_expression
+Rule 32    bool_expression -> ID EQUAL ID
+Rule 33    bool_expression -> ID LEQ ID
+Rule 34    bool_expression -> ID GEQ ID
+Rule 35    bool_expression -> ID GREATER ID
+Rule 36    bool_expression -> ID LESS ID
+Rule 37    bool_expression -> OPAREN bool_expression CPAREN
+Rule 38    bool_expression -> ID IN ID
+Rule 39    instance -> TYPE ID
+Rule 40    instance -> TYPE ID ASSIGN Assignable
+Rule 41    instance -> ID ASSIGN Assignable
+Rule 42    operation -> operation PLUS operation
+Rule 43    operation -> operation MINUS operation
+Rule 44    operation -> operation DIV operation
+Rule 45    operation -> operation MULT operation
+Rule 46    operation -> ID
+Rule 47    operation -> NUMBER
+Rule 48    operation -> OPAREN operation CPAREN
+Rule 49    Assignable -> subType
+Rule 50    Assignable -> collection
+Rule 51    Assignable -> GET NAME FROM ID
+Rule 52    Assignable -> LOAD NAME
+Rule 53    Assignable -> operation
+Rule 54    Assignable -> GET STAFF FROM ID
+Rule 55    Assignable -> GET CATALOG FROM ID
+Rule 56    Assignable -> GET AMOUNT FROM ID
+Rule 57    Assignable -> ID
+Rule 58    subType -> OBRACE bus CBRACE
+Rule 59    subType -> OBRACE emp CBRACE
+Rule 60    subType -> OBRACE prod CBRACE
+Rule 61    collection -> OBR collection_body CBR
+Rule 62    collection_body -> subType COMMA collection_body
+Rule 63    collection_body -> subType
+Rule 64    collection_body -> ID COMMA collection_body
+Rule 65    collection_body -> ID
+Rule 66    bus -> NAME COMMA collection COMMA collection
+Rule 67    bus -> NAME COMMA ID COMMA ID
+Rule 68    emp -> NAME COMMA SALARY DPOINT NUMBER
+Rule 69    emp -> NAME COMMA SALARY DPOINT ID
+Rule 70    emp -> NAME COMMA SALARY DPOINT operation
+Rule 71    prod -> NAME COMMA AMOUNT DPOINT NUMBER
+Rule 72    prod -> NAME
+Rule 73    prod -> NAME COMMA AMOUNT DPOINT ID
+Rule 74    prod -> NAME COMMA AMOUNT DPOINT operation
 
 Terminals, with rules where they appear
 
-ACTION               : 6 7
-ADD                  : 8 9 10
-AMOUNT               : 6 7
-ASSIGN               : 12 13
-BILL                 : 9
-CBR                  : 20
-CBRACE               : 9 17 18 19
-COMMA                : 21 23 25 25 26 26 27
-COST                 : 7 9
-DATE                 : 5
-DEL                  : 11
-DPOINT               : 6 6 7 7
+ACTION               : 10 11 12 13 14 15
+ADD                  : 16 17 18 19 20
+AMOUNT               : 10 11 12 13 14 15 56 71 73 74
+AND                  : 30
+ASSIGN               : 40 41
+BILL                 : 17 18 19
+CATALOG              : 55
+CBR                  : 61
+CBRACE               : 9 17 18 19 25 26 27 58 59 60
+COMMA                : 17 18 19 62 64 66 66 67 67 68 69 70 71 73 74
+COST                 : 13 14 15
+CPAREN               : 26 27 37 48
+DATE                 : 6
+DEL                  : 21 22
+DESCRIP              : 17 18 19
+DISMISS              : 23 24
+DIV                  : 44
+DPOINT               : 10 10 11 11 12 12 13 13 14 14 15 15 68 69 70 71 73 74
+ELSE                 : 9
 END                  : 2 3
-GET                  : 5
-ID                   : 5 6 6 7 7 8 8 9 10 11 12 13 16 23 24 26 26
-INVESTS              : 7
-LOAD                 : 
-METRICS              : 5
-NAME                 : 11 25 26 27 28
-NUMBER               : 6 6 7 7 27
-OBR                  : 20
-OBRACE               : 9 17 18 19
+EQUAL                : 32
+FOREACH              : 25
+FROM                 : 51 54 55 56
+GEQ                  : 34
+GET                  : 6 51 54 55 56
+GREATER              : 35
+ID                   : 5 6 10 10 11 11 11 11 12 12 13 13 14 14 14 14 15 15 16 16 17 18 19 19 20 21 22 22 23 24 24 25 25 32 32 33 33 34 34 35 35 36 36 38 38 39 40 41 46 51 54 55 56 57 64 65 67 67 69 73
+IF                   : 27
+IN                   : 25 38
+INVESTS              : 13 14 15
+LEQ                  : 33
+LESS                 : 36
+LOAD                 : 52
+METRICS              : 6
+MINUS                : 43
+MULT                 : 45
+NAME                 : 21 23 51 52 66 67 68 69 70 71 72 73 74
+NOT                  : 29
+NUMBER               : 10 10 13 13 17 47 68 71
+OBR                  : 61
+OBRACE               : 9 17 18 19 25 26 27 58 59 60
+OPAREN               : 26 27 37 48
+OR                   : 31
+PLUS                 : 42
 POINT                : 
-PRICE                : 6
-SALE                 : 6
-TYPE                 : 12
+PRICE                : 10 11 12
+SALARY               : 68 69 70
+SALE                 : 10 11 12
+SAVE                 : 5
+STAFF                : 54
+TYPE                 : 39 40
+WHILE                : 26
 error                : 
 
 Nonterminals, with rules where they appear
 
-Assignable           : 12 13
+Assignable           : 40 41
+IfStatement          : 8 9
 Instruction          : 2 3
-ListInst             : 1 2
+ListInst             : 1 2 9 25 26 27
 Program              : 0
-bus                  : 17
-collection           : 15 25 25
-collection_body      : 20 21 23
-emp                  : 18
+bool_expression      : 28 29 30 30 31 31 37
+bus                  : 58
+collection           : 50 66 66
+collection_body      : 61 62 64
+condition            : 26 27
+emp                  : 59
 instance             : 4
-prod                 : 19
-subType              : 10 14 21 22
+loop_statements      : 7
+operation            : 12 12 15 15 18 42 42 43 43 44 44 45 45 48 53 70 74
+prod                 : 60
+subType              : 20 49 62 63
 
 Parsing method: LALR
 
@@ -90,23 +166,46 @@ state 0
     (2) ListInst -> . Instruction END ListInst
     (3) ListInst -> . Instruction END
     (4) Instruction -> . instance
-    (5) Instruction -> . ID GET METRICS DATE
-    (6) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (7) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (8) Instruction -> . ID ADD ID
-    (9) Instruction -> . ID ADD BILL OBRACE COST CBRACE
-    (10) Instruction -> . ID ADD subType
-    (11) Instruction -> . ID DEL NAME
-    (12) instance -> . TYPE ID ASSIGN Assignable
-    (13) instance -> . ID ASSIGN Assignable
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
 
-    ID              shift and go to state 5
-    TYPE            shift and go to state 6
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
 
     Program                        shift and go to state 1
     ListInst                       shift and go to state 2
     Instruction                    shift and go to state 3
     instance                       shift and go to state 4
+    loop_statements                shift and go to state 7
+    IfStatement                    shift and go to state 8
 
 state 1
 
@@ -126,7 +225,7 @@ state 3
     (2) ListInst -> Instruction . END ListInst
     (3) ListInst -> Instruction . END
 
-    END             shift and go to state 7
+    END             shift and go to state 13
 
 
 state 4
@@ -138,588 +237,2264 @@ state 4
 
 state 5
 
-    (5) Instruction -> ID . GET METRICS DATE
-    (6) Instruction -> ID . ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (7) Instruction -> ID . ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (8) Instruction -> ID . ADD ID
-    (9) Instruction -> ID . ADD BILL OBRACE COST CBRACE
-    (10) Instruction -> ID . ADD subType
-    (11) Instruction -> ID . DEL NAME
-    (13) instance -> ID . ASSIGN Assignable
+    (5) Instruction -> SAVE . ID
 
-    GET             shift and go to state 8
-    ACTION          shift and go to state 9
-    ADD             shift and go to state 10
-    DEL             shift and go to state 11
-    ASSIGN          shift and go to state 12
+    ID              shift and go to state 14
 
 
 state 6
 
-    (12) instance -> TYPE . ID ASSIGN Assignable
+    (6) Instruction -> ID . GET METRICS DATE
+    (10) Instruction -> ID . ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID . ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> ID . ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> ID . ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID . ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> ID . ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> ID . ADD ID
+    (17) Instruction -> ID . ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> ID . ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> ID . ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> ID . ADD subType
+    (21) Instruction -> ID . DEL NAME
+    (22) Instruction -> ID . DEL ID
+    (23) Instruction -> ID . DISMISS NAME
+    (24) Instruction -> ID . DISMISS ID
+    (41) instance -> ID . ASSIGN Assignable
 
-    ID              shift and go to state 13
+    GET             shift and go to state 15
+    ACTION          shift and go to state 16
+    ADD             shift and go to state 17
+    DEL             shift and go to state 18
+    DISMISS         shift and go to state 19
+    ASSIGN          shift and go to state 20
 
 
 state 7
+
+    (7) Instruction -> loop_statements .
+
+    END             reduce using rule 7 (Instruction -> loop_statements .)
+
+
+state 8
+
+    (8) Instruction -> IfStatement .
+    (9) Instruction -> IfStatement . ELSE OBRACE ListInst CBRACE
+
+    END             reduce using rule 8 (Instruction -> IfStatement .)
+    ELSE            shift and go to state 21
+
+
+state 9
+
+    (39) instance -> TYPE . ID
+    (40) instance -> TYPE . ID ASSIGN Assignable
+
+    ID              shift and go to state 22
+
+
+state 10
+
+    (25) loop_statements -> FOREACH . ID IN ID OBRACE ListInst CBRACE
+
+    ID              shift and go to state 23
+
+
+state 11
+
+    (26) loop_statements -> WHILE . OPAREN condition CPAREN OBRACE ListInst CBRACE
+
+    OPAREN          shift and go to state 24
+
+
+state 12
+
+    (27) IfStatement -> IF . OPAREN condition CPAREN OBRACE ListInst CBRACE
+
+    OPAREN          shift and go to state 25
+
+
+state 13
 
     (2) ListInst -> Instruction END . ListInst
     (3) ListInst -> Instruction END .
     (2) ListInst -> . Instruction END ListInst
     (3) ListInst -> . Instruction END
     (4) Instruction -> . instance
-    (5) Instruction -> . ID GET METRICS DATE
-    (6) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (7) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (8) Instruction -> . ID ADD ID
-    (9) Instruction -> . ID ADD BILL OBRACE COST CBRACE
-    (10) Instruction -> . ID ADD subType
-    (11) Instruction -> . ID DEL NAME
-    (12) instance -> . TYPE ID ASSIGN Assignable
-    (13) instance -> . ID ASSIGN Assignable
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
 
     $end            reduce using rule 3 (ListInst -> Instruction END .)
-    ID              shift and go to state 5
-    TYPE            shift and go to state 6
+    CBRACE          reduce using rule 3 (ListInst -> Instruction END .)
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
 
     Instruction                    shift and go to state 3
-    ListInst                       shift and go to state 14
+    ListInst                       shift and go to state 26
     instance                       shift and go to state 4
-
-state 8
-
-    (5) Instruction -> ID GET . METRICS DATE
-
-    METRICS         shift and go to state 15
-
-
-state 9
-
-    (6) Instruction -> ID ACTION . SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
-    (7) Instruction -> ID ACTION . INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
-
-    SALE            shift and go to state 16
-    INVESTS         shift and go to state 17
-
-
-state 10
-
-    (8) Instruction -> ID ADD . ID
-    (9) Instruction -> ID ADD . BILL OBRACE COST CBRACE
-    (10) Instruction -> ID ADD . subType
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
-
-    ID              shift and go to state 18
-    BILL            shift and go to state 19
-    OBRACE          shift and go to state 20
-
-    subType                        shift and go to state 21
-
-state 11
-
-    (11) Instruction -> ID DEL . NAME
-
-    NAME            shift and go to state 22
-
-
-state 12
-
-    (13) instance -> ID ASSIGN . Assignable
-    (14) Assignable -> . subType
-    (15) Assignable -> . collection
-    (16) Assignable -> . ID
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
-    (20) collection -> . OBR collection_body CBR
-
-    ID              shift and go to state 23
-    OBRACE          shift and go to state 20
-    OBR             shift and go to state 27
-
-    Assignable                     shift and go to state 24
-    subType                        shift and go to state 25
-    collection                     shift and go to state 26
-
-state 13
-
-    (12) instance -> TYPE ID . ASSIGN Assignable
-
-    ASSIGN          shift and go to state 28
-
+    loop_statements                shift and go to state 7
+    IfStatement                    shift and go to state 8
 
 state 14
 
-    (2) ListInst -> Instruction END ListInst .
+    (5) Instruction -> SAVE ID .
 
-    $end            reduce using rule 2 (ListInst -> Instruction END ListInst .)
+    END             reduce using rule 5 (Instruction -> SAVE ID .)
 
 
 state 15
 
-    (5) Instruction -> ID GET METRICS . DATE
+    (6) Instruction -> ID GET . METRICS DATE
 
-    DATE            shift and go to state 29
+    METRICS         shift and go to state 27
 
 
 state 16
 
-    (6) Instruction -> ID ACTION SALE . ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (10) Instruction -> ID ACTION . SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID ACTION . SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> ID ACTION . SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> ID ACTION . INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID ACTION . INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> ID ACTION . INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
 
-    ID              shift and go to state 30
+    SALE            shift and go to state 28
+    INVESTS         shift and go to state 29
 
 
 state 17
 
-    (7) Instruction -> ID ACTION INVESTS . ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (16) Instruction -> ID ADD . ID
+    (17) Instruction -> ID ADD . BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> ID ADD . BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> ID ADD . BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> ID ADD . subType
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
 
-    ID              shift and go to state 31
+    ID              shift and go to state 30
+    BILL            shift and go to state 31
+    OBRACE          shift and go to state 32
 
+    subType                        shift and go to state 33
 
 state 18
 
-    (8) Instruction -> ID ADD ID .
+    (21) Instruction -> ID DEL . NAME
+    (22) Instruction -> ID DEL . ID
 
-    END             reduce using rule 8 (Instruction -> ID ADD ID .)
+    NAME            shift and go to state 35
+    ID              shift and go to state 34
 
 
 state 19
 
-    (9) Instruction -> ID ADD BILL . OBRACE COST CBRACE
+    (23) Instruction -> ID DISMISS . NAME
+    (24) Instruction -> ID DISMISS . ID
 
-    OBRACE          shift and go to state 32
+    NAME            shift and go to state 37
+    ID              shift and go to state 36
 
 
 state 20
 
-    (17) subType -> OBRACE . bus CBRACE
-    (18) subType -> OBRACE . emp CBRACE
-    (19) subType -> OBRACE . prod CBRACE
-    (25) bus -> . NAME COMMA collection COMMA collection
-    (26) bus -> . NAME COMMA ID COMMA ID
-    (27) emp -> . NAME COMMA NUMBER
-    (28) prod -> . NAME
+    (41) instance -> ID ASSIGN . Assignable
+    (49) Assignable -> . subType
+    (50) Assignable -> . collection
+    (51) Assignable -> . GET NAME FROM ID
+    (52) Assignable -> . LOAD NAME
+    (53) Assignable -> . operation
+    (54) Assignable -> . GET STAFF FROM ID
+    (55) Assignable -> . GET CATALOG FROM ID
+    (56) Assignable -> . GET AMOUNT FROM ID
+    (57) Assignable -> . ID
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
+    (61) collection -> . OBR collection_body CBR
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
 
-    NAME            shift and go to state 36
+    GET             shift and go to state 42
+    LOAD            shift and go to state 43
+    ID              shift and go to state 38
+    OBRACE          shift and go to state 32
+    OBR             shift and go to state 45
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
 
-    bus                            shift and go to state 33
-    emp                            shift and go to state 34
-    prod                           shift and go to state 35
+    Assignable                     shift and go to state 39
+    subType                        shift and go to state 40
+    collection                     shift and go to state 41
+    operation                      shift and go to state 44
 
 state 21
 
-    (10) Instruction -> ID ADD subType .
+    (9) Instruction -> IfStatement ELSE . OBRACE ListInst CBRACE
 
-    END             reduce using rule 10 (Instruction -> ID ADD subType .)
+    OBRACE          shift and go to state 48
 
 
 state 22
 
-    (11) Instruction -> ID DEL NAME .
+    (39) instance -> TYPE ID .
+    (40) instance -> TYPE ID . ASSIGN Assignable
 
-    END             reduce using rule 11 (Instruction -> ID DEL NAME .)
+    END             reduce using rule 39 (instance -> TYPE ID .)
+    ASSIGN          shift and go to state 49
 
 
 state 23
 
-    (16) Assignable -> ID .
+    (25) loop_statements -> FOREACH ID . IN ID OBRACE ListInst CBRACE
 
-    END             reduce using rule 16 (Assignable -> ID .)
+    IN              shift and go to state 50
 
 
 state 24
 
-    (13) instance -> ID ASSIGN Assignable .
+    (26) loop_statements -> WHILE OPAREN . condition CPAREN OBRACE ListInst CBRACE
+    (28) condition -> . bool_expression
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
 
-    END             reduce using rule 13 (instance -> ID ASSIGN Assignable .)
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
 
+    condition                      shift and go to state 52
+    bool_expression                shift and go to state 53
 
 state 25
 
-    (14) Assignable -> subType .
+    (27) IfStatement -> IF OPAREN . condition CPAREN OBRACE ListInst CBRACE
+    (28) condition -> . bool_expression
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
 
-    END             reduce using rule 14 (Assignable -> subType .)
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
 
+    condition                      shift and go to state 56
+    bool_expression                shift and go to state 53
 
 state 26
 
-    (15) Assignable -> collection .
+    (2) ListInst -> Instruction END ListInst .
 
-    END             reduce using rule 15 (Assignable -> collection .)
+    $end            reduce using rule 2 (ListInst -> Instruction END ListInst .)
+    CBRACE          reduce using rule 2 (ListInst -> Instruction END ListInst .)
 
 
 state 27
 
-    (20) collection -> OBR . collection_body CBR
-    (21) collection_body -> . subType COMMA collection_body
-    (22) collection_body -> . subType
-    (23) collection_body -> . ID COMMA collection_body
-    (24) collection_body -> . ID
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
+    (6) Instruction -> ID GET METRICS . DATE
 
-    ID              shift and go to state 39
-    OBRACE          shift and go to state 20
+    DATE            shift and go to state 57
 
-    collection_body                shift and go to state 37
-    subType                        shift and go to state 38
 
 state 28
 
-    (12) instance -> TYPE ID ASSIGN . Assignable
-    (14) Assignable -> . subType
-    (15) Assignable -> . collection
-    (16) Assignable -> . ID
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
-    (20) collection -> . OBR collection_body CBR
+    (10) Instruction -> ID ACTION SALE . ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID ACTION SALE . ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> ID ACTION SALE . ID PRICE DPOINT operation AMOUNT DPOINT operation
 
-    ID              shift and go to state 23
-    OBRACE          shift and go to state 20
-    OBR             shift and go to state 27
+    ID              shift and go to state 58
 
-    Assignable                     shift and go to state 40
-    subType                        shift and go to state 25
-    collection                     shift and go to state 26
 
 state 29
 
-    (5) Instruction -> ID GET METRICS DATE .
+    (13) Instruction -> ID ACTION INVESTS . ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID ACTION INVESTS . ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> ID ACTION INVESTS . ID COST DPOINT operation AMOUNT DPOINT operation
 
-    END             reduce using rule 5 (Instruction -> ID GET METRICS DATE .)
+    ID              shift and go to state 59
 
 
 state 30
 
-    (6) Instruction -> ID ACTION SALE ID . PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (16) Instruction -> ID ADD ID .
 
-    PRICE           shift and go to state 41
+    END             reduce using rule 16 (Instruction -> ID ADD ID .)
 
 
 state 31
 
-    (7) Instruction -> ID ACTION INVESTS ID . COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (17) Instruction -> ID ADD BILL . OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> ID ADD BILL . OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> ID ADD BILL . OBRACE ID COMMA DESCRIP CBRACE
 
-    COST            shift and go to state 42
+    OBRACE          shift and go to state 60
 
 
 state 32
 
-    (9) Instruction -> ID ADD BILL OBRACE . COST CBRACE
+    (58) subType -> OBRACE . bus CBRACE
+    (59) subType -> OBRACE . emp CBRACE
+    (60) subType -> OBRACE . prod CBRACE
+    (66) bus -> . NAME COMMA collection COMMA collection
+    (67) bus -> . NAME COMMA ID COMMA ID
+    (68) emp -> . NAME COMMA SALARY DPOINT NUMBER
+    (69) emp -> . NAME COMMA SALARY DPOINT ID
+    (70) emp -> . NAME COMMA SALARY DPOINT operation
+    (71) prod -> . NAME COMMA AMOUNT DPOINT NUMBER
+    (72) prod -> . NAME
+    (73) prod -> . NAME COMMA AMOUNT DPOINT ID
+    (74) prod -> . NAME COMMA AMOUNT DPOINT operation
 
-    COST            shift and go to state 43
+    NAME            shift and go to state 64
 
+    bus                            shift and go to state 61
+    emp                            shift and go to state 62
+    prod                           shift and go to state 63
 
 state 33
 
-    (17) subType -> OBRACE bus . CBRACE
+    (20) Instruction -> ID ADD subType .
 
-    CBRACE          shift and go to state 44
+    END             reduce using rule 20 (Instruction -> ID ADD subType .)
 
 
 state 34
 
-    (18) subType -> OBRACE emp . CBRACE
+    (22) Instruction -> ID DEL ID .
 
-    CBRACE          shift and go to state 45
+    END             reduce using rule 22 (Instruction -> ID DEL ID .)
 
 
 state 35
 
-    (19) subType -> OBRACE prod . CBRACE
+    (21) Instruction -> ID DEL NAME .
 
-    CBRACE          shift and go to state 46
+    END             reduce using rule 21 (Instruction -> ID DEL NAME .)
 
 
 state 36
 
-    (25) bus -> NAME . COMMA collection COMMA collection
-    (26) bus -> NAME . COMMA ID COMMA ID
-    (27) emp -> NAME . COMMA NUMBER
-    (28) prod -> NAME .
+    (24) Instruction -> ID DISMISS ID .
 
-    COMMA           shift and go to state 47
-    CBRACE          reduce using rule 28 (prod -> NAME .)
+    END             reduce using rule 24 (Instruction -> ID DISMISS ID .)
 
 
 state 37
 
-    (20) collection -> OBR collection_body . CBR
+    (23) Instruction -> ID DISMISS NAME .
 
-    CBR             shift and go to state 48
+    END             reduce using rule 23 (Instruction -> ID DISMISS NAME .)
 
 
 state 38
 
-    (21) collection_body -> subType . COMMA collection_body
-    (22) collection_body -> subType .
+    (57) Assignable -> ID .
+    (46) operation -> ID .
 
-    COMMA           shift and go to state 49
-    CBR             reduce using rule 22 (collection_body -> subType .)
+  ! reduce/reduce conflict for END resolved using rule 46 (operation -> ID .)
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+    END             reduce using rule 46 (operation -> ID .)
+
+  ! END             [ reduce using rule 57 (Assignable -> ID .) ]
 
 
 state 39
 
-    (23) collection_body -> ID . COMMA collection_body
-    (24) collection_body -> ID .
+    (41) instance -> ID ASSIGN Assignable .
 
-    COMMA           shift and go to state 50
-    CBR             reduce using rule 24 (collection_body -> ID .)
+    END             reduce using rule 41 (instance -> ID ASSIGN Assignable .)
 
 
 state 40
 
-    (12) instance -> TYPE ID ASSIGN Assignable .
+    (49) Assignable -> subType .
 
-    END             reduce using rule 12 (instance -> TYPE ID ASSIGN Assignable .)
+    END             reduce using rule 49 (Assignable -> subType .)
 
 
 state 41
 
-    (6) Instruction -> ID ACTION SALE ID PRICE . DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (50) Assignable -> collection .
 
-    DPOINT          shift and go to state 51
+    END             reduce using rule 50 (Assignable -> collection .)
 
 
 state 42
 
-    (7) Instruction -> ID ACTION INVESTS ID COST . DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (51) Assignable -> GET . NAME FROM ID
+    (54) Assignable -> GET . STAFF FROM ID
+    (55) Assignable -> GET . CATALOG FROM ID
+    (56) Assignable -> GET . AMOUNT FROM ID
 
-    DPOINT          shift and go to state 52
+    NAME            shift and go to state 65
+    STAFF           shift and go to state 66
+    CATALOG         shift and go to state 67
+    AMOUNT          shift and go to state 68
 
 
 state 43
 
-    (9) Instruction -> ID ADD BILL OBRACE COST . CBRACE
+    (52) Assignable -> LOAD . NAME
 
-    CBRACE          shift and go to state 53
+    NAME            shift and go to state 69
 
 
 state 44
 
-    (17) subType -> OBRACE bus CBRACE .
+    (53) Assignable -> operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
 
-    END             reduce using rule 17 (subType -> OBRACE bus CBRACE .)
-    COMMA           reduce using rule 17 (subType -> OBRACE bus CBRACE .)
-    CBR             reduce using rule 17 (subType -> OBRACE bus CBRACE .)
+    END             reduce using rule 53 (Assignable -> operation .)
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
 
 
 state 45
 
-    (18) subType -> OBRACE emp CBRACE .
+    (61) collection -> OBR . collection_body CBR
+    (62) collection_body -> . subType COMMA collection_body
+    (63) collection_body -> . subType
+    (64) collection_body -> . ID COMMA collection_body
+    (65) collection_body -> . ID
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
 
-    END             reduce using rule 18 (subType -> OBRACE emp CBRACE .)
-    COMMA           reduce using rule 18 (subType -> OBRACE emp CBRACE .)
-    CBR             reduce using rule 18 (subType -> OBRACE emp CBRACE .)
+    ID              shift and go to state 76
+    OBRACE          shift and go to state 32
 
+    collection_body                shift and go to state 74
+    subType                        shift and go to state 75
 
 state 46
 
-    (19) subType -> OBRACE prod CBRACE .
+    (47) operation -> NUMBER .
 
-    END             reduce using rule 19 (subType -> OBRACE prod CBRACE .)
-    COMMA           reduce using rule 19 (subType -> OBRACE prod CBRACE .)
-    CBR             reduce using rule 19 (subType -> OBRACE prod CBRACE .)
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+    END             reduce using rule 47 (operation -> NUMBER .)
+    CPAREN          reduce using rule 47 (operation -> NUMBER .)
+    COMMA           reduce using rule 47 (operation -> NUMBER .)
+    AMOUNT          reduce using rule 47 (operation -> NUMBER .)
+    CBRACE          reduce using rule 47 (operation -> NUMBER .)
 
 
 state 47
 
-    (25) bus -> NAME COMMA . collection COMMA collection
-    (26) bus -> NAME COMMA . ID COMMA ID
-    (27) emp -> NAME COMMA . NUMBER
-    (20) collection -> . OBR collection_body CBR
+    (48) operation -> OPAREN . operation CPAREN
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
 
-    ID              shift and go to state 55
-    NUMBER          shift and go to state 56
-    OBR             shift and go to state 27
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
 
-    collection                     shift and go to state 54
+    operation                      shift and go to state 77
 
 state 48
 
-    (20) collection -> OBR collection_body CBR .
+    (9) Instruction -> IfStatement ELSE OBRACE . ListInst CBRACE
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
 
-    END             reduce using rule 20 (collection -> OBR collection_body CBR .)
-    COMMA           reduce using rule 20 (collection -> OBR collection_body CBR .)
-    CBRACE          reduce using rule 20 (collection -> OBR collection_body CBR .)
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
 
+    IfStatement                    shift and go to state 8
+    ListInst                       shift and go to state 79
+    Instruction                    shift and go to state 3
+    instance                       shift and go to state 4
+    loop_statements                shift and go to state 7
 
 state 49
 
-    (21) collection_body -> subType COMMA . collection_body
-    (21) collection_body -> . subType COMMA collection_body
-    (22) collection_body -> . subType
-    (23) collection_body -> . ID COMMA collection_body
-    (24) collection_body -> . ID
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
+    (40) instance -> TYPE ID ASSIGN . Assignable
+    (49) Assignable -> . subType
+    (50) Assignable -> . collection
+    (51) Assignable -> . GET NAME FROM ID
+    (52) Assignable -> . LOAD NAME
+    (53) Assignable -> . operation
+    (54) Assignable -> . GET STAFF FROM ID
+    (55) Assignable -> . GET CATALOG FROM ID
+    (56) Assignable -> . GET AMOUNT FROM ID
+    (57) Assignable -> . ID
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
+    (61) collection -> . OBR collection_body CBR
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
 
-    ID              shift and go to state 39
-    OBRACE          shift and go to state 20
+    GET             shift and go to state 42
+    LOAD            shift and go to state 43
+    ID              shift and go to state 38
+    OBRACE          shift and go to state 32
+    OBR             shift and go to state 45
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
 
-    subType                        shift and go to state 38
-    collection_body                shift and go to state 57
+    Assignable                     shift and go to state 80
+    subType                        shift and go to state 40
+    collection                     shift and go to state 41
+    operation                      shift and go to state 44
 
 state 50
 
-    (23) collection_body -> ID COMMA . collection_body
-    (21) collection_body -> . subType COMMA collection_body
-    (22) collection_body -> . subType
-    (23) collection_body -> . ID COMMA collection_body
-    (24) collection_body -> . ID
-    (17) subType -> . OBRACE bus CBRACE
-    (18) subType -> . OBRACE emp CBRACE
-    (19) subType -> . OBRACE prod CBRACE
+    (25) loop_statements -> FOREACH ID IN . ID OBRACE ListInst CBRACE
 
-    ID              shift and go to state 39
-    OBRACE          shift and go to state 20
+    ID              shift and go to state 81
 
-    collection_body                shift and go to state 58
-    subType                        shift and go to state 38
 
 state 51
 
-    (6) Instruction -> ID ACTION SALE ID PRICE DPOINT . NUMBER AMOUNT DPOINT NUMBER
+    (37) bool_expression -> OPAREN . bool_expression CPAREN
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
 
-    NUMBER          shift and go to state 59
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
 
+    bool_expression                shift and go to state 82
 
 state 52
 
-    (7) Instruction -> ID ACTION INVESTS ID COST DPOINT . NUMBER AMOUNT DPOINT NUMBER
+    (26) loop_statements -> WHILE OPAREN condition . CPAREN OBRACE ListInst CBRACE
 
-    NUMBER          shift and go to state 60
+    CPAREN          shift and go to state 83
 
 
 state 53
 
-    (9) Instruction -> ID ADD BILL OBRACE COST CBRACE .
+    (28) condition -> bool_expression .
+    (30) bool_expression -> bool_expression . AND bool_expression
+    (31) bool_expression -> bool_expression . OR bool_expression
 
-    END             reduce using rule 9 (Instruction -> ID ADD BILL OBRACE COST CBRACE .)
+    CPAREN          reduce using rule 28 (condition -> bool_expression .)
+    AND             shift and go to state 84
+    OR              shift and go to state 85
 
 
 state 54
 
-    (25) bus -> NAME COMMA collection . COMMA collection
+    (29) bool_expression -> NOT . bool_expression
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
 
-    COMMA           shift and go to state 61
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
 
+    bool_expression                shift and go to state 86
 
 state 55
 
-    (26) bus -> NAME COMMA ID . COMMA ID
+    (32) bool_expression -> ID . EQUAL ID
+    (33) bool_expression -> ID . LEQ ID
+    (34) bool_expression -> ID . GEQ ID
+    (35) bool_expression -> ID . GREATER ID
+    (36) bool_expression -> ID . LESS ID
+    (38) bool_expression -> ID . IN ID
 
-    COMMA           shift and go to state 62
+    EQUAL           shift and go to state 87
+    LEQ             shift and go to state 88
+    GEQ             shift and go to state 89
+    GREATER         shift and go to state 90
+    LESS            shift and go to state 91
+    IN              shift and go to state 92
 
 
 state 56
 
-    (27) emp -> NAME COMMA NUMBER .
+    (27) IfStatement -> IF OPAREN condition . CPAREN OBRACE ListInst CBRACE
 
-    CBRACE          reduce using rule 27 (emp -> NAME COMMA NUMBER .)
+    CPAREN          shift and go to state 93
 
 
 state 57
 
-    (21) collection_body -> subType COMMA collection_body .
+    (6) Instruction -> ID GET METRICS DATE .
 
-    CBR             reduce using rule 21 (collection_body -> subType COMMA collection_body .)
+    END             reduce using rule 6 (Instruction -> ID GET METRICS DATE .)
 
 
 state 58
 
-    (23) collection_body -> ID COMMA collection_body .
+    (10) Instruction -> ID ACTION SALE ID . PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID ACTION SALE ID . PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> ID ACTION SALE ID . PRICE DPOINT operation AMOUNT DPOINT operation
 
-    CBR             reduce using rule 23 (collection_body -> ID COMMA collection_body .)
+    PRICE           shift and go to state 94
 
 
 state 59
 
-    (6) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER . AMOUNT DPOINT NUMBER
+    (13) Instruction -> ID ACTION INVESTS ID . COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID ACTION INVESTS ID . COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> ID ACTION INVESTS ID . COST DPOINT operation AMOUNT DPOINT operation
 
-    AMOUNT          shift and go to state 63
+    COST            shift and go to state 95
 
 
 state 60
 
-    (7) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER . AMOUNT DPOINT NUMBER
+    (17) Instruction -> ID ADD BILL OBRACE . NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> ID ADD BILL OBRACE . operation COMMA DESCRIP CBRACE
+    (19) Instruction -> ID ADD BILL OBRACE . ID COMMA DESCRIP CBRACE
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
 
-    AMOUNT          shift and go to state 64
+    NUMBER          shift and go to state 97
+    ID              shift and go to state 96
+    OPAREN          shift and go to state 47
 
+    operation                      shift and go to state 98
 
 state 61
 
-    (25) bus -> NAME COMMA collection COMMA . collection
-    (20) collection -> . OBR collection_body CBR
+    (58) subType -> OBRACE bus . CBRACE
 
-    OBR             shift and go to state 27
+    CBRACE          shift and go to state 99
 
-    collection                     shift and go to state 65
 
 state 62
 
-    (26) bus -> NAME COMMA ID COMMA . ID
+    (59) subType -> OBRACE emp . CBRACE
 
-    ID              shift and go to state 66
+    CBRACE          shift and go to state 100
 
 
 state 63
 
-    (6) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT . DPOINT NUMBER
+    (60) subType -> OBRACE prod . CBRACE
 
-    DPOINT          shift and go to state 67
+    CBRACE          shift and go to state 101
 
 
 state 64
 
-    (7) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT . DPOINT NUMBER
+    (66) bus -> NAME . COMMA collection COMMA collection
+    (67) bus -> NAME . COMMA ID COMMA ID
+    (68) emp -> NAME . COMMA SALARY DPOINT NUMBER
+    (69) emp -> NAME . COMMA SALARY DPOINT ID
+    (70) emp -> NAME . COMMA SALARY DPOINT operation
+    (71) prod -> NAME . COMMA AMOUNT DPOINT NUMBER
+    (72) prod -> NAME .
+    (73) prod -> NAME . COMMA AMOUNT DPOINT ID
+    (74) prod -> NAME . COMMA AMOUNT DPOINT operation
 
-    DPOINT          shift and go to state 68
+    COMMA           shift and go to state 102
+    CBRACE          reduce using rule 72 (prod -> NAME .)
 
 
 state 65
 
-    (25) bus -> NAME COMMA collection COMMA collection .
+    (51) Assignable -> GET NAME . FROM ID
 
-    CBRACE          reduce using rule 25 (bus -> NAME COMMA collection COMMA collection .)
+    FROM            shift and go to state 103
 
 
 state 66
 
-    (26) bus -> NAME COMMA ID COMMA ID .
+    (54) Assignable -> GET STAFF . FROM ID
 
-    CBRACE          reduce using rule 26 (bus -> NAME COMMA ID COMMA ID .)
+    FROM            shift and go to state 104
 
 
 state 67
 
-    (6) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT . NUMBER
+    (55) Assignable -> GET CATALOG . FROM ID
 
-    NUMBER          shift and go to state 69
+    FROM            shift and go to state 105
 
 
 state 68
 
-    (7) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT . NUMBER
+    (56) Assignable -> GET AMOUNT . FROM ID
 
-    NUMBER          shift and go to state 70
+    FROM            shift and go to state 106
 
 
 state 69
 
-    (6) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER .
+    (52) Assignable -> LOAD NAME .
 
-    END             reduce using rule 6 (Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER .)
+    END             reduce using rule 52 (Assignable -> LOAD NAME .)
 
 
 state 70
 
-    (7) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER .
+    (42) operation -> operation PLUS . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
 
-    END             reduce using rule 7 (Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER .)
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
 
+    operation                      shift and go to state 107
+
+state 71
+
+    (43) operation -> operation MINUS . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 108
+
+state 72
+
+    (44) operation -> operation DIV . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 109
+
+state 73
+
+    (45) operation -> operation MULT . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 110
+
+state 74
+
+    (61) collection -> OBR collection_body . CBR
+
+    CBR             shift and go to state 111
+
+
+state 75
+
+    (62) collection_body -> subType . COMMA collection_body
+    (63) collection_body -> subType .
+
+    COMMA           shift and go to state 112
+    CBR             reduce using rule 63 (collection_body -> subType .)
+
+
+state 76
+
+    (64) collection_body -> ID . COMMA collection_body
+    (65) collection_body -> ID .
+
+    COMMA           shift and go to state 113
+    CBR             reduce using rule 65 (collection_body -> ID .)
+
+
+state 77
+
+    (48) operation -> OPAREN operation . CPAREN
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    CPAREN          shift and go to state 114
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 78
+
+    (46) operation -> ID .
+
+    CPAREN          reduce using rule 46 (operation -> ID .)
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+    END             reduce using rule 46 (operation -> ID .)
+    COMMA           reduce using rule 46 (operation -> ID .)
+    AMOUNT          reduce using rule 46 (operation -> ID .)
+    CBRACE          reduce using rule 46 (operation -> ID .)
+
+
+state 79
+
+    (9) Instruction -> IfStatement ELSE OBRACE ListInst . CBRACE
+
+    CBRACE          shift and go to state 115
+
+
+state 80
+
+    (40) instance -> TYPE ID ASSIGN Assignable .
+
+    END             reduce using rule 40 (instance -> TYPE ID ASSIGN Assignable .)
+
+
+state 81
+
+    (25) loop_statements -> FOREACH ID IN ID . OBRACE ListInst CBRACE
+
+    OBRACE          shift and go to state 116
+
+
+state 82
+
+    (37) bool_expression -> OPAREN bool_expression . CPAREN
+    (30) bool_expression -> bool_expression . AND bool_expression
+    (31) bool_expression -> bool_expression . OR bool_expression
+
+    CPAREN          shift and go to state 117
+    AND             shift and go to state 84
+    OR              shift and go to state 85
+
+
+state 83
+
+    (26) loop_statements -> WHILE OPAREN condition CPAREN . OBRACE ListInst CBRACE
+
+    OBRACE          shift and go to state 118
+
+
+state 84
+
+    (30) bool_expression -> bool_expression AND . bool_expression
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
+
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
+
+    bool_expression                shift and go to state 119
+
+state 85
+
+    (31) bool_expression -> bool_expression OR . bool_expression
+    (29) bool_expression -> . NOT bool_expression
+    (30) bool_expression -> . bool_expression AND bool_expression
+    (31) bool_expression -> . bool_expression OR bool_expression
+    (32) bool_expression -> . ID EQUAL ID
+    (33) bool_expression -> . ID LEQ ID
+    (34) bool_expression -> . ID GEQ ID
+    (35) bool_expression -> . ID GREATER ID
+    (36) bool_expression -> . ID LESS ID
+    (37) bool_expression -> . OPAREN bool_expression CPAREN
+    (38) bool_expression -> . ID IN ID
+
+    NOT             shift and go to state 54
+    ID              shift and go to state 55
+    OPAREN          shift and go to state 51
+
+    bool_expression                shift and go to state 120
+
+state 86
+
+    (29) bool_expression -> NOT bool_expression .
+    (30) bool_expression -> bool_expression . AND bool_expression
+    (31) bool_expression -> bool_expression . OR bool_expression
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CPAREN          reduce using rule 29 (bool_expression -> NOT bool_expression .)
+    AND             shift and go to state 84
+    OR              shift and go to state 85
+
+  ! AND             [ reduce using rule 29 (bool_expression -> NOT bool_expression .) ]
+  ! OR              [ reduce using rule 29 (bool_expression -> NOT bool_expression .) ]
+
+
+state 87
+
+    (32) bool_expression -> ID EQUAL . ID
+
+    ID              shift and go to state 121
+
+
+state 88
+
+    (33) bool_expression -> ID LEQ . ID
+
+    ID              shift and go to state 122
+
+
+state 89
+
+    (34) bool_expression -> ID GEQ . ID
+
+    ID              shift and go to state 123
+
+
+state 90
+
+    (35) bool_expression -> ID GREATER . ID
+
+    ID              shift and go to state 124
+
+
+state 91
+
+    (36) bool_expression -> ID LESS . ID
+
+    ID              shift and go to state 125
+
+
+state 92
+
+    (38) bool_expression -> ID IN . ID
+
+    ID              shift and go to state 126
+
+
+state 93
+
+    (27) IfStatement -> IF OPAREN condition CPAREN . OBRACE ListInst CBRACE
+
+    OBRACE          shift and go to state 127
+
+
+state 94
+
+    (10) Instruction -> ID ACTION SALE ID PRICE . DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID ACTION SALE ID PRICE . DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> ID ACTION SALE ID PRICE . DPOINT operation AMOUNT DPOINT operation
+
+    DPOINT          shift and go to state 128
+
+
+state 95
+
+    (13) Instruction -> ID ACTION INVESTS ID COST . DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID ACTION INVESTS ID COST . DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> ID ACTION INVESTS ID COST . DPOINT operation AMOUNT DPOINT operation
+
+    DPOINT          shift and go to state 129
+
+
+state 96
+
+    (19) Instruction -> ID ADD BILL OBRACE ID . COMMA DESCRIP CBRACE
+    (46) operation -> ID .
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    COMMA           shift and go to state 130
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+
+  ! COMMA           [ reduce using rule 46 (operation -> ID .) ]
+
+
+state 97
+
+    (17) Instruction -> ID ADD BILL OBRACE NUMBER . COMMA DESCRIP CBRACE
+    (47) operation -> NUMBER .
+
+  ! shift/reduce conflict for COMMA resolved as shift
+    COMMA           shift and go to state 131
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+
+  ! COMMA           [ reduce using rule 47 (operation -> NUMBER .) ]
+
+
+state 98
+
+    (18) Instruction -> ID ADD BILL OBRACE operation . COMMA DESCRIP CBRACE
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    COMMA           shift and go to state 132
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 99
+
+    (58) subType -> OBRACE bus CBRACE .
+
+    END             reduce using rule 58 (subType -> OBRACE bus CBRACE .)
+    COMMA           reduce using rule 58 (subType -> OBRACE bus CBRACE .)
+    CBR             reduce using rule 58 (subType -> OBRACE bus CBRACE .)
+
+
+state 100
+
+    (59) subType -> OBRACE emp CBRACE .
+
+    END             reduce using rule 59 (subType -> OBRACE emp CBRACE .)
+    COMMA           reduce using rule 59 (subType -> OBRACE emp CBRACE .)
+    CBR             reduce using rule 59 (subType -> OBRACE emp CBRACE .)
+
+
+state 101
+
+    (60) subType -> OBRACE prod CBRACE .
+
+    END             reduce using rule 60 (subType -> OBRACE prod CBRACE .)
+    COMMA           reduce using rule 60 (subType -> OBRACE prod CBRACE .)
+    CBR             reduce using rule 60 (subType -> OBRACE prod CBRACE .)
+
+
+state 102
+
+    (66) bus -> NAME COMMA . collection COMMA collection
+    (67) bus -> NAME COMMA . ID COMMA ID
+    (68) emp -> NAME COMMA . SALARY DPOINT NUMBER
+    (69) emp -> NAME COMMA . SALARY DPOINT ID
+    (70) emp -> NAME COMMA . SALARY DPOINT operation
+    (71) prod -> NAME COMMA . AMOUNT DPOINT NUMBER
+    (73) prod -> NAME COMMA . AMOUNT DPOINT ID
+    (74) prod -> NAME COMMA . AMOUNT DPOINT operation
+    (61) collection -> . OBR collection_body CBR
+
+    ID              shift and go to state 134
+    SALARY          shift and go to state 135
+    AMOUNT          shift and go to state 136
+    OBR             shift and go to state 45
+
+    collection                     shift and go to state 133
+
+state 103
+
+    (51) Assignable -> GET NAME FROM . ID
+
+    ID              shift and go to state 137
+
+
+state 104
+
+    (54) Assignable -> GET STAFF FROM . ID
+
+    ID              shift and go to state 138
+
+
+state 105
+
+    (55) Assignable -> GET CATALOG FROM . ID
+
+    ID              shift and go to state 139
+
+
+state 106
+
+    (56) Assignable -> GET AMOUNT FROM . ID
+
+    ID              shift and go to state 140
+
+
+state 107
+
+    (42) operation -> operation PLUS operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    PLUS            reduce using rule 42 (operation -> operation PLUS operation .)
+    MINUS           reduce using rule 42 (operation -> operation PLUS operation .)
+    END             reduce using rule 42 (operation -> operation PLUS operation .)
+    CPAREN          reduce using rule 42 (operation -> operation PLUS operation .)
+    COMMA           reduce using rule 42 (operation -> operation PLUS operation .)
+    AMOUNT          reduce using rule 42 (operation -> operation PLUS operation .)
+    CBRACE          reduce using rule 42 (operation -> operation PLUS operation .)
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+  ! DIV             [ reduce using rule 42 (operation -> operation PLUS operation .) ]
+  ! MULT            [ reduce using rule 42 (operation -> operation PLUS operation .) ]
+  ! PLUS            [ shift and go to state 70 ]
+  ! MINUS           [ shift and go to state 71 ]
+
+
+state 108
+
+    (43) operation -> operation MINUS operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    PLUS            reduce using rule 43 (operation -> operation MINUS operation .)
+    MINUS           reduce using rule 43 (operation -> operation MINUS operation .)
+    END             reduce using rule 43 (operation -> operation MINUS operation .)
+    CPAREN          reduce using rule 43 (operation -> operation MINUS operation .)
+    COMMA           reduce using rule 43 (operation -> operation MINUS operation .)
+    AMOUNT          reduce using rule 43 (operation -> operation MINUS operation .)
+    CBRACE          reduce using rule 43 (operation -> operation MINUS operation .)
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+  ! DIV             [ reduce using rule 43 (operation -> operation MINUS operation .) ]
+  ! MULT            [ reduce using rule 43 (operation -> operation MINUS operation .) ]
+  ! PLUS            [ shift and go to state 70 ]
+  ! MINUS           [ shift and go to state 71 ]
+
+
+state 109
+
+    (44) operation -> operation DIV operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    PLUS            reduce using rule 44 (operation -> operation DIV operation .)
+    MINUS           reduce using rule 44 (operation -> operation DIV operation .)
+    DIV             reduce using rule 44 (operation -> operation DIV operation .)
+    MULT            reduce using rule 44 (operation -> operation DIV operation .)
+    END             reduce using rule 44 (operation -> operation DIV operation .)
+    CPAREN          reduce using rule 44 (operation -> operation DIV operation .)
+    COMMA           reduce using rule 44 (operation -> operation DIV operation .)
+    AMOUNT          reduce using rule 44 (operation -> operation DIV operation .)
+    CBRACE          reduce using rule 44 (operation -> operation DIV operation .)
+
+  ! PLUS            [ shift and go to state 70 ]
+  ! MINUS           [ shift and go to state 71 ]
+  ! DIV             [ shift and go to state 72 ]
+  ! MULT            [ shift and go to state 73 ]
+
+
+state 110
+
+    (45) operation -> operation MULT operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    PLUS            reduce using rule 45 (operation -> operation MULT operation .)
+    MINUS           reduce using rule 45 (operation -> operation MULT operation .)
+    DIV             reduce using rule 45 (operation -> operation MULT operation .)
+    MULT            reduce using rule 45 (operation -> operation MULT operation .)
+    END             reduce using rule 45 (operation -> operation MULT operation .)
+    CPAREN          reduce using rule 45 (operation -> operation MULT operation .)
+    COMMA           reduce using rule 45 (operation -> operation MULT operation .)
+    AMOUNT          reduce using rule 45 (operation -> operation MULT operation .)
+    CBRACE          reduce using rule 45 (operation -> operation MULT operation .)
+
+  ! PLUS            [ shift and go to state 70 ]
+  ! MINUS           [ shift and go to state 71 ]
+  ! DIV             [ shift and go to state 72 ]
+  ! MULT            [ shift and go to state 73 ]
+
+
+state 111
+
+    (61) collection -> OBR collection_body CBR .
+
+    END             reduce using rule 61 (collection -> OBR collection_body CBR .)
+    COMMA           reduce using rule 61 (collection -> OBR collection_body CBR .)
+    CBRACE          reduce using rule 61 (collection -> OBR collection_body CBR .)
+
+
+state 112
+
+    (62) collection_body -> subType COMMA . collection_body
+    (62) collection_body -> . subType COMMA collection_body
+    (63) collection_body -> . subType
+    (64) collection_body -> . ID COMMA collection_body
+    (65) collection_body -> . ID
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
+
+    ID              shift and go to state 76
+    OBRACE          shift and go to state 32
+
+    subType                        shift and go to state 75
+    collection_body                shift and go to state 141
+
+state 113
+
+    (64) collection_body -> ID COMMA . collection_body
+    (62) collection_body -> . subType COMMA collection_body
+    (63) collection_body -> . subType
+    (64) collection_body -> . ID COMMA collection_body
+    (65) collection_body -> . ID
+    (58) subType -> . OBRACE bus CBRACE
+    (59) subType -> . OBRACE emp CBRACE
+    (60) subType -> . OBRACE prod CBRACE
+
+    ID              shift and go to state 76
+    OBRACE          shift and go to state 32
+
+    collection_body                shift and go to state 142
+    subType                        shift and go to state 75
+
+state 114
+
+    (48) operation -> OPAREN operation CPAREN .
+
+    PLUS            reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    MINUS           reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    DIV             reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    MULT            reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    END             reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    CPAREN          reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    COMMA           reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    AMOUNT          reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+    CBRACE          reduce using rule 48 (operation -> OPAREN operation CPAREN .)
+
+
+state 115
+
+    (9) Instruction -> IfStatement ELSE OBRACE ListInst CBRACE .
+
+    END             reduce using rule 9 (Instruction -> IfStatement ELSE OBRACE ListInst CBRACE .)
+
+
+state 116
+
+    (25) loop_statements -> FOREACH ID IN ID OBRACE . ListInst CBRACE
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
+
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
+
+    ListInst                       shift and go to state 143
+    Instruction                    shift and go to state 3
+    instance                       shift and go to state 4
+    loop_statements                shift and go to state 7
+    IfStatement                    shift and go to state 8
+
+state 117
+
+    (37) bool_expression -> OPAREN bool_expression CPAREN .
+
+    AND             reduce using rule 37 (bool_expression -> OPAREN bool_expression CPAREN .)
+    OR              reduce using rule 37 (bool_expression -> OPAREN bool_expression CPAREN .)
+    CPAREN          reduce using rule 37 (bool_expression -> OPAREN bool_expression CPAREN .)
+
+
+state 118
+
+    (26) loop_statements -> WHILE OPAREN condition CPAREN OBRACE . ListInst CBRACE
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
+
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
+
+    ListInst                       shift and go to state 144
+    Instruction                    shift and go to state 3
+    instance                       shift and go to state 4
+    loop_statements                shift and go to state 7
+    IfStatement                    shift and go to state 8
+
+state 119
+
+    (30) bool_expression -> bool_expression AND bool_expression .
+    (30) bool_expression -> bool_expression . AND bool_expression
+    (31) bool_expression -> bool_expression . OR bool_expression
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CPAREN          reduce using rule 30 (bool_expression -> bool_expression AND bool_expression .)
+    AND             shift and go to state 84
+    OR              shift and go to state 85
+
+  ! AND             [ reduce using rule 30 (bool_expression -> bool_expression AND bool_expression .) ]
+  ! OR              [ reduce using rule 30 (bool_expression -> bool_expression AND bool_expression .) ]
+
+
+state 120
+
+    (31) bool_expression -> bool_expression OR bool_expression .
+    (30) bool_expression -> bool_expression . AND bool_expression
+    (31) bool_expression -> bool_expression . OR bool_expression
+
+  ! shift/reduce conflict for AND resolved as shift
+  ! shift/reduce conflict for OR resolved as shift
+    CPAREN          reduce using rule 31 (bool_expression -> bool_expression OR bool_expression .)
+    AND             shift and go to state 84
+    OR              shift and go to state 85
+
+  ! AND             [ reduce using rule 31 (bool_expression -> bool_expression OR bool_expression .) ]
+  ! OR              [ reduce using rule 31 (bool_expression -> bool_expression OR bool_expression .) ]
+
+
+state 121
+
+    (32) bool_expression -> ID EQUAL ID .
+
+    AND             reduce using rule 32 (bool_expression -> ID EQUAL ID .)
+    OR              reduce using rule 32 (bool_expression -> ID EQUAL ID .)
+    CPAREN          reduce using rule 32 (bool_expression -> ID EQUAL ID .)
+
+
+state 122
+
+    (33) bool_expression -> ID LEQ ID .
+
+    AND             reduce using rule 33 (bool_expression -> ID LEQ ID .)
+    OR              reduce using rule 33 (bool_expression -> ID LEQ ID .)
+    CPAREN          reduce using rule 33 (bool_expression -> ID LEQ ID .)
+
+
+state 123
+
+    (34) bool_expression -> ID GEQ ID .
+
+    AND             reduce using rule 34 (bool_expression -> ID GEQ ID .)
+    OR              reduce using rule 34 (bool_expression -> ID GEQ ID .)
+    CPAREN          reduce using rule 34 (bool_expression -> ID GEQ ID .)
+
+
+state 124
+
+    (35) bool_expression -> ID GREATER ID .
+
+    AND             reduce using rule 35 (bool_expression -> ID GREATER ID .)
+    OR              reduce using rule 35 (bool_expression -> ID GREATER ID .)
+    CPAREN          reduce using rule 35 (bool_expression -> ID GREATER ID .)
+
+
+state 125
+
+    (36) bool_expression -> ID LESS ID .
+
+    AND             reduce using rule 36 (bool_expression -> ID LESS ID .)
+    OR              reduce using rule 36 (bool_expression -> ID LESS ID .)
+    CPAREN          reduce using rule 36 (bool_expression -> ID LESS ID .)
+
+
+state 126
+
+    (38) bool_expression -> ID IN ID .
+
+    AND             reduce using rule 38 (bool_expression -> ID IN ID .)
+    OR              reduce using rule 38 (bool_expression -> ID IN ID .)
+    CPAREN          reduce using rule 38 (bool_expression -> ID IN ID .)
+
+
+state 127
+
+    (27) IfStatement -> IF OPAREN condition CPAREN OBRACE . ListInst CBRACE
+    (2) ListInst -> . Instruction END ListInst
+    (3) ListInst -> . Instruction END
+    (4) Instruction -> . instance
+    (5) Instruction -> . SAVE ID
+    (6) Instruction -> . ID GET METRICS DATE
+    (7) Instruction -> . loop_statements
+    (8) Instruction -> . IfStatement
+    (9) Instruction -> . IfStatement ELSE OBRACE ListInst CBRACE
+    (10) Instruction -> . ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> . ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID
+    (12) Instruction -> . ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation
+    (13) Instruction -> . ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> . ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID
+    (15) Instruction -> . ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation
+    (16) Instruction -> . ID ADD ID
+    (17) Instruction -> . ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+    (18) Instruction -> . ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+    (19) Instruction -> . ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+    (20) Instruction -> . ID ADD subType
+    (21) Instruction -> . ID DEL NAME
+    (22) Instruction -> . ID DEL ID
+    (23) Instruction -> . ID DISMISS NAME
+    (24) Instruction -> . ID DISMISS ID
+    (39) instance -> . TYPE ID
+    (40) instance -> . TYPE ID ASSIGN Assignable
+    (41) instance -> . ID ASSIGN Assignable
+    (25) loop_statements -> . FOREACH ID IN ID OBRACE ListInst CBRACE
+    (26) loop_statements -> . WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE
+    (27) IfStatement -> . IF OPAREN condition CPAREN OBRACE ListInst CBRACE
+
+    SAVE            shift and go to state 5
+    ID              shift and go to state 6
+    TYPE            shift and go to state 9
+    FOREACH         shift and go to state 10
+    WHILE           shift and go to state 11
+    IF              shift and go to state 12
+
+    ListInst                       shift and go to state 145
+    Instruction                    shift and go to state 3
+    instance                       shift and go to state 4
+    loop_statements                shift and go to state 7
+    IfStatement                    shift and go to state 8
+
+state 128
+
+    (10) Instruction -> ID ACTION SALE ID PRICE DPOINT . NUMBER AMOUNT DPOINT NUMBER
+    (11) Instruction -> ID ACTION SALE ID PRICE DPOINT . ID AMOUNT DPOINT ID
+    (12) Instruction -> ID ACTION SALE ID PRICE DPOINT . operation AMOUNT DPOINT operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    NUMBER          shift and go to state 147
+    ID              shift and go to state 146
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 148
+
+state 129
+
+    (13) Instruction -> ID ACTION INVESTS ID COST DPOINT . NUMBER AMOUNT DPOINT NUMBER
+    (14) Instruction -> ID ACTION INVESTS ID COST DPOINT . ID AMOUNT DPOINT ID
+    (15) Instruction -> ID ACTION INVESTS ID COST DPOINT . operation AMOUNT DPOINT operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    NUMBER          shift and go to state 150
+    ID              shift and go to state 149
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 151
+
+state 130
+
+    (19) Instruction -> ID ADD BILL OBRACE ID COMMA . DESCRIP CBRACE
+
+    DESCRIP         shift and go to state 152
+
+
+state 131
+
+    (17) Instruction -> ID ADD BILL OBRACE NUMBER COMMA . DESCRIP CBRACE
+
+    DESCRIP         shift and go to state 153
+
+
+state 132
+
+    (18) Instruction -> ID ADD BILL OBRACE operation COMMA . DESCRIP CBRACE
+
+    DESCRIP         shift and go to state 154
+
+
+state 133
+
+    (66) bus -> NAME COMMA collection . COMMA collection
+
+    COMMA           shift and go to state 155
+
+
+state 134
+
+    (67) bus -> NAME COMMA ID . COMMA ID
+
+    COMMA           shift and go to state 156
+
+
+state 135
+
+    (68) emp -> NAME COMMA SALARY . DPOINT NUMBER
+    (69) emp -> NAME COMMA SALARY . DPOINT ID
+    (70) emp -> NAME COMMA SALARY . DPOINT operation
+
+    DPOINT          shift and go to state 157
+
+
+state 136
+
+    (71) prod -> NAME COMMA AMOUNT . DPOINT NUMBER
+    (73) prod -> NAME COMMA AMOUNT . DPOINT ID
+    (74) prod -> NAME COMMA AMOUNT . DPOINT operation
+
+    DPOINT          shift and go to state 158
+
+
+state 137
+
+    (51) Assignable -> GET NAME FROM ID .
+
+    END             reduce using rule 51 (Assignable -> GET NAME FROM ID .)
+
+
+state 138
+
+    (54) Assignable -> GET STAFF FROM ID .
+
+    END             reduce using rule 54 (Assignable -> GET STAFF FROM ID .)
+
+
+state 139
+
+    (55) Assignable -> GET CATALOG FROM ID .
+
+    END             reduce using rule 55 (Assignable -> GET CATALOG FROM ID .)
+
+
+state 140
+
+    (56) Assignable -> GET AMOUNT FROM ID .
+
+    END             reduce using rule 56 (Assignable -> GET AMOUNT FROM ID .)
+
+
+state 141
+
+    (62) collection_body -> subType COMMA collection_body .
+
+    CBR             reduce using rule 62 (collection_body -> subType COMMA collection_body .)
+
+
+state 142
+
+    (64) collection_body -> ID COMMA collection_body .
+
+    CBR             reduce using rule 64 (collection_body -> ID COMMA collection_body .)
+
+
+state 143
+
+    (25) loop_statements -> FOREACH ID IN ID OBRACE ListInst . CBRACE
+
+    CBRACE          shift and go to state 159
+
+
+state 144
+
+    (26) loop_statements -> WHILE OPAREN condition CPAREN OBRACE ListInst . CBRACE
+
+    CBRACE          shift and go to state 160
+
+
+state 145
+
+    (27) IfStatement -> IF OPAREN condition CPAREN OBRACE ListInst . CBRACE
+
+    CBRACE          shift and go to state 161
+
+
+state 146
+
+    (11) Instruction -> ID ACTION SALE ID PRICE DPOINT ID . AMOUNT DPOINT ID
+    (46) operation -> ID .
+
+  ! shift/reduce conflict for AMOUNT resolved as shift
+    AMOUNT          shift and go to state 162
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+
+  ! AMOUNT          [ reduce using rule 46 (operation -> ID .) ]
+
+
+state 147
+
+    (10) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER . AMOUNT DPOINT NUMBER
+    (47) operation -> NUMBER .
+
+  ! shift/reduce conflict for AMOUNT resolved as shift
+    AMOUNT          shift and go to state 163
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+
+  ! AMOUNT          [ reduce using rule 47 (operation -> NUMBER .) ]
+
+
+state 148
+
+    (12) Instruction -> ID ACTION SALE ID PRICE DPOINT operation . AMOUNT DPOINT operation
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    AMOUNT          shift and go to state 164
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 149
+
+    (14) Instruction -> ID ACTION INVESTS ID COST DPOINT ID . AMOUNT DPOINT ID
+    (46) operation -> ID .
+
+  ! shift/reduce conflict for AMOUNT resolved as shift
+    AMOUNT          shift and go to state 165
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+
+  ! AMOUNT          [ reduce using rule 46 (operation -> ID .) ]
+
+
+state 150
+
+    (13) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER . AMOUNT DPOINT NUMBER
+    (47) operation -> NUMBER .
+
+  ! shift/reduce conflict for AMOUNT resolved as shift
+    AMOUNT          shift and go to state 166
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+
+  ! AMOUNT          [ reduce using rule 47 (operation -> NUMBER .) ]
+
+
+state 151
+
+    (15) Instruction -> ID ACTION INVESTS ID COST DPOINT operation . AMOUNT DPOINT operation
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    AMOUNT          shift and go to state 167
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 152
+
+    (19) Instruction -> ID ADD BILL OBRACE ID COMMA DESCRIP . CBRACE
+
+    CBRACE          shift and go to state 168
+
+
+state 153
+
+    (17) Instruction -> ID ADD BILL OBRACE NUMBER COMMA DESCRIP . CBRACE
+
+    CBRACE          shift and go to state 169
+
+
+state 154
+
+    (18) Instruction -> ID ADD BILL OBRACE operation COMMA DESCRIP . CBRACE
+
+    CBRACE          shift and go to state 170
+
+
+state 155
+
+    (66) bus -> NAME COMMA collection COMMA . collection
+    (61) collection -> . OBR collection_body CBR
+
+    OBR             shift and go to state 45
+
+    collection                     shift and go to state 171
+
+state 156
+
+    (67) bus -> NAME COMMA ID COMMA . ID
+
+    ID              shift and go to state 172
+
+
+state 157
+
+    (68) emp -> NAME COMMA SALARY DPOINT . NUMBER
+    (69) emp -> NAME COMMA SALARY DPOINT . ID
+    (70) emp -> NAME COMMA SALARY DPOINT . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    NUMBER          shift and go to state 173
+    ID              shift and go to state 174
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 175
+
+state 158
+
+    (71) prod -> NAME COMMA AMOUNT DPOINT . NUMBER
+    (73) prod -> NAME COMMA AMOUNT DPOINT . ID
+    (74) prod -> NAME COMMA AMOUNT DPOINT . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    NUMBER          shift and go to state 176
+    ID              shift and go to state 177
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 178
+
+state 159
+
+    (25) loop_statements -> FOREACH ID IN ID OBRACE ListInst CBRACE .
+
+    END             reduce using rule 25 (loop_statements -> FOREACH ID IN ID OBRACE ListInst CBRACE .)
+
+
+state 160
+
+    (26) loop_statements -> WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE .
+
+    END             reduce using rule 26 (loop_statements -> WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE .)
+
+
+state 161
+
+    (27) IfStatement -> IF OPAREN condition CPAREN OBRACE ListInst CBRACE .
+
+    ELSE            reduce using rule 27 (IfStatement -> IF OPAREN condition CPAREN OBRACE ListInst CBRACE .)
+    END             reduce using rule 27 (IfStatement -> IF OPAREN condition CPAREN OBRACE ListInst CBRACE .)
+
+
+state 162
+
+    (11) Instruction -> ID ACTION SALE ID PRICE DPOINT ID AMOUNT . DPOINT ID
+
+    DPOINT          shift and go to state 179
+
+
+state 163
+
+    (10) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT . DPOINT NUMBER
+
+    DPOINT          shift and go to state 180
+
+
+state 164
+
+    (12) Instruction -> ID ACTION SALE ID PRICE DPOINT operation AMOUNT . DPOINT operation
+
+    DPOINT          shift and go to state 181
+
+
+state 165
+
+    (14) Instruction -> ID ACTION INVESTS ID COST DPOINT ID AMOUNT . DPOINT ID
+
+    DPOINT          shift and go to state 182
+
+
+state 166
+
+    (13) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT . DPOINT NUMBER
+
+    DPOINT          shift and go to state 183
+
+
+state 167
+
+    (15) Instruction -> ID ACTION INVESTS ID COST DPOINT operation AMOUNT . DPOINT operation
+
+    DPOINT          shift and go to state 184
+
+
+state 168
+
+    (19) Instruction -> ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE .
+
+    END             reduce using rule 19 (Instruction -> ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE .)
+
+
+state 169
+
+    (17) Instruction -> ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE .
+
+    END             reduce using rule 17 (Instruction -> ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE .)
+
+
+state 170
+
+    (18) Instruction -> ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE .
+
+    END             reduce using rule 18 (Instruction -> ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE .)
+
+
+state 171
+
+    (66) bus -> NAME COMMA collection COMMA collection .
+
+    CBRACE          reduce using rule 66 (bus -> NAME COMMA collection COMMA collection .)
+
+
+state 172
+
+    (67) bus -> NAME COMMA ID COMMA ID .
+
+    CBRACE          reduce using rule 67 (bus -> NAME COMMA ID COMMA ID .)
+
+
+state 173
+
+    (68) emp -> NAME COMMA SALARY DPOINT NUMBER .
+    (47) operation -> NUMBER .
+
+  ! reduce/reduce conflict for CBRACE resolved using rule 47 (operation -> NUMBER .)
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+    CBRACE          reduce using rule 47 (operation -> NUMBER .)
+
+  ! CBRACE          [ reduce using rule 68 (emp -> NAME COMMA SALARY DPOINT NUMBER .) ]
+
+
+state 174
+
+    (69) emp -> NAME COMMA SALARY DPOINT ID .
+    (46) operation -> ID .
+
+  ! reduce/reduce conflict for CBRACE resolved using rule 46 (operation -> ID .)
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+    CBRACE          reduce using rule 46 (operation -> ID .)
+
+  ! CBRACE          [ reduce using rule 69 (emp -> NAME COMMA SALARY DPOINT ID .) ]
+
+
+state 175
+
+    (70) emp -> NAME COMMA SALARY DPOINT operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    CBRACE          reduce using rule 70 (emp -> NAME COMMA SALARY DPOINT operation .)
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 176
+
+    (71) prod -> NAME COMMA AMOUNT DPOINT NUMBER .
+    (47) operation -> NUMBER .
+
+  ! reduce/reduce conflict for CBRACE resolved using rule 47 (operation -> NUMBER .)
+    PLUS            reduce using rule 47 (operation -> NUMBER .)
+    MINUS           reduce using rule 47 (operation -> NUMBER .)
+    DIV             reduce using rule 47 (operation -> NUMBER .)
+    MULT            reduce using rule 47 (operation -> NUMBER .)
+    CBRACE          reduce using rule 47 (operation -> NUMBER .)
+
+  ! CBRACE          [ reduce using rule 71 (prod -> NAME COMMA AMOUNT DPOINT NUMBER .) ]
+
+
+state 177
+
+    (73) prod -> NAME COMMA AMOUNT DPOINT ID .
+    (46) operation -> ID .
+
+  ! reduce/reduce conflict for CBRACE resolved using rule 46 (operation -> ID .)
+    PLUS            reduce using rule 46 (operation -> ID .)
+    MINUS           reduce using rule 46 (operation -> ID .)
+    DIV             reduce using rule 46 (operation -> ID .)
+    MULT            reduce using rule 46 (operation -> ID .)
+    CBRACE          reduce using rule 46 (operation -> ID .)
+
+  ! CBRACE          [ reduce using rule 73 (prod -> NAME COMMA AMOUNT DPOINT ID .) ]
+
+
+state 178
+
+    (74) prod -> NAME COMMA AMOUNT DPOINT operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    CBRACE          reduce using rule 74 (prod -> NAME COMMA AMOUNT DPOINT operation .)
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 179
+
+    (11) Instruction -> ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT . ID
+
+    ID              shift and go to state 185
+
+
+state 180
+
+    (10) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT . NUMBER
+
+    NUMBER          shift and go to state 186
+
+
+state 181
+
+    (12) Instruction -> ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 187
+
+state 182
+
+    (14) Instruction -> ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT . ID
+
+    ID              shift and go to state 188
+
+
+state 183
+
+    (13) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT . NUMBER
+
+    NUMBER          shift and go to state 189
+
+
+state 184
+
+    (15) Instruction -> ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT . operation
+    (42) operation -> . operation PLUS operation
+    (43) operation -> . operation MINUS operation
+    (44) operation -> . operation DIV operation
+    (45) operation -> . operation MULT operation
+    (46) operation -> . ID
+    (47) operation -> . NUMBER
+    (48) operation -> . OPAREN operation CPAREN
+
+    ID              shift and go to state 78
+    NUMBER          shift and go to state 46
+    OPAREN          shift and go to state 47
+
+    operation                      shift and go to state 190
+
+state 185
+
+    (11) Instruction -> ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID .
+
+    END             reduce using rule 11 (Instruction -> ID ACTION SALE ID PRICE DPOINT ID AMOUNT DPOINT ID .)
+
+
+state 186
+
+    (10) Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER .
+
+    END             reduce using rule 10 (Instruction -> ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER .)
+
+
+state 187
+
+    (12) Instruction -> ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    END             reduce using rule 12 (Instruction -> ID ACTION SALE ID PRICE DPOINT operation AMOUNT DPOINT operation .)
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+
+state 188
+
+    (14) Instruction -> ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID .
+
+    END             reduce using rule 14 (Instruction -> ID ACTION INVESTS ID COST DPOINT ID AMOUNT DPOINT ID .)
+
+
+state 189
+
+    (13) Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER .
+
+    END             reduce using rule 13 (Instruction -> ID ACTION INVESTS ID COST DPOINT NUMBER AMOUNT DPOINT NUMBER .)
+
+
+state 190
+
+    (15) Instruction -> ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation .
+    (42) operation -> operation . PLUS operation
+    (43) operation -> operation . MINUS operation
+    (44) operation -> operation . DIV operation
+    (45) operation -> operation . MULT operation
+
+    END             reduce using rule 15 (Instruction -> ID ACTION INVESTS ID COST DPOINT operation AMOUNT DPOINT operation .)
+    PLUS            shift and go to state 70
+    MINUS           shift and go to state 71
+    DIV             shift and go to state 72
+    MULT            shift and go to state 73
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for AND in state 86 resolved as shift
+WARNING: shift/reduce conflict for OR in state 86 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 96 resolved as shift
+WARNING: shift/reduce conflict for COMMA in state 97 resolved as shift
+WARNING: shift/reduce conflict for AND in state 119 resolved as shift
+WARNING: shift/reduce conflict for OR in state 119 resolved as shift
+WARNING: shift/reduce conflict for AND in state 120 resolved as shift
+WARNING: shift/reduce conflict for OR in state 120 resolved as shift
+WARNING: shift/reduce conflict for AMOUNT in state 146 resolved as shift
+WARNING: shift/reduce conflict for AMOUNT in state 147 resolved as shift
+WARNING: shift/reduce conflict for AMOUNT in state 149 resolved as shift
+WARNING: shift/reduce conflict for AMOUNT in state 150 resolved as shift
+WARNING: reduce/reduce conflict in state 38 resolved using rule (operation -> ID)
+WARNING: rejected rule (Assignable -> ID) in state 38
+WARNING: reduce/reduce conflict in state 173 resolved using rule (operation -> NUMBER)
+WARNING: rejected rule (emp -> NAME COMMA SALARY DPOINT NUMBER) in state 173
+WARNING: reduce/reduce conflict in state 174 resolved using rule (operation -> ID)
+WARNING: rejected rule (emp -> NAME COMMA SALARY DPOINT ID) in state 174
+WARNING: reduce/reduce conflict in state 176 resolved using rule (operation -> NUMBER)
+WARNING: rejected rule (prod -> NAME COMMA AMOUNT DPOINT NUMBER) in state 176
+WARNING: reduce/reduce conflict in state 177 resolved using rule (operation -> ID)
+WARNING: rejected rule (prod -> NAME COMMA AMOUNT DPOINT ID) in state 177
+WARNING: Rule (Assignable -> ID) is never reduced
+WARNING: Rule (emp -> NAME COMMA SALARY DPOINT NUMBER) is never reduced
+WARNING: Rule (emp -> NAME COMMA SALARY DPOINT ID) is never reduced
+WARNING: Rule (prod -> NAME COMMA AMOUNT DPOINT NUMBER) is never reduced
+WARNING: Rule (prod -> NAME COMMA AMOUNT DPOINT ID) is never reduced

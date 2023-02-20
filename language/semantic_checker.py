@@ -45,7 +45,7 @@ class SemanticChecker:
     
         self.visit(node.value)
         if not(current_type.name in node.value.processed_type):
-            raise TypeError("Bad Type declaration")
+            raise TypeError(f"Bad Type declaration: {current_type.name} = {node.value.processed_type}")
 
         self.scope.set(node.id, node.value.processed_type)
         node.processed_type = node.value.processed_type
@@ -90,7 +90,8 @@ class SemanticChecker:
             if not float.is_integer(node.amount.number):
                 raise Exception("The amount must be an integer")
         except:
-            node.processed_type = "product"
+            pass
+        node.processed_type = "product"
     
     @when(Emp_Node)
     def visit(self, node : Emp_Node):
@@ -102,8 +103,12 @@ class SemanticChecker:
     @when(Bill_Node)
     def visit(self, node : Bill_Node):
         self.visit(node.business)
+        self.visit(node.cost)
         if node.business.processed_type != "business":
             raise Exception("Only can add bills on business")
+        
+        if node.cost.processed_type != "number":
+            raise Exception("Cost must be a number")
         node.processed_type = "bill"
 
     @when(Number_Node)
@@ -161,25 +166,43 @@ class SemanticChecker:
     def visit(self, node : ActionSALE):
         self.visit(node.business)
         self.visit(node.product)
+        self.visit(node.sale_price)
+        self.visit(node.amount)
         if node.business.processed_type != "business":
             raise Exception("Only can make an action sale from business")
         if node.product.processed_type != "product":
             raise Exception("Only can make an action sale over a product")
-        if not float.is_integer(node.amount):
-            raise Exception("The amount must be an integer")
-        
+        if node.sale_price.processed_type != "number":
+            raise Exception("Sale price must be a number")
+        if node.amount.processed_type != "number":
+            raise Exception("Amount must be a number")
+        try:
+            if not float.is_integer(node.amount.number):
+                raise Exception("The amount must be an integer")
+        except:
+            pass
+
         node.processed_type = "actionSale"
     
     @when(ActionINVESTS)
     def visit(self, node : ActionINVESTS):
         self.visit(node.business)
         self.visit(node.product)
+        self.visit(node.sale_price)
+        self.visit(node.amount)
         if node.business.processed_type != "business":
             raise Exception("Only can make an action invest from business")
         if node.product.processed_type != "product":
             raise Exception("Only can make an action invest over a product")
-        if not float.is_integer(node.amount):
-            raise Exception("The amount must be an integer")
+        if node.sale_price.processed_type != "number":
+            raise Exception("Sale price must be a number")
+        if node.amount.processed_type != "number":
+            raise Exception("Amount must be a number")
+        try:
+            if not float.is_integer(node.amount.number):
+                raise Exception("The amount must be an integer")
+        except:
+            pass
         
         node.processed_type = "actionInvest"
 

@@ -11,7 +11,7 @@ class LexerBusiness:
         "bill" : "BILL",
         "action" : "ACTION",
         "sale" : "SALE",
-        "invests" : "INVESTS",
+        "invest" : "INVESTS",
         "net-sales" : "METRICS",
         "gross-margin" : "METRICS",
         "gross-profit" : "METRICS",
@@ -37,7 +37,13 @@ class LexerBusiness:
         "in" : "IN",
         "not" : "NOT",
         "and" : "AND",
-        "or" : "OR"
+        "or" : "OR",
+        "dismiss" : "DISMISS",
+        "staff" : "STAFF",
+        "while" : "WHILE",
+        "catalog" : "CATALOG",
+        "salary" : "SALARY",
+        
     }
 
     tokens = [
@@ -92,7 +98,7 @@ class LexerBusiness:
     t_DESCRIP = r'"[a-zA-Z][a-zA-Z_\s]+"'
 
     def t_NUMBER (self,t):
-        r'\d+\.?\d+'
+        r'\d+(\.\d+)?'
         try:
             t.value = float(t.value)
         except ValueError:
@@ -106,7 +112,7 @@ class LexerBusiness:
         return t
     
     def t_DATE(self, t):
-        r"^([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})"
+        r"([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})"
         d = None
         try:
             d = t.value.split('/')

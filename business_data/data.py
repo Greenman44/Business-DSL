@@ -52,46 +52,46 @@ class Business_Data:
     def get_product(self, name: str) -> Product:
         for i in self.product_table.index:
             if self.product_table.at[i, "name"] == name:
-                return i, Product(name, amount = self.product_table.at[i, "amount"])
+                return i, Product(name, amount = Number(self.product_table.at[i, "amount"]))
         raise Exception("Product not found")
 
     def get_employed(self, name: str) -> Employed:
         """Get employed from employed table"""
         for i in self.employed_table.index:
             if self.employed_table.at[i, "name"] == name:
-                return i, Employed(name, self.employed_table.at[i, "salary"])
+                return i, Employed(name, Number(self.employed_table.at[i, "salary"]))
         raise Exception("Employed not found")
 
     def get_catalogue(self) -> Collection:
         """return collection of products"""
         catalog = []
         for i in self.product_table.index:
-            current_product = Product(self.product_table.at[i, "name"], amount=self.product_table.at[i, "amount"])
+            current_product = Product(self.product_table.at[i, "name"], amount=Number(self.product_table.at[i, "amount"]))
             catalog.append(current_product)
         return Collection(catalog)
 
     def get_staff(self) -> Collection:
         staff = []
         for i in self.employed_table.index:
-            current_employed = Product(self.employed_table.at[i, "name"], amount=self.employed_table.at[i, "salary"])
+            current_employed = Employed(self.employed_table.at[i, "name"], Number(self.employed_table.at[i, "salary"]))
             staff.append(current_employed)
         return Collection(staff)
 
     def add_product(self, product: Product):
         """add product to product table"""
         self.product_table = self.product_table.append(
-            {"name": product.name, "amount": product.amount}, ignore_index=True
+            {"name": product.name, "amount": product.amount.number}, ignore_index=True
         )
 
     def add_employed(self, employed: Employed):
         """add employed to employed table"""
         self.employed_table = self.employed_table.append(
-            {"name": employed.name, "salary": employed.salary}, ignore_index=True
+            {"name": employed.name, "salary": employed.salary.number}, ignore_index=True
         )
 
     def add_productCollection(self, collection: Collection):
         data_names = [product.name for product in collection]
-        data_amounts = [product.amount for product in collection]
+        data_amounts = [product.amount.number for product in collection]
         new_products = pd.DataFrame()
         new_products["name"] = data_names
         new_products["amount"] = data_amounts
@@ -101,7 +101,7 @@ class Business_Data:
 
     def add_employedCollection(self, collection: Collection):
         data_names = [employed.name for employed in collection]
-        data_salaries = [employed.salary for employed in collection]
+        data_salaries = [employed.salary.number for employed in collection]
         new_employees = pd.DataFrame()
         new_employees["name"] = data_names
         new_employees["salary"] = data_salaries
@@ -111,13 +111,13 @@ class Business_Data:
 
     def fill_catalog(self, coll_products: Collection):
         data_name = [product.name for product in coll_products]
-        data_amount = [0 for i in range(len(coll_products))]
+        data_amount = [product.amount.number for product in coll_products]
         self.product_table["name"] = data_name
         self.product_table["amount"] = data_amount
 
     def fill_staff(self, coll_employees: Collection):
         data_name = [employed.name for employed in coll_employees]
-        data_salary = [employed.salary for employed in coll_employees]
+        data_salary = [employed.salary.number for employed in coll_employees]
         self.employed_table["name"] = data_name
         self.employed_table["salary"] = data_salary
 
@@ -130,7 +130,7 @@ class Business_Data:
 
     def delete_employedCollection(self, collection: Collection):
         data_names = [e.name for e in collection]
-        data_salary = [e.salary for e in collection]
+        data_salary = [e.salary.number for e in collection]
         df_toDrop = pd.DataFrame()
         df_toDrop["name"] = data_names
         df_toDrop["salary"] = data_salary
@@ -147,7 +147,7 @@ class Business_Data:
 
     def delete_productCollection(self, collection: Collection):
         data_names = [e.name for e in collection]
-        data_amounts = [0 for e in collection]
+        data_amounts = [e.amount.number for e in collection]
         df_toDrop = pd.DataFrame()
         df_toDrop["name"] = data_names
         df_toDrop["amount"] = data_amounts
@@ -195,14 +195,14 @@ class Business_Data:
 
     def make_sale(self, sale : Sale):
         index, current_product = self.get_product(sale.product.name)
-        self.product_table.at[index, "amount"] = current_product.amount - sale.amount
+        self.product_table.at[index, "amount"] = current_product.amount.number - sale.amount
         self.sales_table = self.sales_table.append({"product" : sale.product.name,"price" : sale.price , "amount" : sale.amount, "date" : date.today()}, ignore_index=True)
     
 
     def make_invest(self, invest: Invest):
         try:
             index, current_product = self.get_product(invest.product.name)
-            self.product_table.at[index, "amount"] = current_product.amount + invest.amount
+            self.product_table.at[index, "amount"] = current_product.amount.number + invest.amount
         except:
             self.add_product(invest.product)
         self.invests_table = self.invests_table.append({"product" : invest.product.name,"cost" : invest.cost , "amount" : invest.amount, "date" : date.today()}, ignore_index=True)
@@ -268,17 +268,17 @@ class Business:
         else:
             self.data = data
 
-    def add_Bill(self, cost:float, description:str):
-        self.data.add_bill(Bill(bill_type=description, cost=cost, date=date.today()))
+    def add_Bill(self, cost:Number, description:str):
+        self.data.add_bill(Bill(bill_type=description, cost=cost.number, date=date.today()))
 
     def save(self):
         self.data.Save_DatatoExcel()
 
-    def make_sale(self, product_name:str, price:float, amount):
-        self.data.make_sale(Sale(product=Product(product_name), price=price, amount=int(amount)))
+    def make_sale(self, product_name:str, price:Number, amount: Number):
+        self.data.make_sale(Sale(product=Product(product_name), price=price.number, amount=int(amount.number)))
 
-    def make_invest(self, product_name:str, cost:float, amount:float):
-        self.data.make_invest(Invest(product=Product(product_name), cost=cost, amount=int(amount)))
+    def make_invest(self, product_name:str, cost:Number, amount:Number):
+        self.data.make_invest(Invest(product=Product(product_name, amount=amount), cost=cost.number, amount=int(amount.number)))
 
     def calculate_metrics(self, metric : str, date):
         return self.data.get_metric(metric, date)
@@ -321,7 +321,10 @@ class Business:
             self.catalogue._delete_coll(item)
         else:
             self.catalogue._delete_instanceByName(item)
-        self.data.delete_product(item)
+        try:
+            self.data.delete_product(item.name)
+        except:
+            self.data.delete_product(item)
 
     def dismiss(self, item):
         if isinstance(item, Employed):
@@ -330,6 +333,11 @@ class Business:
             self.staff._delete_coll(item)
         else:
             self.staff._delete_instanceByName(item)
+        
+        try:
+            self.data.delete_employed(item.name)
+        except:
+            self.data.delete_employed(item)
 
     def __hash__(self) -> int:
         return self.name.__hash__()
@@ -359,7 +367,7 @@ class Collection:
 
     def _delete_coll(self, collection):
         for item in collection:
-            self.delete_instance(item)
+            self._delete_instance(item)
 
     def _delete_instance(self, item):
         try:
@@ -378,7 +386,7 @@ class Collection:
             if name == item.name:
                 current_item = item
                 break
-        self.delete_instance(current_item)
+        self._delete_instance(current_item)
 
     def get_type(self):
         return self.peek().__class__.__name__.lower()
@@ -518,7 +526,7 @@ class Number:
 
 
 class Product:
-    def __init__(self, name, amount=0):
+    def __init__(self, name, amount=Number(0)):
         self.name = name
         self.amount = amount
 
