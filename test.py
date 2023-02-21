@@ -1,12 +1,12 @@
 from business_parser import parser
 from lexer import LexerBusiness
 from language import Evaluator, Scope, SemanticChecker
-#from business_data.data import  Collection, Product, Business_Data, Business, Employed, Invest
+from business_data.data import  Collection, Product, Business_Data, Business, Employed, Number, Invest
 # import re
 # from business_data import Number
 
-# a = Number(2)
-
+a =Collection([Employed( "prueba" , Number(300)), Employed("prueba2", Number(200))])
+print(a)
 # print(a.__class__.__name__)
 # SemanticChecker, Scope,
 # l = LexerBusiness()
@@ -58,17 +58,20 @@ try:
     s = '''
     employed e1 = {"Juan", salary : 300};
     employed e2 = {"Pedro", salary : 400};
+    employed e3 = {"Antonio", salary : 500};
     product p1 = {"Tomate", amount : 100};
     product p2 = {"Hierro", amount : 30};
-    collection employeds = [e1, e2];
+    collection employeds = [e1, e2, e3];
+    collection a = [];
     num n1 = 20;
     num n2 = 10;
     num n3 = 10;
     num n4 = 30;
+    foreach item in employeds {
+        a add item;
+    };
+    print : a;
 
-    
-    num n5 = (n2 + n1) * (n4 + n3);
-    print : employeds;
 '''
 # TODO: We need to check the number __str__() because is not working as expected
     # employed e1 = {"Juan", salary : 300};

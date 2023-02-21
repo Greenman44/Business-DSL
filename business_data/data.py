@@ -441,7 +441,7 @@ class Collection:
 class Employed:
     def __init__(self, name, salary):
         self.name = name
-        self.salary : float = salary
+        self.salary = salary
 
     def __str__(self) -> str:
         return f"(name : {self.name}, salary : {str(self.salary)})"
@@ -537,7 +537,7 @@ class Product:
         self.amount = amount
 
     def __str__(self) -> str:
-        return self.name
+        return f"(name : {self.name}, amount : {str(self.amount)})"
 
     def __repr__(self) -> str:
         return str(self)

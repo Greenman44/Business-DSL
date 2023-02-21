@@ -51,11 +51,22 @@ class Evaluator:
 
     @when(Emp_Node)
     def visit(self, emp_node : Emp_Node):
-        return Employed(emp_node.name, emp_node.number)
+        var_salary = self.visit(emp_node.number)
+        try:
+            var_salary = var_salary.value
+        except:
+            pass
+        
+        return Employed(emp_node.name, var_salary)
     
     @when(Prod_Node)
     def visit(self, prod_node : Prod_Node):
-        return Product(prod_node.name, amount=prod_node.amount)
+        var_amount = self.visit(prod_node.amount)
+        try:
+            var_amount = var_amount.value
+        except:
+            pass
+        return Product(prod_node.name, amount=var_amount)
 
     @when(Bill_Node)
     def visit(self, bill_node : Bill_Node):
@@ -212,7 +223,7 @@ class Evaluator:
     
     @when(Foreach_node)
     def visit(self, foreach : Foreach_node):
-        coll : Collection = self.visit(foreach.collection)
+        coll : Collection = self.visit(foreach.collection).value
         type_coll = coll.get_type()
         for item in coll:
             foreach_scope = self.scope.new_child()

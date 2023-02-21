@@ -117,6 +117,9 @@ class SemanticChecker:
 
     @when(Collection_Node)
     def visit(self, node : Collection_Node):
+        if len(node.collection) == 0:
+            node.processed_type = "collection"
+            return
         self.visit(node.collection[0])
         current_type = node.collection[0].processed_type
         for i in range(1, len(node.collection)):

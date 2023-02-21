@@ -110,7 +110,7 @@ def p_loops_statements(p):
     '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
                        | WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE'''
     if p[1] == "foreach":
-        p[0] = Foreach_node(p[2], p[4], p[6])
+        p[0] = Foreach_node(p[2], VariableCall(p[4]), p[6])
     else:
         p[0] = While_node(p[3], p[6])
 
@@ -229,13 +229,17 @@ def p_subType(p):
     p[0] = p[2]       
 
 def p_collection(p):
-    "collection : OBR collection_body CBR"
+    '''collection : OBR collection_body CBR
+                  | OBR CBR
+                ''' 
     p[0] = Collection_Node(p[2])
+    p[0] = Collection_Node([])
 
 
 def p_collection_body(p):
     '''collection_body : subType COMMA collection_body
-                       | subType'''
+                       | subType
+                       '''
     if len(p) ==  4:
         p[0] = [p[1]] + p[3]
     elif len(p) == 2:
@@ -243,7 +247,8 @@ def p_collection_body(p):
 
 def p_collection_body_ID(p):
     '''collection_body : ID COMMA collection_body
-                       | ID'''
+                       | ID
+                       '''
     if len(p) ==  4:
         p[0] = [VariableCall(p[1])] + p[3]
     elif len(p) == 2:
