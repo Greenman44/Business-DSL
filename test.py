@@ -61,19 +61,21 @@ try:
     employed e3 = {"Antonio", salary : 500};
     product p1 = {"Tomate", amount : 100};
     product p2 = {"Hierro", amount : 30};
-    collection employeds = [e1, e2, e3];
+    collection employeds = [e1, e2];
     collection a = [];
     num n1 = 20;
     num n2 = 10;
     num n3 = 10;
     num n4 = 30;
-    foreach item in employeds {
-        a add item;
-    };
+    a add p1;
+    a add p2;
     print : a;
 
 '''
 # TODO: We need to check the number __str__() because is not working as expected
+    # foreach item in employeds {
+    #     a add item;
+    # };
     # employed e1 = {"Juan", salary : 300};
     # employed e2 = {"Pedro", salary : 400};
     # product p1 = {"Tomate", amount : 100};

@@ -117,7 +117,7 @@ class SemanticChecker:
 
     @when(Collection_Node)
     def visit(self, node : Collection_Node):
-        if len(node.collection) == 0:
+        if node.collection == None:
             node.processed_type = "collection"
             return
         self.visit(node.collection[0])
@@ -213,13 +213,16 @@ class SemanticChecker:
     def visit(self, node : ActionADD):
         self.visit(node.collection_items)
         current_type = node.collection_items.processed_type
+        if current_type == "collection":
+            node.processed_type = "actionAdd"
+            return
         if current_type != "business" and not ("collection" in current_type):
             raise Exception("The type of the first ID has to be business or collection")
         self.visit(node.item)
         current_type_2 = node.item.processed_type
         if current_type == "business" and not("employed" in current_type_2) and not ("product" in current_type_2):
             raise Exception("You only can add to a business employeds and products")
-        if "collection" in current_type and current_type_2 not in current_type:
+        if ("collection" in current_type and current_type_2 not in current_type):
             raise Exception(f"You can not add {current_type_2} to a collection of {current_type}")
         node.processed_type = "actionAdd"
 

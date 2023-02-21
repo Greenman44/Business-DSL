@@ -69,9 +69,9 @@ Rule 59    subType -> OBRACE bus CBRACE
 Rule 60    subType -> OBRACE emp CBRACE
 Rule 61    subType -> OBRACE prod CBRACE
 Rule 62    collection -> OBR collection_body CBR
-Rule 63    collection -> OBR CBR
-Rule 64    collection_body -> subType COMMA collection_body
-Rule 65    collection_body -> subType
+Rule 63    collection_body -> subType COMMA collection_body
+Rule 64    collection_body -> subType
+Rule 65    collection_body -> empty
 Rule 66    collection_body -> ID COMMA collection_body
 Rule 67    collection_body -> ID
 Rule 68    bus -> NAME COMMA collection COMMA collection
@@ -83,6 +83,7 @@ Rule 73    prod -> NAME COMMA AMOUNT DPOINT NUMBER
 Rule 74    prod -> NAME
 Rule 75    prod -> NAME COMMA AMOUNT DPOINT ID
 Rule 76    prod -> NAME COMMA AMOUNT DPOINT operation
+Rule 77    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -93,9 +94,9 @@ AND                  : 31
 ASSIGN               : 41 42
 BILL                 : 17 18 19
 CATALOG              : 56
-CBR                  : 62 63
+CBR                  : 62
 CBRACE               : 9 17 18 19 26 27 28 59 60 61
-COMMA                : 17 18 19 64 66 68 68 69 69 70 71 72 73 75 76
+COMMA                : 17 18 19 63 66 68 68 69 69 70 71 72 73 75 76
 COST                 : 13 14 15
 CPAREN               : 27 28 38 49
 DATE                 : 6
@@ -125,7 +126,7 @@ MULT                 : 46
 NAME                 : 21 23 52 53 68 69 70 71 72 73 74 75 76
 NOT                  : 30
 NUMBER               : 10 10 13 13 17 48 70 73
-OBR                  : 62 63
+OBR                  : 62
 OBRACE               : 9 17 18 19 26 27 28 59 60 61
 OPAREN               : 27 28 38 49
 OR                   : 32
@@ -151,14 +152,15 @@ Program              : 0
 bool_expression      : 29 30 31 31 32 32 38
 bus                  : 59
 collection           : 51 68 68
-collection_body      : 62 64 66
+collection_body      : 62 63 66
 condition            : 27 28
 emp                  : 60
+empty                : 65
 instance             : 4
 loop_statements      : 7
 operation            : 12 12 15 15 18 43 43 44 44 45 45 46 46 49 54 72 76
 prod                 : 61
-subType              : 20 50 64 65
+subType              : 20 50 63 64
 
 Parsing method: LALR
 
@@ -456,7 +458,6 @@ state 21
     (60) subType -> . OBRACE emp CBRACE
     (61) subType -> . OBRACE prod CBRACE
     (62) collection -> . OBR collection_body CBR
-    (63) collection -> . OBR CBR
     (43) operation -> . operation PLUS operation
     (44) operation -> . operation MINUS operation
     (45) operation -> . operation DIV operation
@@ -731,21 +732,23 @@ state 46
 state 47
 
     (62) collection -> OBR . collection_body CBR
-    (63) collection -> OBR . CBR
-    (64) collection_body -> . subType COMMA collection_body
-    (65) collection_body -> . subType
+    (63) collection_body -> . subType COMMA collection_body
+    (64) collection_body -> . subType
+    (65) collection_body -> . empty
     (66) collection_body -> . ID COMMA collection_body
     (67) collection_body -> . ID
     (59) subType -> . OBRACE bus CBRACE
     (60) subType -> . OBRACE emp CBRACE
     (61) subType -> . OBRACE prod CBRACE
+    (77) empty -> .
 
-    CBR             shift and go to state 78
     ID              shift and go to state 80
     OBRACE          shift and go to state 34
+    CBR             reduce using rule 77 (empty -> .)
 
     collection_body                shift and go to state 77
-    subType                        shift and go to state 79
+    subType                        shift and go to state 78
+    empty                          shift and go to state 79
 
 state 48
 
@@ -850,7 +853,6 @@ state 52
     (60) subType -> . OBRACE emp CBRACE
     (61) subType -> . OBRACE prod CBRACE
     (62) collection -> . OBR collection_body CBR
-    (63) collection -> . OBR CBR
     (43) operation -> . operation PLUS operation
     (44) operation -> . operation MINUS operation
     (45) operation -> . operation DIV operation
@@ -1154,20 +1156,18 @@ state 77
 
 state 78
 
-    (63) collection -> OBR CBR .
+    (63) collection_body -> subType . COMMA collection_body
+    (64) collection_body -> subType .
 
-    END             reduce using rule 63 (collection -> OBR CBR .)
-    COMMA           reduce using rule 63 (collection -> OBR CBR .)
-    CBRACE          reduce using rule 63 (collection -> OBR CBR .)
+    COMMA           shift and go to state 116
+    CBR             reduce using rule 64 (collection_body -> subType .)
 
 
 state 79
 
-    (64) collection_body -> subType . COMMA collection_body
-    (65) collection_body -> subType .
+    (65) collection_body -> empty .
 
-    COMMA           shift and go to state 116
-    CBR             reduce using rule 65 (collection_body -> subType .)
+    CBR             reduce using rule 65 (collection_body -> empty .)
 
 
 state 80
@@ -1454,7 +1454,6 @@ state 106
     (75) prod -> NAME COMMA . AMOUNT DPOINT ID
     (76) prod -> NAME COMMA . AMOUNT DPOINT operation
     (62) collection -> . OBR collection_body CBR
-    (63) collection -> . OBR CBR
 
     ID              shift and go to state 138
     SALARY          shift and go to state 139
@@ -1598,37 +1597,45 @@ state 115
 
 state 116
 
-    (64) collection_body -> subType COMMA . collection_body
-    (64) collection_body -> . subType COMMA collection_body
-    (65) collection_body -> . subType
+    (63) collection_body -> subType COMMA . collection_body
+    (63) collection_body -> . subType COMMA collection_body
+    (64) collection_body -> . subType
+    (65) collection_body -> . empty
     (66) collection_body -> . ID COMMA collection_body
     (67) collection_body -> . ID
     (59) subType -> . OBRACE bus CBRACE
     (60) subType -> . OBRACE emp CBRACE
     (61) subType -> . OBRACE prod CBRACE
+    (77) empty -> .
 
     ID              shift and go to state 80
     OBRACE          shift and go to state 34
+    CBR             reduce using rule 77 (empty -> .)
 
-    subType                        shift and go to state 79
+    subType                        shift and go to state 78
     collection_body                shift and go to state 145
+    empty                          shift and go to state 79
 
 state 117
 
     (66) collection_body -> ID COMMA . collection_body
-    (64) collection_body -> . subType COMMA collection_body
-    (65) collection_body -> . subType
+    (63) collection_body -> . subType COMMA collection_body
+    (64) collection_body -> . subType
+    (65) collection_body -> . empty
     (66) collection_body -> . ID COMMA collection_body
     (67) collection_body -> . ID
     (59) subType -> . OBRACE bus CBRACE
     (60) subType -> . OBRACE emp CBRACE
     (61) subType -> . OBRACE prod CBRACE
+    (77) empty -> .
 
     ID              shift and go to state 80
     OBRACE          shift and go to state 34
+    CBR             reduce using rule 77 (empty -> .)
 
     collection_body                shift and go to state 146
-    subType                        shift and go to state 79
+    subType                        shift and go to state 78
+    empty                          shift and go to state 79
 
 state 118
 
@@ -2012,9 +2019,9 @@ state 144
 
 state 145
 
-    (64) collection_body -> subType COMMA collection_body .
+    (63) collection_body -> subType COMMA collection_body .
 
-    CBR             reduce using rule 64 (collection_body -> subType COMMA collection_body .)
+    CBR             reduce using rule 63 (collection_body -> subType COMMA collection_body .)
 
 
 state 146
@@ -2160,7 +2167,6 @@ state 159
 
     (68) bus -> NAME COMMA collection COMMA . collection
     (62) collection -> . OBR collection_body CBR
-    (63) collection -> . OBR CBR
 
     OBR             shift and go to state 47
 

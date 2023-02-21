@@ -45,8 +45,10 @@ class Evaluator:
     @when(Collection_Node)
     def visit(self, coll_node : Collection_Node):
         collection = []
-        for item in coll_node.collection:
-            collection.append(self.visit(item).value)
+        if coll_node.collection is not None:
+            for item in coll_node.collection:
+                collection.append(self.visit(item).value)
+            return Collection(collection)
         return Collection(collection)
 
     @when(Emp_Node)

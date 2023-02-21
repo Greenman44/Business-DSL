@@ -230,10 +230,8 @@ def p_subType(p):
 
 def p_collection(p):
     '''collection : OBR collection_body CBR
-                  | OBR CBR
                 ''' 
     p[0] = Collection_Node(p[2])
-    p[0] = Collection_Node([])
 
 
 def p_collection_body(p):
@@ -244,6 +242,9 @@ def p_collection_body(p):
         p[0] = [p[1]] + p[3]
     elif len(p) == 2:
         p[0] = [p[1]]
+
+def p_collection_body_empty(p):
+    'collection_body : empty'
 
 def p_collection_body_ID(p):
     '''collection_body : ID COMMA collection_body
@@ -289,6 +290,10 @@ def p_prod_ID(p):
 def p_prod_Oper(p):
     'prod : NAME COMMA AMOUNT DPOINT operation'
     p[0] = Prod_Node(p[1], amount=p[5])
+
+def p_empty(p):
+    'empty :'
+    pass
 
 
 def p_error(p):
