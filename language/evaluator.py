@@ -48,7 +48,6 @@ class Evaluator:
         if coll_node.collection is not None:
             for item in coll_node.collection:
                 collection.append(self.visit(item).value)
-            return Collection(collection)
         return Collection(collection)
 
     @when(Emp_Node)
@@ -220,7 +219,7 @@ class Evaluator:
     
     @when(GetAmount_node)
     def visit(self, getAmount : GetAmount_node):
-        var_product : Product = self.visit(getAmount.product)
+        var_product : Product = self.visit(getAmount.product).value
         return var_product.get_amount()
     
     @when(Foreach_node)
@@ -249,12 +248,21 @@ class Evaluator:
         var_condition = self.visit(if_statement.condition)
         
         if var_condition:
-            if_scope = self.scope.new_child(self.scope)
+            if_scope = self.scope.new_child()
             if_eva = Evaluator(if_scope)
             for node in if_statement.body:
                 if_eva.visit(node)
         return var_condition
-            
+
+    @when(ElseStatement)
+    def visit(self, else_statement: ElseStatement):
+        var_if = self.visit(else_statement.if_statement)
+        if not var_if:
+            else_scope = self.scope.new_child()
+            else_eval = Evaluator(else_scope)
+            for node in else_statement.body:
+                else_eval.visit(node)
+        return not var_if   
 
     @when(NotStatement)
     def visit(self, not_statement: NotStatement):

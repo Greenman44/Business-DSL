@@ -117,7 +117,7 @@ class SemanticChecker:
 
     @when(Collection_Node)
     def visit(self, node : Collection_Node):
-        if node.collection == None:
+        if len(node.collection) == 0:
             node.processed_type = "collection"
             return
         self.visit(node.collection[0])
@@ -212,13 +212,15 @@ class SemanticChecker:
     @when(ActionADD)
     def visit(self, node : ActionADD):
         self.visit(node.collection_items)
+        self.visit(node.item)
         current_type = node.collection_items.processed_type
         if current_type == "collection":
+            node.collection_items.processed_type += f"_{node.item.processed_type}"
+            self.scope.set(node.collection_items.id, node.collection_items.processed_type)
             node.processed_type = "actionAdd"
             return
         if current_type != "business" and not ("collection" in current_type):
             raise Exception("The type of the first ID has to be business or collection")
-        self.visit(node.item)
         current_type_2 = node.item.processed_type
         if current_type == "business" and not("employed" in current_type_2) and not ("product" in current_type_2):
             raise Exception("You only can add to a business employeds and products")
@@ -286,7 +288,11 @@ class SemanticChecker:
         var = self.scope.find(node.loop_var)
         if var != None:
             raise Exception("You can not declare two variables with the same name")
-        coll_type = node.collection.processed_type.split("_")[1]
+        try:
+            coll_type = node.collection.processed_type.split("_")[1]
+        except:
+            node.processed_type = "foreach"
+            return    
         foreach_scope = self.scope.new_child()
         foreach_scope.set(node.loop_var, coll_type)
         foreach_sem_check = SemanticChecker(foreach_scope)
@@ -380,11 +386,6 @@ class SemanticChecker:
         if current_type != "bool_expression":
             raise Exception("Only can make a not syntax to a bool_expression")
         node.processed_type = "bool_expression"
-
-
-    @when(ForeachStatement)
-    def visit(self, node : ForeachStatement):
-        pass
 
     @when(Metrics)
     def visit(self, node : Metrics):

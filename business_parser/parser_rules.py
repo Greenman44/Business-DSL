@@ -132,17 +132,21 @@ def p_bool_expression(p):
         bool_expression : NOT bool_expression
                         | bool_expression AND bool_expression
                         | bool_expression OR bool_expression
-                        | ID EQUAL ID
-                        | ID LEQ ID
-                        | ID GEQ ID
-                        | ID GREATER ID
-                        | ID LESS ID
                         '''
 
     if len(p) == 3:
         p[0] = NotStatement(p[2])
     elif len(p) == 4:
         p[0] = Bool_Expression_Node(p[1], p[3], p[2])
+
+def p_bool_expression_ID(p):
+    '''bool_expression  : ID EQUAL ID
+                        | ID LEQ ID
+                        | ID GEQ ID
+                        | ID GREATER ID
+                        | ID LESS ID '''
+    
+    p[0] = Bool_Expression_Node(VariableCall(p[1]), VariableCall(p[3]), p[2])
 
 def p_bool_expression_Paren(p):
     'bool_expression : OPAREN bool_expression CPAREN'
@@ -245,6 +249,7 @@ def p_collection_body(p):
 
 def p_collection_body_empty(p):
     'collection_body : empty'
+    p[0] = []
 
 def p_collection_body_ID(p):
     '''collection_body : ID COMMA collection_body

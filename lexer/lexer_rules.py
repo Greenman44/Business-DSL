@@ -21,7 +21,7 @@ class LexerBusiness:
         "load" : "LOAD",
         "save" : "SAVE",
         "amount" : "AMOUNT",
-        "GET" : "GET",
+        "get" : "GET",
         "add" : "ADD",
         "del" : "DEL",
         "load" : "LOAD",
