@@ -60,7 +60,7 @@
 ```
 
 #### Condicionales:
-```
+```python
   num x = 5;
   if( x > 1){
 
@@ -71,7 +71,7 @@
 ```
 
 #### Bucles:
-```
+```python
    num a = 1;
    num b = 2;
    num i = 1;
@@ -93,7 +93,7 @@
 ```
 
 #### Funciones built-in:
-```
+```python
     business b = load "laCuevita";
    
     product p = { "Azúcar_no_hay"};
