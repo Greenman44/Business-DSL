@@ -168,20 +168,19 @@ class SemanticChecker:
     @when(Date_node)
     def visit(self, node : Date_node):
         valid_dates = {
-            "TODAY" : date.today(),
-            "LAST MONTH" : date.today() - timedelta(days=30),
-            "LAST YEAR" : date.today() + timedelta(days=365)
+            "today" : date.today(),
+            "last_week" : date.today() - timedelta(days=7),
+            "last_month" : date.today() - timedelta(days=30),
+            "last_year" : date.today() + timedelta(days=365)
         }
         if isinstance(node.date, str):
             try:
                 a = valid_dates[node.date]
             except:
                 raise Exception("Invalid date was given")
-        else:
-            if node.date > date.today():
-                raise Exception("Only can make a metric with a date earlier")
+        
+        node.processed_type= "date"
 
-        node.processed_type("date")
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):

@@ -29,7 +29,11 @@ class Evaluator:
     @when(VariableAssignment)
     def visit(self, varAssign_node : VariableAssignment):
         var : Instance = self.scope.find(varAssign_node.id)
-        new_value = self.visit(varAssign_node.value) 
+        new_value = self.visit(varAssign_node.value)
+        try:
+            new_value = new_value.value
+        except:
+            pass
         var.value = new_value
     
     @when(VariableCall)
@@ -106,6 +110,7 @@ class Evaluator:
         var_prod : Product = self.visit(inv_node.product).value
         var_price : Number =  self.visit(inv_node.sale_price)
         var_amount : Number = self.visit(inv_node.amount)
+        
         try:
             var_price = var_price.value
             var_amount = var_amount.value
@@ -113,8 +118,7 @@ class Evaluator:
             pass
         if not float.is_integer(var_amount.number):
             raise Exception("Amount must be an integer")
-        if not var_bus.any_product(var_prod):
-            var_bus.add(var_prod)
+        var_amount += var_prod.amount
         var_bus.make_invest(var_prod.name, var_price, var_amount)
     
     @when(ActionADD)
@@ -157,30 +161,28 @@ class Evaluator:
     
     @when(Oper_Node)
     def visit(self, op_node : Oper_Node):
+        var_left = self.visit(op_node.left)
+        var_right = self.visit(op_node.right)
         try:
-            var_left = self.visit(op_node.left).value
+            var_left = var_left.value
+            var_right = var_right.value
         except:
-            var_left = self.visit(op_node.left)
-        try:
-            var_right = self.visit(op_node.right).value
-        except:
-            var_right = self.visit(op_node.right)
-        
+            pass
         
 
         operators = {
-                "+" : var_left + var_right,
-                "-" : var_left - var_right,
-                "/" : var_left / var_right,
-                "*" : var_left * var_right,
+                "+" : var_left.__add__,
+                "-" : var_left.__sub__,
+                "/" : var_left.__truediv__,
+                "*" : var_left.__mul__,
         }
-        return operators[op_node.oper]
+        return operators[op_node.oper](var_right)
 
     @when(Load)
     def visit(self, load_node : Load):
-        var_bus = self.visit(load_node.business)
+        
 
-        var_bus.value = Business_Data.LoadBusiness(load_node.name)
+        return Business_Data.LoadBusiness(load_node.name)
 
     
     @when(Save)
@@ -199,14 +201,16 @@ class Evaluator:
     @when(Date_node)
     def visit(self, date_node : Date_node):
         valid_dates = {
-            "TODAY" : date.today(),
-            "LAST MONTH" : date.today() - timedelta(days=30),
-            "LAST YEAR" : date.today() + timedelta(days=365)
+            "today" : date.today(),
+            "last_week" : date.today() - timedelta(days=7),
+            "last_month" : date.today() - timedelta(days=30),
+            "last_year" : date.today() + timedelta(days=365)
         }
         try:
             return valid_dates[date_node.date]
         except:
             return date_node.date
+            
     @when(Funct_Call_Node)
     def visit(self, call_node : Funct_Call_Node):
         func : Function = self.scope.find(call_node.id)
@@ -231,13 +235,14 @@ class Evaluator:
     def visit(self, function_node : Function_Node):
         self.scope.set(function_node.id, Function(parameters=function_node.params, body=function_node.body))
 
+        
 
     @when(Metrics)
     def visit(self, metrics : Metrics):
         var_bus : Business = self.visit(metrics.business).value
         var_date : date = self.visit(metrics.date)
 
-        var_bus.calculate_metrics(metrics.metric , var_date)
+        return var_bus.calculate_metrics(metrics.metric , var_date)
 
     @when(GetElementFrom_Statement)
     def visit(self, getElement : GetElementFrom_Statement):

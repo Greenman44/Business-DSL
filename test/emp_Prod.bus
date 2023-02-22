@@ -1,0 +1,9 @@
+employed e1 = {"Jose", salary : 600};
+employed e2 = {"Anthony", salary : 800};
+employed e3 = {"Marc", salary : 400};
+product p1 = {"Agua", amount : 200};
+product p2 ={"Ketchup", amount :100};
+collection emp = [e1,e2,e3];
+collection p = [p1,p2];
+business b = {"laCuevita",emp,p};
+save b;

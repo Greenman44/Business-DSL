@@ -216,6 +216,7 @@ class Business_Data:
     def get_investments(self, date : date):
         investments = 0
         for i in self.invests_table.index:
+            
             if self.invests_table.at[i,"date"] >= date:
                 investments += self.invests_table.at[i,"cost"]
         return investments
@@ -247,9 +248,9 @@ class Business_Data:
     
     def get_metric(self, current_metric : str, date: date):
         metrics = {
-            "net-sales" : self.get_net_sales,
-            "gross-profit" : self.get_gross_profit,
-            "gross-margin" :  self.get_gross_margin,
+            "net_sales" : self.get_net_sales,
+            "gross_profit" : self.get_gross_profit,
+            "gross_margin" :  self.get_gross_margin,
             "expenses" : self.get_expenses,
             "earnings" : self.get_earnings,
         }
@@ -275,9 +276,16 @@ class Business:
         self.data.Save_DatatoExcel()
 
     def make_sale(self, product_name:str, price:Number, amount: Number):
+        p = self.get(product_name)
+        p.amount -= amount
         self.data.make_sale(Sale(product=Product(product_name), price=price.number, amount=int(amount.number)))
 
     def make_invest(self, product_name:str, cost:Number, amount:Number):
+        try:
+            p1 = self.get(product_name)
+            p1.amount += amount
+        except:
+            self.catalogue.add(Product(product_name,amount))    
         self.data.make_invest(Invest(product=Product(product_name, amount=amount), cost=cost.number, amount=int(amount.number)))
 
     def calculate_metrics(self, metric : str, date):
@@ -343,13 +351,14 @@ class Business:
         return self.name.__hash__()
     
     def __str__(self) -> str:
-        print("BUSSINESS: " + self.name)
-        print("STAFF:")
-        for emp in self.staff.items():
-            print("name:"+ " " + emp.name + " " + "salary:"+ " " + emp.salary )
-        print("CATALOG:")
-        for prod in self.catalogue.items(): 
-            print("name:"+ " " + prod.name + " " + "amount:"+ " " + prod.amount)
+        ret = "BUSSINESS: " + self.name + "\n" + "STAFF: \n"
+        
+        for emp in self.staff:
+            ret += "name:"+ " " + emp.name + " " + "salary:"+ " " + str(emp.salary) + "\n" 
+        ret += "CATALOG: \n"
+        for prod in self.catalogue: 
+            ret += "name:"+ " " + prod.name + " " + "amount:"+ " " + str(prod.amount) + "\n" 
+        return ret
 
     def __repr__(self) -> str:
         return str(self)
@@ -392,7 +401,7 @@ class Collection:
             self.items.remove(item)
         except KeyError:
             warnings.warn_explicit(
-                f"You try remove an item: '{item.name}' that does not exist",
+                f"You try remove an item: '{str(item)}' that does not exist",
                 RuntimeWarning,
                 "Collection class",
                 262,
@@ -404,7 +413,8 @@ class Collection:
             if name == item.name:
                 current_item = item
                 break
-        self._delete_instance(current_item)
+        
+        self._delete_instance(current_item if current_item is not None else name )
 
     def get_type(self):
         return self.peek().__class__.__name__.lower()
