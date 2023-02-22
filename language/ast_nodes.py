@@ -133,10 +133,10 @@ class Params_Node(Node):
         self.id = id
 
 class Function_Node(Node):
-    def __init__(self, type_ret, name, params, list_inst) -> None:
+    def __init__(self, type_ret, id, params, list_inst) -> None:
         self.parmas = params
         self.type_ret = type_ret
-        self.name = name
+        self.id = id
         self.list_inst = list_inst
 
 class InStatement(Node):

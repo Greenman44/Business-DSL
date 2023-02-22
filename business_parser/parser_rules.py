@@ -111,8 +111,8 @@ def p_instruction_FuncCall(p):
     p[0] = p[1]
 
 def p_instruction_Func(p):
-    '''Instruction : DEF TYPE NAME OPAREN Params CPAREN OBRACE ListInst CBRACE
-                   | DEF VOID NAME OPAREN Params CPAREN OBRACE ListInst CBRACE'''
+    '''Instruction : DEF TYPE ID OPAREN Params CPAREN OBRACE ListInst CBRACE
+                   | DEF VOID ID OPAREN Params CPAREN OBRACE ListInst CBRACE'''
     p[0] = Function_Node(p[2], p[3], p[5], p[8])
 
 def p_params(p):
@@ -226,9 +226,22 @@ def p_Assignable(p):
                   
 
 def p_Funct_call(p):
-    '''Assignable : NAME OPAREN Assignable CPAREN'''
+    '''funct_call : ID OPAREN Argument CPAREN'''
     p[0] = Funct_Call_Node(p[3])
-        
+
+def p_Arguments(p):
+    '''Argument : Assignable COMMA Argument
+                | Assignable'''
+    if len(p) == 4:
+        p[0] = [p[1]] + p[3]
+    else:
+        p[0]= [p[1]]
+
+def p_Arguments_empty(p):
+    '''funct_call : empty'''
+    p[0] = []
+
+
 def p_Assignable_Staff(p):
     '''Assignable : GET STAFF FROM ID'''
     p[0] = GetStaff_node(VariableCall(p[4]))
