@@ -38,5 +38,8 @@ __all__ = [
     "GetAmount_node",
     "Load",
     "Save",
-    "Print_Node"
+    "Print_Node",
+    "Params_Node",
+    "Funct_Call_Node",
+    "Function_Node"
 ]

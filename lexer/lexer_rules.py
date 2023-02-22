@@ -8,6 +8,7 @@ class LexerBusiness:
         "product" : "TYPE",
         "collection" : "TYPE",
         "num" : "TYPE",
+        "def" : "DEF",
         "bill" : "BILL",
         "action" : "ACTION",
         "sale" : "SALE",

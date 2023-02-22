@@ -106,6 +106,22 @@ def p_print(p):
     'Instruction : PRINT DPOINT ID'
     p[0] = Print_Node(VariableCall(p[3]))
 
+def p_instruction_FuncCall(p):
+    '''Instruction : funct_call'''
+    p[0] = p[1]
+
+def p_instruction_Func(p):
+    '''Instruction : DEF TYPE NAME OPAREN Params CPAREN OBRACE ListInst CBRACE'''
+    p[0] = Function_Node(p[2], p[3], p[5], p[8])
+
+
+def p_params(p):
+    ''' Params : TYPE ID COMMA Params
+               | TYPE ID
+               | empty'''
+    if len(p) == 5 or len(p) == 3:
+        p[0] = Params_Node(p[1], p[2])
+
 def p_loops_statements(p):
     '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
                        | WHILE OPAREN condition CPAREN OBRACE ListInst CBRACE'''
@@ -200,6 +216,7 @@ def p_Assignable(p):
                   | GET NAME FROM ID
                   | LOAD NAME
                   | operation
+                  | funct_call
                   '''
     p[0] = p[1]
     if len(p) == 5:
@@ -208,6 +225,9 @@ def p_Assignable(p):
         p[0] = Load(p[2])                  
                   
 
+def p_Funct_call(p):
+    '''Assignable : NAME OPAREN Assignable CPAREN'''
+    p[0] = Funct_Call_Node(p[3])
         
 def p_Assignable_Staff(p):
     '''Assignable : GET STAFF FROM ID'''

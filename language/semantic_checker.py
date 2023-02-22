@@ -326,6 +326,18 @@ class SemanticChecker:
 
         node.processed_type = "number"
     
+    @when(Funct_Call_Node)
+    def visit(self, node : Funct_Call_Node):
+        pass
+
+    @when(Params_Node)
+    def visit(self, node : Params_Node):
+        node.processed_type = node.params_type
+    
+    @when(Function_Node)
+    def visit(self, node : Function_Node):
+        pass
+    
 
     @when(IfStatement)
     def visit(self, node : IfStatement):
