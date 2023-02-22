@@ -6,7 +6,18 @@ from language import Evaluator, Scope, SemanticChecker
 import re
 # from business_data import Number
 
+print("Insert file name ( '.bus' extension ) to run: ")
+file_name = input()
 
+with open('test/' + file_name + '.bus', 'r') as file:
+    data = file.read()
+l = LexerBusiness()
+l.build()
+node = parser.parse(data, lexer=l.lexer)
+checker = SemanticChecker(Scope())
+checker.visit(node)
+evaluator = Evaluator(Scope()) 
+evaluator.visit(node)
 # a =Collection([Employed( "prueba" , Number(300)), Employed("prueba2", Number(200))])
 # print(a)
 # print(a.__class__.__name__)
@@ -54,46 +65,4 @@ import re
 
 
 
-l = LexerBusiness()
-l.build()
 
-try:
-    s =  '''
-    num n1 = 20;
-    num n2 = 10;
-    num n3 = 10;
-    num n4 = 30;
-        employed e1 = {"Juan", salary : 300};
-    employed e2 = {"Pedro", salary : 400};
-    product p1 = {"Tomate", amount : 100};
-    product p2 = {"Hierro", amount : 30};
-    collection employeds = [e1, e2];
-    collection products = [p1, p2];
-    business b1 = {"DeTodo", employeds, products};
-    b1 action sale p1 price: 20 amount: 5;
-    b1 action sale p2 price: n1 amount: n2;
-    b1 action invest p1 cost: 10 amount: 30;
-    b1 action invest p1 cost: n3 amount: n4;
-    b1 add {"Chirimolla", amount : 30};
-    product p3 = {"Mamey", amount : 100};
-    employed e3 = {"Alberto", salary : 500};
-    b1 add p3;
-    b1 add e3;
-    b1 add bill {500, "Cobro de la luz"};
-    b1 dismiss "Juan";
-    b1 del p2;
-    b1 del "Tomate";
-    b1 dismiss e2;
-    b1 add e2;
-    b1 add p2;
-    b1 add e1;
-    b1 add p1;
-    save b1;
-    '''
-except EOFError:
-     print("Error")
-node = parser.parse(s, lexer=l.lexer)
-checker = SemanticChecker(Scope())
-checker.visit(node)
-evaluator = Evaluator(Scope()) 
-evaluator.visit(node)
