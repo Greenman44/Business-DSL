@@ -111,9 +111,9 @@ def p_instruction_FuncCall(p):
     p[0] = p[1]
 
 def p_instruction_Func(p):
-    '''Instruction : DEF TYPE NAME OPAREN Params CPAREN OBRACE ListInst CBRACE'''
+    '''Instruction : DEF TYPE NAME OPAREN Params CPAREN OBRACE ListInst CBRACE
+                   | DEF VOID NAME OPAREN Params CPAREN OBRACE ListInst CBRACE'''
     p[0] = Function_Node(p[2], p[3], p[5], p[8])
-
 
 def p_params(p):
     ''' Params : TYPE ID COMMA Params
