@@ -57,6 +57,7 @@ print(b)
 # EXAMPLES
 # ACTIONS
 
+<<<<<<< Updated upstream
 
 
 # l = LexerBusiness()
@@ -67,6 +68,18 @@ print(b)
 #        business b1 = load "laCuevita";
 #        print: b1;
 #     '''
+=======
+l = LexerBusiness()
+l.build()
+#
+try:
+    s =  '''
+       business b1 = load "laCuevita";
+       b1 add {"Agua", amount: 200};
+       print: b1;
+       SAVE b1;
+    '''
+>>>>>>> Stashed changes
     # employed e1 = {"Jose", salary : 600};
     # employed e2 = {"Anthony", salary : 800};
     # employed e3 = {"Marc", salary : 400};

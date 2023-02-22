@@ -178,9 +178,9 @@ class Evaluator:
 
     @when(Load)
     def visit(self, load_node : Load):
-        var_bus = self.visit(load_node.business)
+        
 
-        var_bus.value = Business_Data.LoadBusiness(load_node.name)
+        return Business_Data.LoadBusiness(load_node.name)
 
     
     @when(Save)

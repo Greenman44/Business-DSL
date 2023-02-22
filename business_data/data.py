@@ -343,13 +343,14 @@ class Business:
         return self.name.__hash__()
     
     def __str__(self) -> str:
-        print("BUSSINESS: " + self.name)
-        print("STAFF:")
-        for emp in self.staff.items():
-            print("name:"+ " " + emp.name + " " + "salary:"+ " " + emp.salary )
-        print("CATALOG:")
-        for prod in self.catalogue.items(): 
-            print("name:"+ " " + prod.name + " " + "amount:"+ " " + prod.amount)
+        ret = "BUSSINESS: " + self.name + "\n" + "STAFF: \n"
+        
+        for emp in self.staff:
+            ret += "name:"+ " " + emp.name + " " + "salary:"+ " " + str(emp.salary) + "\n" 
+        ret += "CATALOG: \n"
+        for prod in self.catalogue: 
+            ret += "name:"+ " " + prod.name + " " + "amount:"+ " " + str(prod.amount) + "\n" 
+        return ret
 
     def __repr__(self) -> str:
         return str(self)
@@ -392,7 +393,7 @@ class Collection:
             self.items.remove(item)
         except KeyError:
             warnings.warn_explicit(
-                f"You try remove an item: '{item.name}' that does not exist",
+                f"You try remove an item: '{str(item)}' that does not exist",
                 RuntimeWarning,
                 "Collection class",
                 262,
@@ -404,7 +405,8 @@ class Collection:
             if name == item.name:
                 current_item = item
                 break
-        self._delete_instance(current_item)
+        
+        self._delete_instance(current_item if current_item is not None else name )
 
     def get_type(self):
         return self.peek().__class__.__name__.lower()
