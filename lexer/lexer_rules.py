@@ -10,6 +10,7 @@ class LexerBusiness:
         "num" : "TYPE",
         "def" : "DEF",
         "bill" : "BILL",
+        "void" : "VOID",
         "action" : "ACTION",
         "sale" : "SALE",
         "invest" : "INVESTS",
