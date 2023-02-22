@@ -450,6 +450,7 @@ class Collection:
         return item in self.items
 
 
+
 class Employed:
     def __init__(self, name, salary):
         self.name = name
@@ -608,4 +609,9 @@ class Bill:
     bill_type : str
     cost : float
     date : date
+
+@dataclass
+class Function:
+    parameters : list 
+    body : list
 

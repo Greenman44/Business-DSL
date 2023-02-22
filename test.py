@@ -1,15 +1,11 @@
 # from business_parser import parser
-from datetime import date, timedelta
+# from datetime import date, timedelta
 # from lexer import LexerBusiness
 # from language import Evaluator, Scope, SemanticChecker
 # from business_data.data import  Collection, Product, Business_Data, Business, Employed, Number, Invest
 # import re
 # from business_data import Number
 
-a = date.today()
-b = a - timedelta(days=30)
-print(a)
-print(b)
 
 # a =Collection([Employed( "prueba" , Number(300)), Employed("prueba2", Number(200))])
 # print(a)

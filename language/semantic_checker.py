@@ -1,5 +1,5 @@
 from .visitor import when, on
-from .types_checker import Bus_Context, Instance
+from .types_checker import Bus_Context, Type
 from .ast_nodes import *
 from .scope import Scope
 from datetime import date
@@ -346,7 +346,23 @@ class SemanticChecker:
     
     @when(Funct_Call_Node)
     def visit(self, node : Funct_Call_Node):
-        pass
+        self.visit(node.id)
+        func : Type = node.processed_type
+        try:
+            aux = func.name 
+        except:
+            raise Exception(f"{node.id} must be a function")
+        params = func.get_attr("params")
+        return_type = func.get_attr("return_type")
+        if len(params) != len(node.params):
+            raise Exception(f"{len(params)} expected arguments but got {len(node.params)}")
+        for i in range(len(node.params)):
+            self.visit(node.params[i])
+            if node.params[i].processed_type != params[i]:
+                raise Exception(f"in position {i} expected {params[i]} but got {node.params[i]}")
+        return return_type
+            
+            
 
     @when(Params_Node)
     def visit(self, node : Params_Node):
@@ -354,7 +370,38 @@ class SemanticChecker:
     
     @when(Function_Node)
     def visit(self, node : Function_Node):
-        pass
+        current_var = self.scope.find(node.id)
+        if current_var is not None:
+            raise Exception("This function already exists.")
+        func_scope = self.scope.new_child()
+        params = []
+        for param in node.params:
+            self.visit(param)
+            func_scope.set(param.id, param.processed_type)
+            params.append(param.processed_type)
+        func_checker = SemanticChecker(func_scope)
+        return_type = ""
+        for inst in node.list_inst:
+            func_checker.visit(inst)
+            if isinstance(inst, Return_Node):
+                if node.type_ret == "void":
+                    if inst.processed_type != "return":
+                        raise Exception("Invalid return type, nothing expected")
+                    else:
+                        return_type = inst.processed_type
+                elif inst.processed_type == node.type_ret:
+                    return_type = inst.processed_type
+                else:
+                    raise Exception(f"Invalid return type, expected {node.type_ret}")
+                return
+        if len(return_type) == 0:
+            raise Exception("A function needs at least one return type")
+        func_type = Type("function")
+        func_type.set_attr("return_type", return_type)
+        func_type.set_attr("params", params)
+        self.scope.set(node.id, func_type)
+                 
+
     
 
     @when(IfStatement)

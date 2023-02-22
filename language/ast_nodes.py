@@ -125,7 +125,8 @@ class Print_Node(Node):
         self.id_1 = id_1
 
 class Funct_Call_Node(Node):
-    def __init__(self, params) -> None:
+    def __init__(self,id, params) -> None:
+        self.id = id
         self.params = params
 class Params_Node(Node):
     def __init__(self, params_type, id) -> None:
@@ -134,10 +135,14 @@ class Params_Node(Node):
 
 class Function_Node(Node):
     def __init__(self, type_ret, id, params, list_inst) -> None:
-        self.parmas = params
+        self.params = params
         self.type_ret = type_ret
         self.id = id
         self.list_inst = list_inst
+
+class Return_Node(Node):
+    def __init__(self, var_return = None):
+        self.var_return = var_return
 
 class InStatement(Node):
     def __init__(self, id_1, id_2) -> None:

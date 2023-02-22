@@ -3,8 +3,16 @@
 class Type:
     def __init__(self, name:str):
         self.name = name
-
+        self.attr = {}
     
+    def set_attr(self, name, value):
+        self.attr[name] = value
+    
+    def get_attr(self, name):
+        try:
+            return self.attr[name]
+        except KeyError:
+            raise AttributeError("Attribute not found: %s" % name)    
 class Instance:
     def __init__(self, type , value) -> None:
         self.type = type

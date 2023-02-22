@@ -27,6 +27,7 @@ def p_instruction(p):
     '''Instruction : instance
                    | SAVE ID
                    | loop_statements
+                   | return_inst
                    | IfStatement
                    | IfStatement ELSE OBRACE ListInst CBRACE
                    '''
@@ -38,6 +39,13 @@ def p_instruction(p):
     elif len(p) == 3:
         p[0] = Save(VariableCall(p[2]))
 
+def p_return_inst(p):
+    '''return_inst : RETURN Assignable
+                   | RETURN'''
+    if len(p) == 3:
+        p[0] = Return_Node(var_return=p[2])
+    elif len(p) == 2:
+        p[0] = Return_Node() 
 
 def p_instruction_sale(p):
     'Instruction : ID ACTION SALE ID PRICE DPOINT NUMBER AMOUNT DPOINT NUMBER'
@@ -233,7 +241,7 @@ def p_Assignable(p):
 
 def p_Funct_call(p):
     '''funct_call : ID OPAREN Argument CPAREN'''
-    p[0] = Funct_Call_Node(p[3])
+    p[0] = Funct_Call_Node(VariableCall(p[1]), p[3])
 
 def p_Arguments(p):
     '''Argument : Assignable COMMA Argument

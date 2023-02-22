@@ -1,6 +1,6 @@
 from .ast_nodes import *
 from .scope import Scope
-from business_data import Business, Collection, Employed, Product, Business_Data, Number
+from business_data import Business, Collection, Employed, Product, Business_Data, Number, Function
 from .types_checker import  Instance
 from .visitor import on, when
 from datetime import date, timedelta
@@ -207,6 +207,30 @@ class Evaluator:
             return valid_dates[date_node.date]
         except:
             return date_node.date
+    @when(Funct_Call_Node)
+    def visit(self, call_node : Funct_Call_Node):
+        func : Function = self.scope.find(call_node.id)
+        func_scope = self.scope.new_child()
+        for i in range(len(func.parameters)):
+            param = self.visit(call_node.params[i])
+            try:
+                param = param.value
+            except:
+                pass
+            func_scope.set(func.parameters[i].id, param)
+        func_eval = Evaluator(func_scope)
+        for inst in func.body:
+            var_return = func_eval.visit(inst)
+            if isinstance(inst, Return_Node):
+                return var_return
+        
+
+    
+    
+    @when(Function_Node)
+    def visit(self, function_node : Function_Node):
+        self.scope.set(function_node.id, Function(parameters=function_node.params, body=function_node.body))
+
 
     @when(Metrics)
     def visit(self, metrics : Metrics):
