@@ -271,10 +271,6 @@ def p_Assignable_Amount(p):
     'Assignable : GET AMOUNT FROM ID'
     p[0] = GetAmount_node(VariableCall(p[4]))
 
-def p_Assignable_ID(p):
-    '''Assignable : ID'''
-    p[0] = VariableCall(p[1])
-
 def p_subType(p):
     '''subType : OBRACE bus CBRACE
                | OBRACE emp CBRACE
@@ -318,29 +314,15 @@ def p_bus_ID(p):
     "bus : NAME COMMA ID COMMA ID"
     p[0] = Bus_Node(p[1], VariableCall(p[3]), VariableCall(p[5]))
 
-def p_emp(p):
-    '''emp : NAME COMMA SALARY DPOINT NUMBER'''
-    p[0] = Emp_Node(p[1], Number_Node(p[5]))
-
-def p_emp_ID(p):
-    "emp : NAME COMMA SALARY DPOINT ID"
-    p[0] = Emp_Node(p[1], VariableCall(p[5]))
 
 def p_emp_Oper(p):
     'emp : NAME COMMA SALARY DPOINT operation'
     p[0] = Emp_Node(p[1], p[5])
 
 def p_prod(p):
-    '''prod : NAME COMMA AMOUNT DPOINT NUMBER
-            | NAME'''
+    '''prod : NAME'''
     if len(p) == 2:
         p[0] = Prod_Node(p[1])
-    else:
-        p[0] = Prod_Node(p[1], amount=Number_Node(p[5]))
-
-def p_prod_ID(p):
-    ' prod : NAME COMMA AMOUNT DPOINT ID'
-    p[0] = Prod_Node(p[1], amount= VariableCall(p[5]))
 
 def p_prod_Oper(p):
     'prod : NAME COMMA AMOUNT DPOINT operation'

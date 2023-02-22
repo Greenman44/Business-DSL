@@ -66,3 +66,31 @@ evaluator.visit(node)
 
 
 
+try:
+    s =  '''
+
+
+
+    def void Fibono(num c){
+        num i = 1;
+        num a = 0;
+        num b = 1;
+        while (i < c){
+            num n = a + b;
+            a = b;
+            b = n;
+            print: b;
+            i = i + 1;
+        };
+        return;
+    };
+    num c = 8;
+    Fibono(c);
+    '''
+except EOFError:
+     print("Error")
+node = parser.parse(s, lexer=l.lexer)
+checker = SemanticChecker(Scope())
+checker.visit(node)
+evaluator = Evaluator(Scope()) 
+evaluator.visit(node)
