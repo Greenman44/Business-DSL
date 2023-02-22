@@ -56,7 +56,8 @@ l.build()
 #
 try:
     s =  '''
-        load "laCuevita";
+       business b1 = load "laCuevita";
+       print: b1;
     '''
     # employed e1 = {"Jose", salary : 600};
     # employed e2 = {"Anthony", salary : 800};

@@ -342,6 +342,18 @@ class Business:
     def __hash__(self) -> int:
         return self.name.__hash__()
     
+    def __str__(self) -> str:
+        print("BUSSINESS: " + self.name)
+        print("STAFF:")
+        for emp in self.staff.items():
+            print("name:"+ " " + emp.name + " " + "salary:"+ " " + emp.salary )
+        print("CATALOG:")
+        for prod in self.catalogue.items(): 
+            print("name:"+ " " + prod.name + " " + "amount:"+ " " + prod.amount)
+
+    def __repr__(self) -> str:
+        return str(self)
+    
     def __contains__(self, item) -> bool:
         if isinstance(item, Product):
             return item in self.catalogue
