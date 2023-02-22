@@ -9,6 +9,7 @@ class LexerBusiness:
         "collection" : "TYPE",
         "num" : "TYPE",
         "def" : "DEF",
+        "return" : "RETURN",
         "bill" : "BILL",
         "void" : "VOID",
         "action" : "ACTION",

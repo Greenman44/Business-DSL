@@ -346,7 +346,7 @@ class SemanticChecker:
     @when(Funct_Call_Node)
     def visit(self, node : Funct_Call_Node):
         self.visit(node.id)
-        func : Type = node.processed_type
+        func : Type = node.id.processed_type
         try:
             aux = func.name 
         except:
@@ -359,16 +359,20 @@ class SemanticChecker:
             self.visit(node.params[i])
             if node.params[i].processed_type != params[i]:
                 raise Exception(f"in position {i} expected {params[i]} but got {node.params[i]}")
-        return return_type
+        node.processed_type = return_type
             
             
 
     @when(Params_Node)
     def visit(self, node : Params_Node):
+        if node.params_type == "num":
+            node.params_type = "number"
         node.processed_type = node.params_type
     
     @when(Function_Node)
     def visit(self, node : Function_Node):
+        if node.type_ret == "num":
+            node.type_ret = "number"
         current_var = self.scope.find(node.id)
         if current_var is not None:
             raise Exception("This function already exists.")
@@ -392,7 +396,6 @@ class SemanticChecker:
                     return_type = inst.processed_type
                 else:
                     raise Exception(f"Invalid return type, expected {node.type_ret}")
-                return
         if len(return_type) == 0:
             raise Exception("A function needs at least one return type")
         func_type = Type("function")
@@ -401,7 +404,13 @@ class SemanticChecker:
         self.scope.set(node.id, func_type)
                  
 
-    
+    @when(Return_Node)
+    def visit(self, node : Return_Node):
+        if node.var_return is None:
+            node.processed_type = "return"
+            return    
+        self.visit(node.var_return)
+        node.processed_type = node.var_return.processed_type  
 
     @when(IfStatement)
     def visit(self, node : IfStatement):
@@ -439,7 +448,7 @@ class SemanticChecker:
             raise Exception(f"Can not compare type Business")
 
         if type_id_1 != type_id_2:
-            raise Exception(f"Type of {node.id_1} is not equal to the type of {node.id_2}")
+            raise Exception(f"Type of {type_id_1} is not equal to the type of {type_id_2}")
         
         node.processed_type = "bool_expression"
     

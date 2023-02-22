@@ -213,7 +213,7 @@ class Evaluator:
             
     @when(Funct_Call_Node)
     def visit(self, call_node : Funct_Call_Node):
-        func : Function = self.scope.find(call_node.id)
+        func : Function = self.visit(call_node.id)
         func_scope = self.scope.new_child()
         for i in range(len(func.parameters)):
             param = self.visit(call_node.params[i])
@@ -221,19 +221,26 @@ class Evaluator:
                 param = param.value
             except:
                 pass
-            func_scope.set(func.parameters[i].id, param)
+            func_scope.set(func.parameters[i].id, Instance(func.parameters[i],param))
         func_eval = Evaluator(func_scope)
         for inst in func.body:
             var_return = func_eval.visit(inst)
             if isinstance(inst, Return_Node):
                 return var_return
         
-
+    @when(Return_Node)
+    def visit(self, return_node : Return_Node):
+        var_return = self.visit(return_node.var_return)
+        try:
+            var_return = var_return.value
+        except:
+            pass
+        return var_return
     
     
     @when(Function_Node)
     def visit(self, function_node : Function_Node):
-        self.scope.set(function_node.id, Function(parameters=function_node.params, body=function_node.body))
+        self.scope.set(function_node.id, Function(parameters=function_node.params, body=function_node.list_inst))
 
         
 
