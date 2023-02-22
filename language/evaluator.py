@@ -3,7 +3,7 @@ from .scope import Scope
 from business_data import Business, Collection, Employed, Product, Business_Data, Number
 from .types_checker import  Instance
 from .visitor import on, when
-
+from datetime import date, timedelta
 
 class Evaluator:
     def __init__(self, scope : Scope):
@@ -196,11 +196,24 @@ class Evaluator:
 
         print(var_id)
 
+    @when(Date_node)
+    def visit(self, date_node : Date_node):
+        valid_dates = {
+            "TODAY" : date.today(),
+            "LAST MONTH" : date.today() - timedelta(days=30),
+            "LAST YEAR" : date.today() + timedelta(days=365)
+        }
+        try:
+            return valid_dates[date_node.date]
+        except:
+            return date_node.date
+
     @when(Metrics)
     def visit(self, metrics : Metrics):
         var_bus : Business = self.visit(metrics.business).value
+        var_date : date = self.visit(metrics.date)
 
-        var_bus.calculate_metrics(metrics.metric , metrics.date)
+        var_bus.calculate_metrics(metrics.metric , var_date)
 
     @when(GetElementFrom_Statement)
     def visit(self, getElement : GetElementFrom_Statement):

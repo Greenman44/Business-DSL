@@ -2,13 +2,13 @@ from .visitor import when, on
 from .types_checker import Bus_Context, Instance
 from .ast_nodes import *
 from .scope import Scope
-import datetime
+from datetime import date
+from datetime import timedelta
 
 class SemanticChecker:
     def __init__(self, scope : Scope):
         self.scope = scope
         self.context = Bus_Context()
-        self.today =  datetime.datetime.now()
     
     @on("node")
     def visit(self, node):
@@ -164,6 +164,24 @@ class SemanticChecker:
             raise Exception('Only can make get_amount action from a product')
         
         node.processed_type = "number"
+
+    @when(Date_node)
+    def visit(self, node : Date_node):
+        valid_dates = {
+            "TODAY" : date.today(),
+            "LAST MONTH" : date.today() - timedelta(days=30),
+            "LAST YEAR" : date.today() + timedelta(days=365)
+        }
+        if isinstance(node.date, str):
+            try:
+                a = valid_dates[node.date]
+            except:
+                raise Exception("Invalid date was given")
+        else:
+            if node.date > date.today():
+                raise Exception("Only can make a metric with a date earlier")
+
+        node.processed_type("date")
 
     @when(ActionSALE)
     def visit(self, node : ActionSALE):
@@ -406,10 +424,10 @@ class SemanticChecker:
             raise Exception("Can only calculate metrics to a business")
         
         self.visit(node.date)
-        if node.date > self.today:
-            raise Exception("You can only calculate metrics from an old date")
+        if node.date.processed_type != "date":
+            raise Exception("Only can calculate metrics to a date")
         
-        node.processed_type =  "metrics"
+        node.processed_type =  "number"
     
 
 

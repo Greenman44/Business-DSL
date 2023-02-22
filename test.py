@@ -1,9 +1,15 @@
-from business_parser import parser
-from lexer import LexerBusiness
-from language import Evaluator, Scope, SemanticChecker
-from business_data.data import  Collection, Product, Business_Data, Business, Employed, Number, Invest
+# from business_parser import parser
+from datetime import date, timedelta
+# from lexer import LexerBusiness
+# from language import Evaluator, Scope, SemanticChecker
+# from business_data.data import  Collection, Product, Business_Data, Business, Employed, Number, Invest
 # import re
 # from business_data import Number
+
+a = date.today()
+b = a - timedelta(days=30)
+print(a)
+print(b)
 
 # a =Collection([Employed( "prueba" , Number(300)), Employed("prueba2", Number(200))])
 # print(a)
@@ -51,14 +57,16 @@ from business_data.data import  Collection, Product, Business_Data, Business, Em
 # EXAMPLES
 # ACTIONS
 
-l = LexerBusiness()
-l.build()
-#
-try:
-    s =  '''
-       business b1 = load "laCuevita";
-       print: b1;
-    '''
+
+
+# l = LexerBusiness()
+# l.build()
+# #
+# try:
+#     s =  '''
+#        business b1 = load "laCuevita";
+#        print: b1;
+#     '''
     # employed e1 = {"Jose", salary : 600};
     # employed e2 = {"Anthony", salary : 800};
     # employed e3 = {"Marc", salary : 400};
@@ -136,13 +144,13 @@ try:
     # b1 add p2;
     # b1 add e1;
     # b1 add p1;
-except EOFError:
-    print("Error")
-node = parser.parse(s, lexer=l.lexer)
-checker = SemanticChecker(Scope())
-checker.visit(node)
-evaluator = Evaluator(Scope()) 
-evaluator.visit(node)
+# except EOFError:
+#     print("Error")
+# node = parser.parse(s, lexer=l.lexer)
+# checker = SemanticChecker(Scope())
+# checker.visit(node)
+# evaluator = Evaluator(Scope()) 
+# evaluator.visit(node)
 
 # OPERATIONS
 # num n5 = (n4 + n3) * n2

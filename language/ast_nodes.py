@@ -180,7 +180,10 @@ class ActionDISMISS(Node):
     def __init__(self, business, employed):
         self.business = business
         self.employed = employed
-        
+
+class Date_node(Node):
+    def __init__(self,date):
+        self.date = date
 
 class Metrics(Node):
     def __init__(self,business,metric, date):

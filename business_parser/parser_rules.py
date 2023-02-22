@@ -26,14 +26,12 @@ def p_list_instructions(p):
 def p_instruction(p):
     '''Instruction : instance
                    | SAVE ID
-                   | ID GET METRICS DATE
                    | loop_statements
                    | IfStatement
                    | IfStatement ELSE OBRACE ListInst CBRACE
                    '''
-    if len(p) == 5:
-        p[0] = Metrics(VariableCall(p[1]), p[3], p[4])
-    elif len(p) == 2:
+    
+    if len(p) == 2:
         p[0] = p[1]
     elif len(p) == 6:
         p[0] = ElseStatement(p[1], p[4])
@@ -119,8 +117,12 @@ def p_params(p):
     ''' Params : TYPE ID COMMA Params
                | TYPE ID
                | empty'''
-    if len(p) == 5 or len(p) == 3:
-        p[0] = Params_Node(p[1], p[2])
+    if len(p) == 5:
+        p[0] = [Params_Node(p[1], p[2])] + p[4]
+    elif len(p) == 3:
+        p[0] = [Params_Node(p[1], p[2])]
+    else:
+        p[0] = []
 
 def p_loops_statements(p):
     '''loop_statements : FOREACH ID IN ID OBRACE ListInst CBRACE
@@ -214,13 +216,17 @@ def p_Assignable(p):
     '''Assignable : subType
                   | collection
                   | GET NAME FROM ID
+                  | ID GET METRICS DATE
                   | LOAD NAME
                   | operation
                   | funct_call
                   '''
     p[0] = p[1]
     if len(p) == 5:
-        p[0] = GetElementFrom_Statement(p[2], VariableCall(p[4]))
+        if p[1] == "get":
+            p[0] = GetElementFrom_Statement(p[2], VariableCall(p[4]))
+        else:
+            p[0] = Metrics(VariableCall(p[1]), p[3], Date_node(p[4]))
     elif len(p) == 3:
         p[0] = Load(p[2])                  
                   
