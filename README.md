@@ -50,7 +50,7 @@
         - salary  
  #### Declaración y uso de variables:
  En este lenguaje existen 5 tipos built-in: Business, Collection, Employed, Product, Num. A continuación se muestran ejemplos de su declaración y asignación:
- ```
+ ```python
    num a = 5;
    employed e = {"Jose", salary : 666};
    collection c1 = [e,{"Juan",salary: 300}];
