@@ -1,11 +1,15 @@
-num a = 0;
-num b = 1;
-num i = 1;
-num c = 8;
-while (i < c){
-    num n = a + b;
-    a = b;
-    b = n;
-    print: b;
-    i = i + 1;
+def void Fibonacci(num c){
+    num i = 1;
+    num a = 0;
+    num b = 1;
+    while (i < c){
+        num n = a + b;
+        a = b;
+        b = n;
+        print: b;
+        i = i + 1;
+    };
+    return;
 };
+num c = 15;
+Fibonacci(c);
