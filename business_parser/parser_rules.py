@@ -65,18 +65,21 @@ def p_instruction_invests_operation(p):
 
 def p_instruction_add(p):
     '''Instruction : ID ADD ID
-                   | ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE'''
+                   | ID ADD BILL OBRACE NUMBER COMMA DESCRIP CBRACE
+                   | ID ADD BILL OBRACE NUMBER COMMA NAME CBRACE'''
     if len(p) == 4:
         p[0] = ActionADD(VariableCall(p[1]), VariableCall(p[3]))
     if len(p) == 9:
         p[0] = Bill_Node(VariableCall(p[1]), Number_Node(p[5]), p[7])
 
 def p_instruction_Bill_oper(p):
-    'Instruction : ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE'
+    '''Instruction : ID ADD BILL OBRACE operation COMMA DESCRIP CBRACE
+                   | ID ADD BILL OBRACE operation COMMA NAME CBRACE'''
     p[0] = Bill_Node(VariableCall(p[1]), p[5], p[7])
 
 def p_instruction_Bill_ID(p):
-    'Instruction : ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE'
+    '''Instruction : ID ADD BILL OBRACE ID COMMA DESCRIP CBRACE
+                   | ID ADD BILL OBRACE ID COMMA NAME CBRACE'''
     p[0] = Bill_Node(VariableCall(p[1]), VariableCall(p[5]),p[7])
 
 def p_instruction_add_ID(p):

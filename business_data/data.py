@@ -216,6 +216,7 @@ class Business_Data:
     def get_investments(self, date : date):
         investments = 0
         for i in self.invests_table.index:
+            
             if self.invests_table.at[i,"date"] >= date:
                 investments += self.invests_table.at[i,"cost"]
         return investments
@@ -247,9 +248,9 @@ class Business_Data:
     
     def get_metric(self, current_metric : str, date: date):
         metrics = {
-            "net-sales" : self.get_net_sales,
-            "gross-profit" : self.get_gross_profit,
-            "gross-margin" :  self.get_gross_margin,
+            "net_sales" : self.get_net_sales,
+            "gross_profit" : self.get_gross_profit,
+            "gross_margin" :  self.get_gross_margin,
             "expenses" : self.get_expenses,
             "earnings" : self.get_earnings,
         }
@@ -275,9 +276,16 @@ class Business:
         self.data.Save_DatatoExcel()
 
     def make_sale(self, product_name:str, price:Number, amount: Number):
+        p = self.get(product_name)
+        p.amount -= amount
         self.data.make_sale(Sale(product=Product(product_name), price=price.number, amount=int(amount.number)))
 
     def make_invest(self, product_name:str, cost:Number, amount:Number):
+        try:
+            p1 = self.get(product_name)
+            p1.amount += amount
+        except:
+            self.catalogue.add(Product(product_name,amount))    
         self.data.make_invest(Invest(product=Product(product_name, amount=amount), cost=cost.number, amount=int(amount.number)))
 
     def calculate_metrics(self, metric : str, date):

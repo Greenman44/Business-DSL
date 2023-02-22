@@ -14,9 +14,9 @@ class LexerBusiness:
         "action" : "ACTION",
         "sale" : "SALE",
         "invest" : "INVESTS",
-        "net-sales" : "METRICS",
-        "gross-margin" : "METRICS",
-        "gross-profit" : "METRICS",
+        "net_sales" : "METRICS",
+        "gross_margin" : "METRICS",
+        "gross_profit" : "METRICS",
         "expenses" : "METRICS",
         "earnings" : "METRICS",
         "print" : "PRINT",
@@ -27,9 +27,10 @@ class LexerBusiness:
         "add" : "ADD",
         "del" : "DEL",
         "load" : "LOAD",
-        "TODAY" : "DATE",
-        "LAST MONTH" : "DATE",
-        "LAST YEAR" : "DATE",
+        "today" : "DATE",
+        "last_week" : "DATE",
+        "last_month" : "DATE",
+        "last_year" : "DATE",
         "price" : "PRICE",
         "cost" : "COST",
         "if" : "IF",
@@ -98,7 +99,8 @@ class LexerBusiness:
     t_END = r';'
     t_OBR = r'\['
     t_CBR = r'\]'
-    t_DESCRIP = r'"[a-zA-Z][a-zA-Z_\s]+"'
+    t_DESCRIP = r'"[a-zA-Z][a-zA-Z_\s]*"'
+    
 
     def t_NUMBER (self,t):
         r'\d+(\.\d+)?'
@@ -114,14 +116,6 @@ class LexerBusiness:
         t.value = t.value[1:-1]
         return t
     
-    def t_DATE(self, t):
-        r"([0-2][0-9]|3[0-1])(\/|-)(0[1-9]|1[0-2])\2(\d{4})"
-        d = None
-        try:
-            d = t.value.split('/')
-        except:
-            d = t.value.split('-')
-        t.value = date(d[2], d[1], d[0])
 
     def t_ID(self,t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'

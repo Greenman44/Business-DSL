@@ -1,15 +1,12 @@
-# from business_parser import parser
+from business_parser import parser
 from datetime import date, timedelta
-# from lexer import LexerBusiness
-# from language import Evaluator, Scope, SemanticChecker
+from lexer import LexerBusiness
+from language import Evaluator, Scope, SemanticChecker
 # from business_data.data import  Collection, Product, Business_Data, Business, Employed, Number, Invest
-# import re
+import re
 # from business_data import Number
 
-a = date.today()
-b = a - timedelta(days=30)
-print(a)
-print(b)
+
 
 # a =Collection([Employed( "prueba" , Number(300)), Employed("prueba2", Number(200))])
 # print(a)
@@ -38,8 +35,7 @@ print(b)
 # node = parser.parse(s, lexer=l.lexer)
 # checker = SemanticChecker(Scope())
 # checker.visit(node)
-# p = re.compile('\d+(\.\d+)?')
-# print(p.fullmatch("3.56"))
+
 
 # print(int("09"))
 # c1 = Collection([Product("papa"), Product("tomate"), Product("cebolla")])
@@ -57,29 +53,25 @@ print(b)
 # EXAMPLES
 # ACTIONS
 
-<<<<<<< Updated upstream
 
 
-# l = LexerBusiness()
-# l.build()
-# #
-# try:
-#     s =  '''
-#        business b1 = load "laCuevita";
-#        print: b1;
-#     '''
-=======
 l = LexerBusiness()
 l.build()
-#
+
 try:
     s =  '''
-       business b1 = load "laCuevita";
-       b1 add {"Agua", amount: 200};
-       print: b1;
-       SAVE b1;
+       num a = 0;
+       num b = 1;
+       num i = 1;
+       num c = 8;
+       while (i < c){
+       num n = a + b;
+       a = b;
+       b = n * b;
+       print: b;
+       i = i + 1;
+       };
     '''
->>>>>>> Stashed changes
     # employed e1 = {"Jose", salary : 600};
     # employed e2 = {"Anthony", salary : 800};
     # employed e3 = {"Marc", salary : 400};
@@ -157,13 +149,13 @@ try:
     # b1 add p2;
     # b1 add e1;
     # b1 add p1;
-# except EOFError:
-#     print("Error")
-# node = parser.parse(s, lexer=l.lexer)
-# checker = SemanticChecker(Scope())
-# checker.visit(node)
-# evaluator = Evaluator(Scope()) 
-# evaluator.visit(node)
+except EOFError:
+     print("Error")
+node = parser.parse(s, lexer=l.lexer)
+checker = SemanticChecker(Scope())
+checker.visit(node)
+evaluator = Evaluator(Scope()) 
+evaluator.visit(node)
 
 # OPERATIONS
 # num n5 = (n4 + n3) * n2
